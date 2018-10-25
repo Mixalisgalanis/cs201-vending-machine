@@ -2,9 +2,10 @@ package dispensers;
 
 import containers.Container;
 import interfaces.Consumer;
+import interfaces.Pluggable;
 import interfaces.Provider;
 
-public interface Dispenser {
+public interface Dispenser extends Pluggable{
 
     Provider prepareContainer(String containerName, Consumer consumer);
 

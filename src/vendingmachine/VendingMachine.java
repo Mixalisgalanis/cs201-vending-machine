@@ -23,8 +23,6 @@ public class VendingMachine {
         addModule((new ProductCase()));
         addModule((new ChangeCase()));
 
-
-
         //Adding Containers
         modules.add(new DosingContainer("Water Container", ));
     }

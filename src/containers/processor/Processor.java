@@ -1,6 +1,8 @@
 package containers.processor;
 
-public interface Processor {
+import interfaces.Pluggable;
+
+public interface Processor extends Pluggable{
 
     int process(int duration); //Duration in ms
 }

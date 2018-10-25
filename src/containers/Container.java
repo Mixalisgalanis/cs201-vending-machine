@@ -1,9 +1,10 @@
 package containers;
 
 import consumables.Consumable;
+import interfaces.Provider;
 import modules.Module;
 
-abstract public class Container extends Module{
+abstract public class Container extends Module implements Provider{
     //Class Variables
     private int capacity;
     private Consumable consumable;
