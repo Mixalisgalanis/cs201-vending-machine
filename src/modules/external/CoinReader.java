@@ -7,11 +7,12 @@ public class CoinReader extends Module {
 	private int money;
 	
 	public CoinReader() {
-		super ("coinReader");
+		super ("Coin Reader");
 		money = 0;
 	}
 	
-	public String getName() {
-		return "coinReader";
-	}
+	/*public int receiveMoney(int min) {
+				
+	}*/
+	
 }
