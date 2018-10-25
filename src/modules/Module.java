@@ -7,6 +7,7 @@ abstract public class Module {
 		this.name=name;
 	}
 	
+<<<<<<< HEAD
 	public String getName(){return name;}
 =======
 	public String getName() {
