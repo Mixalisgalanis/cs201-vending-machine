@@ -1,4 +1,4 @@
 package consumables;
 
-abstract public class Consumable {
+public class Consumable {
 }

@@ -7,5 +7,5 @@ abstract public class Module {
 		this.name=name;
 	}
 	
-	public abstract String getName();
+	public String getName(){return name;}
 }
