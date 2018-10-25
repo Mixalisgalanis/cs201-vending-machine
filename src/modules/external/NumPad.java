@@ -8,7 +8,8 @@ public class NumPad extends Module {
 		super("Numpad");	
 	}
 	
+	
+/*	
 	public int readInt(int lenght) {
-		
-	}
+	}*/
 }

@@ -11,8 +11,8 @@ public class CoinReader extends Module {
 		money = 0;
 	}
 	
-	public int receiveMoney(int min) {
+	/*public int receiveMoney(int min) {
 				
-	}
+	}*/
 	
 }
