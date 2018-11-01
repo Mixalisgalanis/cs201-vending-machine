@@ -1,4 +1,4 @@
-package interfaces;
+package behaviour;
 
 public interface Provider extends Pluggable{
 

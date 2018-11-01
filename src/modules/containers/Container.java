@@ -1,7 +1,7 @@
 package modules.containers;
 
 import consumables.Consumable;
-import interfaces.Provider;
+import behaviour.Provider;
 import modules.Module;
 
 abstract public class Container extends Module implements Provider{

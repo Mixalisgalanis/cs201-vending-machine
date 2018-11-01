@@ -1,4 +1,14 @@
 package devices.containers;
 
-public interface ContainerDevice {
+import devices.Device;
+
+public interface ContainerDevice extends Device {
+
+    int getCapacity();
+
+    void open();
+
+    void close();
+
+    boolean isOpen();
 }

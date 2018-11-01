@@ -1,4 +1,10 @@
 package devices.containers;
 
-public interface DosingContainer {
+import devices.Device;
+
+public interface DosingContainer extends ContainerDevice {
+
+    void releaseDose(Device device);
+
+    int doseSize();
 }

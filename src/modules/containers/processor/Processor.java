@@ -1,8 +1,9 @@
 package modules.containers.processor;
 
-import interfaces.Pluggable;
+import behaviour.Consumer;
+import behaviour.Pluggable;
 
-public interface Processor extends Pluggable{
+public interface Processor extends Pluggable, Consumer{
 
     int process(int duration); //Duration in ms
 }

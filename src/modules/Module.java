@@ -1,7 +1,10 @@
 package modules;
 
-abstract public class Module {
+import devices.Device;
+
+abstract public class Module<T extends Device> {
 	private String name;
+	private T device;
 	
 	public Module (String name) {
 		this.name=name;

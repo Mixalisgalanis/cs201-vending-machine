@@ -1,6 +1,6 @@
 package modules.external;
  
-import interfaces.Consumer;
+import behaviour.Consumer;
 import modules.Module;
 
 public class ProductCase  extends Module implements Consumer{

@@ -1,6 +1,6 @@
 package devices.external;
 
-import interfaces.Lockable;
+import behaviour.Lockable;
 
 public interface ProductCaseDevice extends Lockable{
 

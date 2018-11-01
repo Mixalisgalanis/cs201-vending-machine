@@ -1,4 +1,4 @@
-package interfaces;
+package behaviour;
 
 import consumables.Consumable;
 

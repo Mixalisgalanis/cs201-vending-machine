@@ -1,9 +1,9 @@
 package modules.dispensers;
 
 import modules.containers.Container;
-import interfaces.Consumer;
-import interfaces.Pluggable;
-import interfaces.Provider;
+import behaviour.Consumer;
+import behaviour.Pluggable;
+import behaviour.Provider;
 
 public interface Dispenser extends Pluggable{
 
