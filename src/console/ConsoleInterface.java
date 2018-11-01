@@ -1,6 +1,6 @@
 package console;
 
-import vendingmachine.VendingMachine;
+import machine.VendingMachine;
 
 public class ConsoleInterface {
 

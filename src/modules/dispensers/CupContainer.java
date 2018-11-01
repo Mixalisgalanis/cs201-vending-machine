@@ -1,4 +1,4 @@
-package dispensers;
+package modules.dispensers;
 
 import modules.Module;
 

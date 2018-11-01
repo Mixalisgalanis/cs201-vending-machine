@@ -1,4 +1,4 @@
-package containers.processor;
+package modules.containers.processor;
 
 import interfaces.Pluggable;
 

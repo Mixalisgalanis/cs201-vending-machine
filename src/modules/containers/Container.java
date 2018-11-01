@@ -1,4 +1,4 @@
-package containers;
+package modules.containers;
 
 import consumables.Consumable;
 import interfaces.Provider;

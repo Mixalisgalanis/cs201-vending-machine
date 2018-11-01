@@ -1,6 +1,6 @@
-package vendingmachine;
+package machine;
 
-import containers.DosingContainer;
+import modules.containers.DosingContainer;
 import modules.Module;
 import modules.external.*;
 

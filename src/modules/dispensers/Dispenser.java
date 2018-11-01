@@ -1,6 +1,6 @@
-package dispensers;
+package modules.dispensers;
 
-import containers.Container;
+import modules.containers.Container;
 import interfaces.Consumer;
 import interfaces.Pluggable;
 import interfaces.Provider;
