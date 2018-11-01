@@ -1,6 +1,5 @@
 package machine;
 
-import modules.containers.DosingContainer;
 import modules.Module;
 import modules.external.*;
 
@@ -29,6 +28,8 @@ public class VendingMachine {
 
     public Module getModule(String name) {
         for (Module module : modules) {
+
+
             if (module.getName().equals(name)) return module;
         }
         return null;

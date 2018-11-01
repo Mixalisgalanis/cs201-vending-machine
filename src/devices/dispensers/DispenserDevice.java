@@ -1,6 +1,7 @@
 package devices.dispensers;
 
 import devices.Device;
+import devices.containers.ContainerDevice;
 
 public interface DispenserDevice extends Device{
 
