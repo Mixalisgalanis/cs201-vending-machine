@@ -1,4 +1,8 @@
 package devices.external;
 
-public interface NumPadDevice {
+import interfaces.Lockable;
+
+public interface NumPadDevice extends Lockable{
+
+	int readDigit();
 }

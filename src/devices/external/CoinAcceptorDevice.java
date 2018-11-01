@@ -1,4 +1,8 @@
 package devices.external;
 
-public interface CoinAcceptorDevice {
+import interfaces.Lockable;
+
+public interface CoinAcceptorDevice extends Lockable{
+
+	int acceptCoin(int supTotal);
 }

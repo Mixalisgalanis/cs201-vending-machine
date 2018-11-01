@@ -1,4 +1,10 @@
 package devices.external;
 
-public interface ChangeCaseDevice {
+import interfaces.Lockable;
+
+public interface ChangeCaseDevice extends Lockable{
+	
+	void giveChange(int coin);
+	
+	void removeChange();
 }
