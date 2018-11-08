@@ -3,11 +3,12 @@ package recipes;
 import recipes.dao.DAOFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecipeManager {
 
     //Class Variables
-    private ArrayList<Recipe recipes;
+    private HashMap<Integer,Recipe> recipes;
     private DAOFactory factory;
 
     //Getters
@@ -19,7 +20,7 @@ public class RecipeManager {
     public void loadRecipes(){};
 
     public Recipe getRecipe(int code){
-
+        
     }
 
     public ArrayList<Recipe> getEnabled(){
