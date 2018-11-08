@@ -1,6 +1,6 @@
 package modules.containers;
 
-import consumables.Consumable;
+import recipes.consumables.Consumable;
 import behaviour.Provider;
 import modules.Module;
 

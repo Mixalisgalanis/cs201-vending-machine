@@ -1,4 +1,4 @@
-package consumables;
+package recipes.consumables;
 
 public class Consumable {
 	

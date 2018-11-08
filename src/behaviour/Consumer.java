@@ -1,6 +1,6 @@
 package behaviour;
 
-import consumables.Consumable;
+import recipes.consumables.Consumable;
 
 public interface Consumer {
 

@@ -1,4 +1,4 @@
-package consumables;
+package recipes.consumables;
 
 abstract public class Material extends Consumable {
 	

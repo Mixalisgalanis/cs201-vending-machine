@@ -1,6 +1,6 @@
 package modules.containers;
 
-import consumables.Consumable;
+import recipes.consumables.Consumable;
 
 public class FlowContainer extends Container {
 

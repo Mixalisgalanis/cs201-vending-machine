@@ -1,4 +1,4 @@
-package consumables.ingredients;
+package recipes.consumables.ingredients;
 
 public class Liquid extends Ingredient {
 	

@@ -1,6 +1,6 @@
-package consumables.ingredients;
+package recipes.consumables.ingredients;
 
-import consumables.Consumable;
+import recipes.consumables.Consumable;
 
 abstract public class Ingredient extends Consumable{
 	
