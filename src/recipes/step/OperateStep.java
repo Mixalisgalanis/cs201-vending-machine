@@ -16,6 +16,7 @@ public class OperateStep extends RecipeStep {
     public String getProcessor() {
         return processor;
     }
+
     public void setProcessor(String processor) {
         this.processor = processor;
     }
@@ -23,7 +24,13 @@ public class OperateStep extends RecipeStep {
     public int getDuration() {
         return duration;
     }
+
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    //Other Methods
+    public String describe(){
+        return "OPERATE " + " " + getProcessor() + " " + getDuration();
     }
 }

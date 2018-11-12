@@ -1,11 +1,12 @@
 package recipes;
 
 import recipes.consumables.ingredients.Ingredient;
-import recipes.step.OperateStep;
 import recipes.step.RecipeStep;
-import recipes.step.TransferStep;
 import utilities.Reader;
 
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Recipe {
@@ -24,7 +25,6 @@ public class Recipe {
 
     //Steps
     private ArrayList<RecipeStep> recipeSteps;
-    private RecipeStep recipeStep;
     private int recipeStepNumber;
 
     //Utilities
@@ -43,6 +43,15 @@ public class Recipe {
         recipeSteps = new ArrayList<>();
         ingredients = new ArrayList<>();
     }
+
+    public Recipe(File file) {
+        reader = new Reader();
+        recipeStepNumber = 0;
+        recipeSteps = new ArrayList<>();
+        ingredients = new ArrayList<>();
+        disassemble(file);
+    }
+
 
     /*Getter & Setters*/
     public String getName() {
@@ -93,9 +102,6 @@ public class Recipe {
         return recipeSteps;
     }
 
-    public RecipeStep getRecipeStep() {
-        return recipeStep;
-    }
 
     //Other Methods
     public RecipeStep getNextStep() {
@@ -117,15 +123,107 @@ public class Recipe {
     /**
      * Converts a recipe text into a working recipe
      */
-    public String decrypt() {
+    public void disassemble(File file) {
+        FileReader fileReader;
+        BufferedReader bufferedReader;
+        try {
+            fileReader = new FileReader(file);
+            bufferedReader = new BufferedReader(fileReader);
+        } catch (FileNotFoundException e) {
+            System.err.println("Unable to open file.");
+        }
+
+        try {
+            /*Basic recipe properties*/
+            String tempLine = bufferedReader.readLine();
+            this.name = tempLine.substring(0, tempLine.indexOf(":") + 2);
+            tempLine = bufferedReader.readLine();
+            this.cost = Integer.parseInt(tempLine.substring(0, tempLine.indexOf(":") + 2));
+            tempLine = bufferedReader.readLine();
+            this.type = tempLine.substring(0, tempLine.indexOf(":") + 2);
+
+            /*Ingredients*/
+            tempLine = bufferedReader.readLine().substring(0, tempLine.indexOf(":") + 2);
+            String[] allIngredients = tempLine.split(",");
+            for (String ingredient : allIngredients) {
+                String[] tempIngredient = ingredient.split(":");
+
+                Class<?> clazz = Class.forName(expandName(tempIngredient[0]));
+                Constructor<?> ctor = clazz.getConstructor(String.class, Integer.class);
+                Object object = ctor.newInstance(tempIngredient[1], Integer.parseInt(tempIngredient[2]));
+                this.ingredients.add((Ingredient) object);
+            }
+
+            /*Recipe Steps*/
+            tempLine = bufferedReader.readLine();
+            while (tempLine != null) {
+
+                Class<?> clazz = Class.forName(expandName(tempLine.substring(0, tempLine.indexOf(" "))));
+                Constructor<?> ctor = clazz.getConstructor();
+                Object object = ctor.newInstance(new Object[]{tempLine.substring(0, tempLine.indexOf(" ")).split(" ")});
+
+                this.recipeSteps.add((RecipeStep) object);
+
+                tempLine = bufferedReader.readLine();
+            }
+
+
+        } catch (IOException | ClassNotFoundException | NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     /**
      * Converts a working recipe into a recipe text
      */
-    public void encrypt(String data) {
+    public void assemble() {
+        File file = new File("/recipes/" + code + ".rcp");
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter(file);
+        } catch (IOException e) {
+            System.err.println("Unable to create file.");
+            return;
+        }
+        try {
+            /*Basic recipe properties*/
+            String tempLine = "NAME: " + getName() + "\n";
+            fileWriter.write(tempLine);
+            tempLine = "PRICE: " + getCost() + "\n";
+            fileWriter.write(tempLine);
+            tempLine = "TYPE: " + getType() + "\n";
+            fileWriter.write(tempLine);
 
+            /*Ingredients*/
+            tempLine = "INGREDIENTS: ";
+            for (Ingredient ingredient : ingredients) {
+                tempLine = ingredient.describe() + ",";
+            }
+            tempLine = tempLine.substring(0, tempLine.length() - 1) + "\n";
+            fileWriter.write(tempLine);
+
+            /*Recipe Steps*/
+            tempLine = "RECIPE STEPS:\n";
+            for (RecipeStep step : recipeSteps) {
+                tempLine = tempLine.concat(step.describe()) + "\n";
+            }
+        } catch (IOException e) {
+            System.err.println("Unable to write file");
+        }
+        try {
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            System.err.println("Unable to save file");
+        }
     }
 
     public void executeStep() {
@@ -133,4 +231,19 @@ public class Recipe {
 
     }
 
+    //Names are a work in progress ._.
+    public String expandName(String abbreviatedName) {
+        switch (abbreviatedName) {
+            case "POW":
+                return "Powder";
+            case "LIQ":
+                return "Liquid";
+            case "TRANSFER":
+                return "TransferStep";
+            case "OPERATE":
+                return "OperateStep";
+            default:
+                return abbreviatedName;
+        }
+    }
 }

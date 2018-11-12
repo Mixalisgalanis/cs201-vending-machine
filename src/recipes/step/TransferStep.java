@@ -45,4 +45,9 @@ public class TransferStep extends RecipeStep {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    //Other Methods
+    public String describe(){
+        return "TRANSFER " + getSource() + " " + getDestination() + " " + getContent() + " " + getQuantity();
+    }
 }

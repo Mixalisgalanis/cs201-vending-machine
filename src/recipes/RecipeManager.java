@@ -2,6 +2,7 @@ package recipes;
 
 import recipes.dao.DAOFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,12 @@ public class RecipeManager {
 
     //Other Methods
     public void loadRecipes() {
+        File folder = new File("/recipes");
+        if (folder.isDirectory()){
+            for (File file: folder.listFiles()){
+                recipes.put(Integer.parseInt(file.getName().substring(0,file.getName().indexOf('.'))), new Recipe(file));
+            }
+        }
     }
 
 
