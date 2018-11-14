@@ -5,5 +5,5 @@ import behaviour.Pluggable;
 
 public interface Processor extends Pluggable, Consumer{
 
-    int process(int duration); //Duration in ms
+    void process(int duration); //Duration in ms
 }

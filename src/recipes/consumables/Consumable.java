@@ -23,6 +23,10 @@ public class Consumable {
 		return quantity;
 	}
 
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 	public String getConsumableType() {
 		return consumableType;
 	}

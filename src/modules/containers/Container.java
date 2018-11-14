@@ -22,10 +22,6 @@ abstract public class Container extends Module implements Provider{
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     public Consumable getConsumable() {
         return consumable;
     }
