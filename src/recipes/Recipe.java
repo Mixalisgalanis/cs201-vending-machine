@@ -136,21 +136,21 @@ public class Recipe {
         try {
             /*Basic recipe properties*/
             String tempLine = bufferedReader.readLine();
-            this.name = tempLine.substring(0, tempLine.indexOf(":") + 2);
+            this.name = tempLine.substring(tempLine.indexOf(":") + 1,tempLine.length());
             tempLine = bufferedReader.readLine();
-            this.cost = Integer.parseInt(tempLine.substring(0, tempLine.indexOf(":") + 2));
+            this.cost = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 1,tempLine.length()));
             tempLine = bufferedReader.readLine();
-            this.type = tempLine.substring(0, tempLine.indexOf(":") + 2);
+            this.type = tempLine.substring(tempLine.indexOf(":") + 1,tempLine.length());
 
             /*Ingredients*/
-            tempLine = bufferedReader.readLine().substring(0, tempLine.indexOf(":") + 2);
+            tempLine = bufferedReader.readLine().substring(tempLine.indexOf(":") + 1,tempLine.length());
             String[] allIngredients = tempLine.split(",");
             for (String ingredient : allIngredients) {
                 String[] tempIngredient = ingredient.split(":");
 
                 Class<?> clazz = Class.forName(expandName(tempIngredient[0]));
-                Constructor<?> ctor = clazz.getConstructor(String.class, Integer.class);
-                Object object = ctor.newInstance(tempIngredient[1], Integer.parseInt(tempIngredient[2]));
+                Constructor<?> ctor = clazz.getConstructor(String.class, Integer.class, String.class);
+                Object object = ctor.newInstance(tempIngredient[1], Integer.parseInt(tempIngredient[2]), expandName(tempIngredient[0]));
                 this.ingredients.add((Ingredient) object);
             }
 
