@@ -1,5 +1,7 @@
 package modules.containers;
 
+import behaviour.Consumer;
+import devices.containers.ContainerDevice;
 import recipes.consumables.Consumable;
 import behaviour.Provider;
 import modules.Module;
@@ -28,5 +30,37 @@ abstract public class Container extends Module implements Provider{
 
     public void setConsumable(Consumable consumable) {
         this.consumable = consumable;
+    }
+
+
+    //Implemented Methods
+    @Override
+    public void provide(Consumer consumer, int quantity) {
+
+    }
+
+    @Override
+    public void provide(Consumer consumer) {
+
+    }
+
+    @Override
+    public void plug(Consumer consumer) {
+
+    }
+
+    @Override
+    public void unPlug(Consumer consumer) {
+
+    }
+
+    @Override
+    public void unPlugAll() {
+
+    }
+
+    @Override
+    public boolean isPlugged() {
+        return false;
     }
 }

@@ -11,7 +11,7 @@ public interface Dispenser extends Pluggable{
 
     void addContainer(Container container);
 
-    Container removeContainer(String containerName);
+    void removeContainer(String containerName);
 
     int getCurrentQuantity(String containerName);
 }

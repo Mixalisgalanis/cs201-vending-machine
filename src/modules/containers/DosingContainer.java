@@ -8,4 +8,7 @@ public class DosingContainer extends Container {
     public DosingContainer(String name, int capacity, Consumable consumable) {
         super(name, capacity, consumable);
     }
+
+
+
 }
