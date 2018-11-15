@@ -4,7 +4,7 @@ import devices.Device;
 
 public interface DisplayDevice extends Device {
 
-    void displayMsg();
+    void displayMsg(String message);
 
     void clear();
 }

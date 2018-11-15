@@ -9,7 +9,6 @@ public class TransferStep extends RecipeStep {
     private int quantity;
 
     //Constructor
-
     public TransferStep(String source, String destination, String content, int quantity) {
         this.source = source;
         this.destination = destination;
@@ -58,6 +57,11 @@ public class TransferStep extends RecipeStep {
     }
 
     //Other Methods
+    /**
+     * Creates a string which describes this step - ex: "TRANSFER POWDERS BLENDER COFFEE 40"
+     *
+     * @return the String created
+     */
     public String describe() {
         return "TRANSFER " + getSource() + " " + getDestination() + " " + getContent() + " " + getQuantity();
     }
