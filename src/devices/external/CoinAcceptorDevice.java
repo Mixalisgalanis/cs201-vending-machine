@@ -2,7 +2,7 @@ package devices.external;
 
 import behaviour.Lockable;
 
-public interface CoinAcceptorDevice extends Lockable{
+public interface CoinAcceptorDevice extends Lockable {
 
-	int acceptCoin(int supTotal);
+    int acceptCoin(int supTotal);
 }

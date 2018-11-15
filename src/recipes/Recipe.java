@@ -136,14 +136,14 @@ public class Recipe {
         try {
             /*Basic recipe properties*/
             String tempLine = bufferedReader.readLine();
-            this.name = tempLine.substring(tempLine.indexOf(":") + 2,tempLine.length());
+            this.name = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length());
             tempLine = bufferedReader.readLine();
-            this.cost = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 2,tempLine.length()));
+            this.cost = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()));
             tempLine = bufferedReader.readLine();
-            this.type = tempLine.substring(tempLine.indexOf(":") + 2,tempLine.length());
+            this.type = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length());
 
             /*Ingredients*/
-            tempLine = bufferedReader.readLine().substring(tempLine.indexOf(":") + 2,tempLine.length());
+            tempLine = bufferedReader.readLine().substring(tempLine.indexOf(":") + 2, tempLine.length());
             String[] allIngredients = tempLine.split(",");
             for (String ingredient : allIngredients) {
                 String[] tempIngredient = ingredient.split(":");
@@ -160,8 +160,8 @@ public class Recipe {
 
                 Class<?> clazz = Class.forName(expandName(tempLine.substring(0, tempLine.indexOf(" "))));
                 Constructor<?> ctor = clazz.getConstructor(String[].class, Integer.class);
-                String[] data = tempLine.substring(tempLine.indexOf(" ")+1,tempLine.lastIndexOf(" ")).split(" ");
-                Object object = ctor.newInstance(new Object[]{data,Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ")+1,tempLine.length()))});
+                String[] data = tempLine.substring(tempLine.indexOf(" ") + 1, tempLine.lastIndexOf(" ")).split(" ");
+                Object object = ctor.newInstance(new Object[]{data, Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ") + 1, tempLine.length()))});
 
                 this.recipeSteps.add((RecipeStep) object);
 

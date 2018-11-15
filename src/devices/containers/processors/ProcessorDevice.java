@@ -2,7 +2,7 @@ package devices.containers.processors;
 
 import devices.containers.FlowContainerDevice;
 
-public interface ProcessorDevice extends FlowContainerDevice{
+public interface ProcessorDevice extends FlowContainerDevice {
 
     void streamln();
 

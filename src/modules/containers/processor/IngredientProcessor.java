@@ -12,11 +12,11 @@ public class IngredientProcessor extends FlowContainer implements Processor {
     private boolean processed;
     private boolean plugged;
 
-
     public IngredientProcessor(String name, int capacity, Consumable consumable) {
         super(name, capacity, consumable);
         this.loaded = false;
         this.processed = false;
+        this.plugged = false;
     }
 
     @Override
@@ -34,34 +34,35 @@ public class IngredientProcessor extends FlowContainer implements Processor {
 
     @Override
     public void acceptAndLoad(Consumable consumable) {
-        if (getConsumable() == null){
-            if (consumable.getQuantity()<=getCapacity()) {
-                setConsumable(consumable);
-                loaded = true;
-            }
-        } else{
-            if (!getConsumable().getName().equals(consumable.getName())){
-                loaded = false;
-            } else if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()){
-                loaded = true;
-                getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
+        if (plugged) {
+            if (getConsumable() == null) {
+                if (consumable.getQuantity() <= getCapacity()) {
+                    setConsumable(consumable);
+                    loaded = true;
+                }
+            } else {
+                if (!getConsumable().getName().equals(consumable.getName())) {
+                    loaded = false;
+                } else if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
+                    loaded = true;
+                    getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
+                }
             }
         }
     }
 
     @Override
     public void provide(Consumer consumer, int quantity) {
-        if (processed){
-            if (quantity <= getConsumable().getQuantity()){
-                consumer.acceptAndLoad(getConsumable());
-                getConsumable().setQuantity(getConsumable().getQuantity() - quantity);
+        if (processed && plugged) {
+            if (quantity <= getConsumable().getQuantity()) {
+                consumer.acceptAndLoad(getConsumable().getPart(quantity));
             }
         }
     }
 
     @Override
     public void provide(Consumer consumer) {
-        if (processed){
+        if (processed && plugged) {
             consumer.acceptAndLoad(getConsumable());
             setConsumable(null);
         }
@@ -69,11 +70,18 @@ public class IngredientProcessor extends FlowContainer implements Processor {
 
     @Override
     public void plug(Consumer consumer) {
+        if (!isPlugged()) {
+            this.plugged = true;
+            consumer.plug(this);
+        }
     }
 
     @Override
     public void unPlug(Consumer consumer) {
-
+        if (isPlugged()) {
+            this.plugged = false;
+            consumer.unPlug(this);
+        }
     }
 
     @Override
@@ -83,7 +91,11 @@ public class IngredientProcessor extends FlowContainer implements Processor {
 
     @Override
     public boolean isPlugged() {
-        return false;
+        return plugged;
     }
 
+    @Override
+    public void setPlugged(boolean plugged) {
+        this.plugged = plugged;
+    }
 }

@@ -3,6 +3,7 @@ package machine;
 import devices.Device;
 
 public interface Machine {
-	Device[] listDevices();
-	String getModel();
+    Device[] listDevices();
+
+    String getModel();
 }

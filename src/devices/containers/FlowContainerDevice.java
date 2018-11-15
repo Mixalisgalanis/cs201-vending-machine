@@ -2,7 +2,7 @@ package devices.containers;
 
 import devices.Device;
 
-public interface FlowContainerDevice extends ContainerDevice{
+public interface FlowContainerDevice extends ContainerDevice {
 
     int streamRate();
 

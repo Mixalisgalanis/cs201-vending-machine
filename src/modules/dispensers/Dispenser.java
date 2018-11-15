@@ -1,11 +1,11 @@
 package modules.dispensers;
 
-import modules.containers.Container;
 import behaviour.Consumer;
 import behaviour.Pluggable;
 import behaviour.Provider;
+import modules.containers.Container;
 
-public interface Dispenser extends Pluggable{
+public interface Dispenser extends Pluggable {
 
     Provider prepareContainer(String containerName, Consumer consumer);
 

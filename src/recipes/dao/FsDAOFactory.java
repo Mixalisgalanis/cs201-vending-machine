@@ -1,8 +1,10 @@
 package recipes.dao;
 
-public class FsDAOFactory extends DAOFactory{
+public class FsDAOFactory extends DAOFactory {
 
-    public RecipeDAO getRecipeDAO(){return null;}
+    public RecipeDAO getRecipeDAO() {
+        return null;
+    }
 
     //public OtherEtityDAO getOtherEntityDAO(){}
 

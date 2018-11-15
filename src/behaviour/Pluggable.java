@@ -9,4 +9,6 @@ public interface Pluggable {
     void unPlugAll();
 
     boolean isPlugged();
+
+    void setPlugged(boolean plugged);
 }

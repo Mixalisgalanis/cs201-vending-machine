@@ -28,8 +28,12 @@ abstract public class Module<T extends Device> {
         this.name = name;
     }
 
+    public void setDevice(T device) {
+        this.device = device;
+    }
+
     //Other Methods
-    public DeviceType getType(){
+    public DeviceType getType() {
         return device.getType();
     }
 }

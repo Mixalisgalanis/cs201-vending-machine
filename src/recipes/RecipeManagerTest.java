@@ -9,12 +9,12 @@ import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
 public class RecipeManagerTest {
+
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
-
 
 
     @org.junit.Before

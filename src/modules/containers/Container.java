@@ -1,15 +1,16 @@
 package modules.containers;
 
 import behaviour.Consumer;
-import devices.containers.ContainerDevice;
-import recipes.consumables.Consumable;
 import behaviour.Provider;
 import modules.Module;
+import recipes.consumables.Consumable;
 
-abstract public class Container extends Module implements Provider{
+abstract public class Container extends Module implements Provider {
     //Class Variables
     private int capacity;
     private Consumable consumable;
+
+    private boolean plugged;
 
 
     //Constructor
@@ -17,6 +18,7 @@ abstract public class Container extends Module implements Provider{
         super(name);
         this.capacity = capacity;
         this.consumable = consumable;
+        this.plugged = false;
     }
 
     //Getters & Setters
@@ -36,22 +38,35 @@ abstract public class Container extends Module implements Provider{
     //Implemented Methods
     @Override
     public void provide(Consumer consumer, int quantity) {
-
+        if (plugged) {
+            if (quantity <= getConsumable().getQuantity()) {
+                consumer.acceptAndLoad(getConsumable().getPart(quantity));
+            }
+        }
     }
 
     @Override
     public void provide(Consumer consumer) {
-
+        if (plugged) {
+            consumer.acceptAndLoad(getConsumable());
+            setConsumable(null);
+        }
     }
 
     @Override
     public void plug(Consumer consumer) {
-
+        if (!isPlugged()) {
+            setPlugged(true);
+            consumer.setPlugged(true);
+        }
     }
 
     @Override
     public void unPlug(Consumer consumer) {
-
+        if (isPlugged()) {
+            setPlugged(false);
+            consumer.setPlugged(false);
+        }
     }
 
     @Override
@@ -61,6 +76,13 @@ abstract public class Container extends Module implements Provider{
 
     @Override
     public boolean isPlugged() {
-        return false;
+        return plugged;
     }
+
+
+    @Override
+    public void setPlugged(boolean plugged) {
+        this.plugged = plugged;
+    }
+
 }

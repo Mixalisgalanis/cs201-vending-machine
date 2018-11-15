@@ -1,7 +1,5 @@
 package recipes.step;
 
-import java.util.ArrayList;
-
 public class TransferStep extends RecipeStep {
 
     //Class variables
@@ -19,7 +17,7 @@ public class TransferStep extends RecipeStep {
         this.quantity = quantity;
     }
 
-    public TransferStep(String[] data, int quantity){
+    public TransferStep(String[] data, int quantity) {
         this.source = data[0];
         this.destination = data[1];
         this.content = data[2];
@@ -30,6 +28,7 @@ public class TransferStep extends RecipeStep {
     public String getSource() {
         return source;
     }
+
     public void setSource(String source) {
         this.source = source;
     }
@@ -37,6 +36,7 @@ public class TransferStep extends RecipeStep {
     public String getDestination() {
         return destination;
     }
+
     public void setDestination(String destination) {
         this.destination = destination;
     }
@@ -44,6 +44,7 @@ public class TransferStep extends RecipeStep {
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
@@ -51,12 +52,13 @@ public class TransferStep extends RecipeStep {
     public int getQuantity() {
         return quantity;
     }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     //Other Methods
-    public String describe(){
+    public String describe() {
         return "TRANSFER " + getSource() + " " + getDestination() + " " + getContent() + " " + getQuantity();
     }
 }
