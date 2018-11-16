@@ -35,7 +35,7 @@ public class RecipeManager {
         if (folder.isDirectory()) {
             for (File file : folder.listFiles()) {
                 int recipeCode = Integer.parseInt(file.getName().substring(0, file.getName().indexOf('.')));
-                recipes.put(recipeCode, new Recipe(file));
+                recipes.put(recipeCode, new Recipe(file, recipeCode));
             }
         }
     }

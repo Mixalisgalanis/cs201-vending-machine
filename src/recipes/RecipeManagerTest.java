@@ -1,6 +1,7 @@
 package recipes;
 
 import org.junit.Before;
+import org.junit.Test;
 
 public class RecipeManagerTest {
 
@@ -9,12 +10,19 @@ public class RecipeManagerTest {
     @Before
     public void setUp() throws Exception {
         recipeManager = new RecipeManager();
+        this.loadRecipes();
     }
 
     @org.junit.Test
     public void loadRecipes() {
         recipeManager.loadRecipes();
         System.out.println("Number of recipes loaded: " + recipeManager.getRecipes().size());
+    }
+
+
+    @Test
+    public void getRecipes() {
+        recipeManager.getRecipes();
     }
 
     @org.junit.Test

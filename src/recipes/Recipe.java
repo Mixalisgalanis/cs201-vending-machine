@@ -50,11 +50,12 @@ public class Recipe {
         ingredients = new ArrayList<>();
     }
 
-    public Recipe(File file) {  //In this modified constructor, the recipe gets constructed step-by-step by the disassemble method
+    public Recipe(File file, int code) {  //In this modified constructor, the recipe gets constructed step-by-step by the disassemble method
         reader = new Reader();
         currentRecipeStepNumber = 0;
         recipeSteps = new ArrayList<>();
         ingredients = new ArrayList<>();
+        this.code = code;
         disassemble(file);
     }
 
@@ -172,36 +173,39 @@ public class Recipe {
             this.type = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //Extracts type
 
             //Ingredients - ex: "INGREDIENTS: POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
-            tempLine = bufferedReader.readLine().substring(tempLine.indexOf(":") + 2, tempLine.length()); //ex: "POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
-            String[] allIngredients = tempLine.split(",");      //ex: allIngredients[0] == POW:COFFEE:40
+            tempLine = bufferedReader.readLine();
+            String ingredientsLine = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //ex: "POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
+            String[] allIngredients = ingredientsLine.split(",");      //ex: allIngredients[0] == POW:COFFEE:40
             for (String ingredient : allIngredients) {
                 String[] tempIngredient = ingredient.split(":");//ex: tempIngredient[0] == POW
 
                 //Creating Liquid or Powder Object based on the ingredient name in file
                 String className = classNameFinder(tempIngredient[0]);   //Gets the class name based on the ingredient name
-                Class<?> clazz = Class.forName(className);          //Finds the class based on the class name
-                Constructor<?> ctor = clazz.getConstructor(String.class, Integer.class, String.class); //Calls class constructor with given parameters
-                Object object = ctor.newInstance(tempIngredient[1], Integer.parseInt(tempIngredient[2]), classNameFinder(tempIngredient[0])); //Creates object from that constructor
+                Class<?> clazz = Class.forName("recipes.consumables.ingredients." + className);          //Finds the class based on the class name
+                Constructor<?> ctor = clazz.getConstructors()[0]; //Calls class constructor with given parameters
+                Object object = ctor.newInstance(tempIngredient[1], Integer.parseInt(tempIngredient[2])); //Creates object from that constructor
                 this.ingredients.add((Ingredient) object);          //Adds the object (Ingredient) on the ingredients list
             }
 
             //Recipe Steps
             //Proceeds to next line recursively until the end of the file
             tempLine = bufferedReader.readLine();
+            tempLine = bufferedReader.readLine();
             do {
                 //Creating TransferStep or OperateStep based on the step name in file
-                Class<?> clazz = Class.forName(classNameFinder(tempLine.substring(0, tempLine.indexOf(" ")))); //Gets the class name based on the step name
-                Constructor<?> ctor = clazz.getConstructor(String[].class, Integer.class);                //Finds the class based on the class name
+                Class<?> clazz = Class.forName("recipes.step." + classNameFinder(tempLine.substring(0, tempLine.indexOf(" ")))); //Gets the class name based on the step name
+                Constructor<?> ctor = clazz.getConstructors()[1];                //Finds the class based on the class name
                 //Needed to collect all strings in an array in order to achieve equal constructor structure between the two Step Types
                 String[] data = tempLine.substring(tempLine.indexOf(" ") + 1, tempLine.lastIndexOf(" ")).split(" ");
-                Object object = ctor.newInstance(new Object[]{data, Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ") + 1, tempLine.length()))}); //Creates object from that constructor
+                int a = Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ") + 1, tempLine.length()));
+                Object object = ctor.newInstance(new Object[]{data, a}); //Creates object from that constructor
 
                 this.recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
                 tempLine = bufferedReader.readLine();
             } while (tempLine != null);
 
 
-        } catch (IOException | ClassNotFoundException | NoSuchMethodException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
