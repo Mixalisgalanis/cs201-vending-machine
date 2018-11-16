@@ -1,13 +1,19 @@
 package recipes;
 
+import behaviour.Consumer;
+import behaviour.Provider;
+import modules.containers.Container;
+import modules.external.ProductCase;
 import recipes.consumables.ingredients.Ingredient;
 import recipes.step.RecipeStep;
+import recipes.step.TransferStep;
 import utilities.Reader;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Recipe {
 
@@ -25,7 +31,7 @@ public class Recipe {
 
     //Steps
     private ArrayList<RecipeStep> recipeSteps;
-    private int recipeStepNumber;
+    private int currentRecipeStepNumber;
 
     //Utilities
     private Reader reader;
@@ -39,14 +45,14 @@ public class Recipe {
         this.available = false;
 
         reader = new Reader();
-        recipeStepNumber = 0;
+        currentRecipeStepNumber = 0;
         recipeSteps = new ArrayList<>();
         ingredients = new ArrayList<>();
     }
 
     public Recipe(File file) {  //In this modified constructor, the recipe gets constructed step-by-step by the disassemble method
         reader = new Reader();
-        recipeStepNumber = 0;
+        currentRecipeStepNumber = 0;
         recipeSteps = new ArrayList<>();
         ingredients = new ArrayList<>();
         disassemble(file);
@@ -102,7 +108,9 @@ public class Recipe {
         return recipeSteps;
     }
 
-
+    public RecipeStep getCurrentRecipeStep(){
+        return recipeSteps.get(currentRecipeStepNumber);
+    }
     //Other Methods
 
     /**
@@ -111,7 +119,7 @@ public class Recipe {
      * @return the next step from the recipe steps list
      */
     public RecipeStep getNextStep() {
-        return (recipeSteps.get(recipeStepNumber++));
+        return (recipeSteps.get(currentRecipeStepNumber++));
     }
 
     /**
@@ -120,7 +128,7 @@ public class Recipe {
      * @return true if there are more steps, false if there aren't
      */
     public boolean hasMoreSteps() {
-        return (recipeStepNumber < recipeSteps.size() - 1);
+        return (currentRecipeStepNumber < recipeSteps.size() - 1);
     }
 
     /**
@@ -251,9 +259,9 @@ public class Recipe {
 
     }
 
-    public void executeStep() {
-        getNextStep();
 
+    public void executeStep() {
+        getNextStep().executeStep();
     }
 
     /**

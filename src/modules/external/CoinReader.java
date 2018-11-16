@@ -10,7 +10,7 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
 
     //Constructor
     public CoinReader() {
-        super("Coin Reader");
+        super("CoinReader");
         money = 0;
     }
 

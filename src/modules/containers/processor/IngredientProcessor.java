@@ -99,4 +99,8 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     public void setPlugged(boolean plugged) {
         this.plugged = plugged;
     }
+
+    public String generateEffect(){
+        return getName().toLowerCase().substring(0,getName().length()-2) + "d " + getConsumable().getName();
+    }
 }

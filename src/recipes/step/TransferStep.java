@@ -1,5 +1,9 @@
 package recipes.step;
 
+import behaviour.Consumer;
+import behaviour.Provider;
+import modules.dispensers.Dispenser;
+
 public class TransferStep extends RecipeStep {
 
     //Class variables
@@ -62,7 +66,27 @@ public class TransferStep extends RecipeStep {
      *
      * @return the String created
      */
+    @Override
     public String describe() {
         return "TRANSFER " + getSource() + " " + getDestination() + " " + getContent() + " " + getQuantity();
+    }
+
+    @Override
+    public void executeStep() {
+        if (data.findDispenser(source) != null){
+            Dispenser dispenser = data.findDispenser(source);
+            Consumer consumer = data.findConsumer(destination);
+
+            dispenser.plug(consumer);
+            dispenser.prepareContainer(data.findContainerByConsumable(source,data.findConsumable(content)).getName(),consumer);
+            dispenser.unPlug(consumer);
+        } else{
+            Provider provider = data.findProvider(source);
+            Consumer consumer = data.findConsumer(destination);
+
+            provider.plug(consumer);
+            provider.provide(consumer,quantity);
+            provider.unPlug(consumer);
+        }
     }
 }

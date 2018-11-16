@@ -7,7 +7,7 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
 
     //Constructor
     public ChangeCase() {
-        super("Change Case");
+        super("ChangeCase");
     }
 
     //OtherMethods

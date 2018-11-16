@@ -7,7 +7,7 @@ public class DisplayPanel extends Module<DisplayDevice> {
 
     //Constructor
     public DisplayPanel() {
-        super("Display Panel");
+        super("DisplayPanel");
     }
 
     //Other Methods

@@ -21,6 +21,11 @@ public class ConsumableDispenser extends Module<ContainerDevice> implements Disp
         this.plugged = false;
     }
 
+    //Getters
+    public HashMap<String, Container> getContainers() {
+        return containers;
+    }
+
     //Other Methods
     @Override
     public Provider prepareContainer(String containerName, Consumer consumer) {

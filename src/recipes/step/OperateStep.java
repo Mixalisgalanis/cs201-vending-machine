@@ -1,10 +1,13 @@
 package recipes.step;
 
+import modules.containers.processor.Processor;
+
 public class OperateStep extends RecipeStep {
 
     //Class variables
     private String processor;
     private int duration;
+
 
     //Constructor
     public OperateStep(String processor, int duration) {
@@ -40,7 +43,14 @@ public class OperateStep extends RecipeStep {
      *
      * @return the String created
      */
+    @Override
     public String describe() {
         return "OPERATE " + " " + getProcessor() + " " + getDuration();
+    }
+
+    @Override
+    public void executeStep() {
+        Processor tempProcessor = data.findIngredientProcessor(processor);
+        tempProcessor.process(duration);
     }
 }
