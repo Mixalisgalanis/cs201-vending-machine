@@ -1,45 +1,20 @@
 package recipes;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.runner.RunWith;
+import org.junit.Before;
 
-@RunWith(Arquillian.class)
 public class RecipeManagerTest {
 
-    @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-    }
+    private RecipeManager recipeManager;
 
-
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-    }
-
-
-    @org.junit.Test
-    public void getRecipes() {
+        recipeManager = new RecipeManager();
     }
 
     @org.junit.Test
     public void loadRecipes() {
-    }
-
-    @org.junit.Test
-    public void getRecipe() {
-    }
-
-    @org.junit.Test
-    public void getEnabled() {
+        recipeManager.loadRecipes();
+        System.out.println("Number of recipes loaded: " + recipeManager.getRecipes().size());
     }
 
     @org.junit.Test

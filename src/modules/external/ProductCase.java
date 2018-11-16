@@ -6,7 +6,7 @@ import devices.external.ProductCaseDevice;
 import modules.Module;
 import recipes.consumables.Consumable;
 
-public class ProductCase extends Module<ProductCaseDevice> implements Consumer, Lockable{
+public class ProductCase extends Module<ProductCaseDevice> implements Consumer{
 
     //Class variables
     private boolean pluggable;
@@ -47,23 +47,8 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer, 
 
     }
 
-    @Override
-    public void lock() {
-
-    }
-
-    @Override
-    public void unLock() {
-
-    }
-
-    @Override
-    public boolean isLocked() {
-        return false;
-    }
-
-    public Product getProduct() {
+    /*public Product getProduct() {
         //TODO Construct Product
         return null;
-    }
+    }*/
 }

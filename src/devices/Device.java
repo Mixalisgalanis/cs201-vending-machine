@@ -1,8 +1,6 @@
 package devices;
 
-import machine.Machine;
-
-public interface Device extends Machine{
+public interface Device{
 
     String getName();
 
