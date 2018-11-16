@@ -27,6 +27,7 @@ public class SoftwareMachine {
          */
         //Powder Consumables
         data.addConsumable(new Consumable("Coffee",data.STANDARD_DOSING_CONTAINER_SIZE,"Powder"));
+        data.addConsumable(new Consumable("Sugar", data.STANDARD_DOSING_CONTAINER_SIZE, "Powder"));
 
         //Liquid Consumables
         data.addConsumable(new Consumable("Water",data.STANDARD_FLOW_CONTAINER_SIZE,"Liquid"));
@@ -51,6 +52,7 @@ public class SoftwareMachine {
 
         //DosingContainers
         data.addHardwareEntity(new DosingContainer("Coffee",data.STANDARD_DOSING_CONTAINER_SIZE,data.findConsumable("Coffee")));
+        data.addHardwareEntity(new DosingContainer("Sugar", data.STANDARD_DOSING_CONTAINER_SIZE, data.findConsumable("Sugar")));
         //LiquidContainers
         data.addHardwareEntity(new FlowContainer("Water",data.STANDARD_FLOW_CONTAINER_SIZE,data.findConsumable("Water")));
         //MaterialContainers

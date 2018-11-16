@@ -77,7 +77,7 @@ public class Data {
         } else if (module instanceof Container) {
             containers.put(module.getName(), (Container) module);
             providers.put(module.getName(), (Container) module);
-
+            findConsumableDispenserByContainer(module.getName()).addContainer((Container) module);
         } else if (module instanceof ProductCase) {
             consumers.put(module.getName(), (ProductCase) module);
         }
@@ -135,6 +135,10 @@ public class Data {
         return consumableDispensers.get(consumableDispenserName);
     }
 
+    public IngredientProcessor findIngredientProcessor(String ingredientProcessorName){
+        return ingredientProcessors.get(ingredientProcessorName);
+    }
+
     public Container findContainerByConsumable(String dispenserName, Consumable consumable){
         ConsumableDispenser consumableDispenser = findConsumableDispenser(dispenserName);
         for (Container container : consumableDispenser.getContainers().values()){
@@ -143,7 +147,8 @@ public class Data {
         return null;
     }
 
-    public IngredientProcessor findIngredientProcessor(String ingredientProcessorName){
-        return ingredientProcessors.get(ingredientProcessorName);
+    public ConsumableDispenser findConsumableDispenserByContainer(String containerName){
+        //TODO complete
+        return null;
     }
 }
