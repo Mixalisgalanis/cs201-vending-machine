@@ -2,23 +2,21 @@ package modules.external;
 
 import behaviour.Consumer;
 import behaviour.Lockable;
+import devices.external.ProductCaseDevice;
 import modules.Module;
 import recipes.consumables.Consumable;
 
-public class ProductCase extends Module implements Consumer, Lockable{
+public class ProductCase extends Module<ProductCaseDevice> implements Consumer, Lockable{
 
+    //Class variables
     private boolean pluggable;
 
+    //Constructor
     public ProductCase() {
         super("Product Case");
-
     }
 
-    //TODO Construct Product
-	public Product getProduct() {
-        return null;
-	}
-
+    //Other Methods
     @Override
     public void acceptAndLoad(Consumable consumable) {
 
@@ -62,5 +60,10 @@ public class ProductCase extends Module implements Consumer, Lockable{
     @Override
     public boolean isLocked() {
         return false;
+    }
+
+    public Product getProduct() {
+        //TODO Construct Product
+        return null;
     }
 }

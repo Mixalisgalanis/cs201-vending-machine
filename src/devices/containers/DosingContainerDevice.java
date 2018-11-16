@@ -2,7 +2,7 @@ package devices.containers;
 
 import devices.Device;
 
-public interface DosingContainer extends ContainerDevice {
+public interface DosingContainerDevice extends ContainerDevice {
 
     void releaseDose(Device device);
 

@@ -1,6 +1,8 @@
 package behaviour;
 
-public interface Lockable {
+import devices.Device;
+
+public interface Lockable extends Device {
 
     void lock();
 

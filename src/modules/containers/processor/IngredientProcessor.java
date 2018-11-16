@@ -1,12 +1,13 @@
 package modules.containers.processor;
 
 import behaviour.Consumer;
+import devices.containers.processors.ProcessorDevice;
 import modules.containers.FlowContainer;
 import recipes.consumables.Consumable;
 
 import java.util.concurrent.TimeUnit;
 
-public class IngredientProcessor extends FlowContainer implements Processor {
+public class IngredientProcessor extends FlowContainer<ProcessorDevice> implements Processor {
 
     private boolean loaded;
     private boolean processed;

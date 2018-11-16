@@ -2,23 +2,26 @@ package modules.dispensers;
 
 import behaviour.Consumer;
 import behaviour.Provider;
+import devices.containers.ContainerDevice;
 import modules.Module;
 import modules.containers.Container;
 
 import java.util.HashMap;
 
-public class ConsumableDispenser extends Module implements Dispenser {
+public class ConsumableDispenser extends Module<ContainerDevice> implements Dispenser {
 
+    //Class variables
+    private boolean plugged;
     private HashMap<String, Container> containers;
 
-    private boolean plugged;
-
+    //Constructor
     public ConsumableDispenser(String name) {
         super(name);
         this.containers = containers;
         this.plugged = false;
     }
 
+    //Other Methods
     @Override
     public Provider prepareContainer(String containerName, Consumer consumer) {
         Container container = containers.get(containerName);
@@ -77,7 +80,6 @@ public class ConsumableDispenser extends Module implements Dispenser {
     public void setPlugged(boolean plugged) {
         this.plugged = plugged;
     }
-
 
     private String nameDecoder(Container container) {
         switch (container.getConsumable().getConsumableType()) {

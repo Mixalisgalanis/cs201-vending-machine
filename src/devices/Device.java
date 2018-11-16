@@ -1,6 +1,9 @@
 package devices;
 
-public interface Device {
+import machine.Machine;
+
+public interface Device extends Machine{
+
     String getName();
 
     void connect(Device device);

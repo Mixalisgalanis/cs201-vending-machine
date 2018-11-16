@@ -2,16 +2,16 @@ package modules.containers;
 
 import behaviour.Consumer;
 import behaviour.Provider;
+import devices.containers.ContainerDevice;
 import modules.Module;
 import recipes.consumables.Consumable;
 
-abstract public class Container extends Module implements Provider {
+abstract public class Container<T extends ContainerDevice> extends Module<ContainerDevice> implements Provider {
+
     //Class Variables
     private int capacity;
     private Consumable consumable;
-
     private boolean plugged;
-
 
     //Constructor
     Container(String name, int capacity, Consumable consumable) {
@@ -33,7 +33,6 @@ abstract public class Container extends Module implements Provider {
     public void setConsumable(Consumable consumable) {
         this.consumable = consumable;
     }
-
 
     //Implemented Methods
     @Override
