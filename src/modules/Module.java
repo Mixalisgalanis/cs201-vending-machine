@@ -27,7 +27,6 @@ abstract public class Module<T extends Device> {
         return device;
     }
 
-    //Other Methods
     public DeviceType getType() {
         return device.getType();
     }

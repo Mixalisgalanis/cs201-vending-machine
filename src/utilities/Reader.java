@@ -10,105 +10,86 @@ import java.util.Locale;
 
 public class Reader {
 
-    public static final int POS_ERROR = -1;
-    public static final int NEG_ERROR = 1;
-    BufferedReader in;
+    //Class variables
+    private static final int POS_ERROR = -1;
+    private static final int NEG_ERROR = 1;
+    private BufferedReader in;
 
+    //Constructor
     public Reader() {
         this.in = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    /**
+     * Prints a message on the screen and asks for a String input
+     * @param message to be displayed on screen
+     * @return the String the user gave
+     */
     public String readString(String message) {
         System.out.print(message);
-
         try {
             return this.in.readLine();
-        } catch (IOException var3) {
+        } catch (IOException ex) {
             return null;
         }
     }
 
-    public int readPositiveInt(String message) {
+    /**
+     * Prints a message on the screen and asks for an Integer input
+     * @param message to be displayed on screen
+     * @return the Integer Number the user gave
+     */
+    public int readInt(String message) {
         System.out.print(message);
-
         try {
-            String str = this.in.readLine();
-            int num = Integer.parseInt(str);
-            return num < 0 ? -1 : num;
-        } catch (IOException var5) {
-            return -1;
-        } catch (NumberFormatException var6) {
+            String str = in.readLine();
+            return Integer.parseInt(str);
+        } catch (IOException | NumberFormatException ex) {
             return -1;
         }
     }
 
-    public int readNegativeInt(String message) {
+    /**
+     * Prints a message on the screen and asks for a Float input
+     * @param message to be displayed on screen
+     * @return the Float Number the user gave
+     */
+    public float readFloat(String message) {
         System.out.print(message);
-
         try {
-            String str = this.in.readLine();
-            int num = Integer.parseInt(str);
-            return num >= 0 ? 1 : num;
-        } catch (IOException var5) {
-            return 1;
-        } catch (NumberFormatException var6) {
-            return 1;
-        }
-    }
-
-    public float readPositiveFloat(String message) {
-        System.out.print(message);
-
-        try {
-            String str = this.in.readLine();
-            float num = Float.parseFloat(str);
-            return num < 0.0F ? -1.0F : num;
-        } catch (IOException var5) {
-            return -1.0F;
-        } catch (NumberFormatException var6) {
+            return Float.parseFloat(in.readLine());
+        } catch (IOException | NumberFormatException ex) {
             return -1.0F;
         }
     }
 
-    public float readNegativeFloat(String message) {
-        System.out.print(message);
-
-        try {
-            String str = this.in.readLine();
-            float num = Float.parseFloat(str);
-            return num >= 0.0F ? 1.0F : num;
-        } catch (IOException var5) {
-            return 1.0F;
-        } catch (NumberFormatException var6) {
-            return 1.0F;
-        }
-    }
-
+    /**
+     * Prints a message on the screen and asks for a Date input (String Format) - ex "1/1/2018"
+     * @param message to be displayed on screen
+     * @return the Date the user gave (Date Format)
+     */
     public Date readDate(String message) {
         System.out.print(message);
-
         try {
-            String str = this.in.readLine();
             Locale l = new Locale("el", "GR");
             DateFormat df = DateFormat.getDateInstance(3, l);
-            return df.parse(str);
-        } catch (IOException var5) {
-            return null;
-        } catch (ParseException var6) {
+            return df.parse(in.readLine());
+        } catch (IOException | ParseException ex) {
             return null;
         }
     }
 
+    /**
+     * Prints a message on the screen and asks for a Time input (String Format) - ex "04:35"
+     * @param message to be displayed on screen
+     * @return the String the user gave (Time Format)
+     */
     public Date readTime(String message) {
         System.out.print(message);
-
         try {
-            String str = this.in.readLine();
             DateFormat df = DateFormat.getTimeInstance(3);
-            return df.parse(str);
-        } catch (IOException var4) {
-            return null;
-        } catch (ParseException var5) {
+            return df.parse(in.readLine());
+        } catch (IOException | ParseException ex) {
             return null;
         }
     }
