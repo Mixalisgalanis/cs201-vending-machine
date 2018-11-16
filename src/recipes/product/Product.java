@@ -1,11 +1,16 @@
 package recipes.product;
 
+import recipes.consumables.Consumable;
+
+import java.util.ArrayList;
+
 public class Product {
 
     //Class variables
     private String productName;
     private int productCost;
 
+    private Consumable consumables;
     //Constructor
     public Product(String productName, int productCost) {
         this.productName = productName;
@@ -13,6 +18,10 @@ public class Product {
     }
 
     //Getters & Setters
+
+    public void setConsumables(Consumable consumables) {
+        this.consumables = consumables;
+    }
 
     public String getProductName() {
         return productName;
