@@ -9,6 +9,7 @@ public interface Pluggable {
     /**
      * Whenever a class implements this interface plugs itself to a consumer and vice-versa.
      * The plugging is done on both ends.
+     *
      * @param consumer to be plugged into/from
      */
     void plug(Consumer consumer);
@@ -16,6 +17,7 @@ public interface Pluggable {
     /**
      * Whenever a class implements this interface unplugs itself from a consumer and vice-versa.
      * The unplugging is done on both ends.
+     *
      * @param consumer to be unplugged from/into
      */
     void unPlug(Consumer consumer);
@@ -27,6 +29,7 @@ public interface Pluggable {
 
     /**
      * This method is a getter to the plugged boolean variable found in the class implementing this interface
+     *
      * @return the boolean plugged variable itself
      */
     boolean isPlugged();

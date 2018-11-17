@@ -1,7 +1,6 @@
 package modules.external;
 
 import behaviour.Consumer;
-import behaviour.Lockable;
 import devices.external.ProductCaseDevice;
 import modules.Module;
 import recipes.Recipe;
@@ -10,7 +9,7 @@ import recipes.consumables.Consumable;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
 
-public class ProductCase extends Module<ProductCaseDevice> implements Consumer{
+public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     //Class variables
     private boolean pluggable;
@@ -18,18 +17,16 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer{
     private Product product;
 
 
-
     //Constructor
     public ProductCase(String productName, int procuctCost, RecipeManager recipeManager) {
         super("ProductCase");
         this.pluggable = false;
-        this.builder = new ProductBuilder(productName,procuctCost,recipeManager);
+        this.builder = new ProductBuilder(productName, procuctCost, recipeManager);
     }
 
-    public ProductCase(){
+    public ProductCase() {
         super("ProductCase");
     }
-
 
 
     //Other Methods
@@ -40,6 +37,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer{
         }
         //TODO check if we need more if cases
     }
+
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
@@ -76,8 +74,8 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer{
         return product;
     }
 
-    public void prepareProduct(Recipe recipe){
-        product = new Product(recipe.getName(),recipe.getPrice());
+    public void prepareProduct(Recipe recipe) {
+        product = new Product(recipe.getName(), recipe.getPrice());
         builder.addConsumables();
     }
 }

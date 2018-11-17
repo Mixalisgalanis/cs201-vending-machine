@@ -1,19 +1,13 @@
 package recipes;
 
-import behaviour.Consumer;
-import behaviour.Provider;
-import modules.containers.Container;
-import modules.external.ProductCase;
 import recipes.consumables.ingredients.Ingredient;
 import recipes.step.RecipeStep;
-import recipes.step.TransferStep;
 import utilities.Reader;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Recipe {
 
@@ -50,7 +44,13 @@ public class Recipe {
         ingredients = new ArrayList<>();
     }
 
-    public Recipe(File file, int code) {  //In this modified constructor, the recipe gets constructed step-by-step by the disassemble method
+    /**
+     * In this modified constructor, the recipe gets constructed step-by-step by the disassemble method.
+     *
+     * @param file in disk to disassemble.
+     * @param code required for the code basic variable type.
+     */
+    public Recipe(File file, int code) {
         reader = new Reader();
         currentRecipeStepNumber = 0;
         recipeSteps = new ArrayList<>();
@@ -109,24 +109,24 @@ public class Recipe {
         return recipeSteps;
     }
 
-    public RecipeStep getCurrentRecipeStep(){
+    public RecipeStep getCurrentRecipeStep() {
         return recipeSteps.get(currentRecipeStepNumber);
     }
     //Other Methods
 
     /**
-     * Gets the next step from the recipe steps list
+     * Gets the next step from the recipe steps list.
      *
-     * @return the next step from the recipe steps list
+     * @return the next step from the recipe steps list.
      */
     public RecipeStep getNextStep() {
         return (recipeSteps.get(currentRecipeStepNumber++));
     }
 
     /**
-     * Checks whether there are more steps in the recipe steps list
+     * Checks whether there are more steps in the recipe steps list.
      *
-     * @return true if there are more steps, false if there aren't
+     * @return true if there are more steps, false if there aren't.
      */
     public boolean hasMoreSteps() {
         return (currentRecipeStepNumber < recipeSteps.size() - 1);
@@ -140,16 +140,16 @@ public class Recipe {
     }
 
     /**
-     * Makes this particular recipe not available
+     * Makes this particular recipe not available.
      */
     public void disable() {
         this.available = false;
     }
 
     /**
-     * Converts a recipe text into a working recipe by extracting text information
+     * Converts a recipe text into a working recipe by extracting text information.
      *
-     * @param file the required .rcp file to extract information from
+     * @param file the required .rcp file to extract information from.
      */
     public void disassemble(File file) {
         //Required Readers to access and read from the file
@@ -183,7 +183,7 @@ public class Recipe {
                 String className = classNameFinder(tempIngredient[0]);   //Gets the class name based on the ingredient name
                 Class<?> clazz = Class.forName("recipes.consumables.ingredients." + className);          //Finds the class based on the class name
                 Constructor<?> ctor = clazz.getConstructors()[0]; //Calls class constructor with given parameters
-                Object object = ctor.newInstance(tempIngredient[1], Integer.parseInt(tempIngredient[2])); //Creates object from that constructor
+                Object object = ctor.newInstance(toCamelCase(tempIngredient[1]), Integer.parseInt(tempIngredient[2])); //Creates object from that constructor
                 this.ingredients.add((Ingredient) object);          //Adds the object (Ingredient) on the ingredients list
             }
 
@@ -203,23 +203,13 @@ public class Recipe {
                 this.recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
                 tempLine = bufferedReader.readLine();
             } while (tempLine != null);
-
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IOException | ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
-     * Converts a working recipe into a recipe text by building an .rcp file
+     * Converts a working recipe into a recipe text by building an .rcp file.
      */
     public void assemble() {
         File file = new File("/recipes/" + code + ".rcp"); //Creates rcp recipe file named based on recipe code
@@ -263,13 +253,18 @@ public class Recipe {
 
     }
 
-
+    /**
+     * Executes Step Internally depending on the type of step. This is accomplished with method overloading.
+     */
     public void executeStep() {
         getNextStep().executeStep();
     }
 
+    //Utilities
+
     /**
      * Finds the class name based on the data it receives
+     *
      * @param data the extracted text from the file
      * @return the class name found
      */
@@ -286,5 +281,16 @@ public class Recipe {
             default:
                 return data;
         }
+    }
+
+    /**
+     * Converts a String to Camel Case Format.
+     *
+     * @param input String to be converted.
+     * @return the Camel Case String.
+     */
+    public String toCamelCase(String input) {
+        String temp = input.toLowerCase();
+        return (temp.substring(0, 1).toUpperCase() + temp.substring(1, temp.length()));
     }
 }

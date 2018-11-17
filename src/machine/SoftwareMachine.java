@@ -26,14 +26,14 @@ public class SoftwareMachine {
         Adding Consumables
          */
         //Powder Consumables
-        data.addConsumable(new Consumable("Coffee",data.STANDARD_DOSING_CONTAINER_SIZE,"Powder"));
+        data.addConsumable(new Consumable("Coffee", data.STANDARD_DOSING_CONTAINER_SIZE, "Powder"));
         data.addConsumable(new Consumable("Sugar", data.STANDARD_DOSING_CONTAINER_SIZE, "Powder"));
 
         //Liquid Consumables
-        data.addConsumable(new Consumable("Water",data.STANDARD_FLOW_CONTAINER_SIZE,"Liquid"));
+        data.addConsumable(new Consumable("Water", data.STANDARD_FLOW_CONTAINER_SIZE, "Liquid"));
 
         //Material Consumables
-        data.addConsumable(new Consumable("Cup",data.STANDARD_MATERIAL_CONTAINER_SIZE, "Material"));
+        data.addConsumable(new Consumable("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, "Material"));
 
         /*
         Adding Modules
@@ -46,18 +46,17 @@ public class SoftwareMachine {
         data.addHardwareEntity(new ProductCase());
 
         //ConsumableDispensers
-        data.addHardwareEntity(new ConsumableDispenser("POWDERS"));
-        data.addHardwareEntity(new ConsumableDispenser("LIQUIDS"));
-        data.addHardwareEntity(new ConsumableDispenser("MATERIALS"));
+        data.addHardwareEntity(new ConsumableDispenser("POWDERS", "Powder"));
+        data.addHardwareEntity(new ConsumableDispenser("LIQUIDS", "Liquid"));
+        data.addHardwareEntity(new ConsumableDispenser("MATERIALS", "Material"));
 
         //DosingContainers
-        data.addHardwareEntity(new DosingContainer("Coffee",data.STANDARD_DOSING_CONTAINER_SIZE,data.findConsumable("Coffee")));
+        data.addHardwareEntity(new DosingContainer("Coffee", data.STANDARD_DOSING_CONTAINER_SIZE, data.findConsumable("Coffee")));
         data.addHardwareEntity(new DosingContainer("Sugar", data.STANDARD_DOSING_CONTAINER_SIZE, data.findConsumable("Sugar")));
         //LiquidContainers
-        data.addHardwareEntity(new FlowContainer("Water",data.STANDARD_FLOW_CONTAINER_SIZE,data.findConsumable("Water")));
+        data.addHardwareEntity(new FlowContainer("Water", data.STANDARD_FLOW_CONTAINER_SIZE, data.findConsumable("Water")));
         //MaterialContainers
-        data.addHardwareEntity(new MaterialContainer("Cup",data.STANDARD_MATERIAL_CONTAINER_SIZE,data.findConsumable("Cup")));
-
+        data.addHardwareEntity(new MaterialContainer("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, data.findConsumable("Cup")));
 
 
     }

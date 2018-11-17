@@ -11,11 +11,11 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
     }
 
     //OtherMethods
-    public void setChange(int change){
+    public void setChange(int change) {
         //TODO ChangeCase - setChange
     }
 
-    public void removeChange(){
+    public void removeChange() {
         //TODO ChangeCase - removeChange
     }
 }

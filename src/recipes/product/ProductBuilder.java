@@ -15,7 +15,7 @@ public class ProductBuilder {
     }
 
     //Getters & Setters
-    public Product getProduct(){
+    public Product getProduct() {
         return this.product;
     }
 
@@ -28,11 +28,11 @@ public class ProductBuilder {
     }
 
     //Other Methods
-    public void addConsumable(Consumable consumable){
+    public void addConsumable(Consumable consumable) {
 
     }
 
-    public void addConsumables(){
+    public void addConsumables() {
 
     }
 

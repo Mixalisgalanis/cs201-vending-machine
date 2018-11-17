@@ -13,17 +13,23 @@ public class ConsumableDispenser extends Module<ContainerDevice> implements Disp
     //Class variables
     private boolean plugged;
     private HashMap<String, Container> containers;
+    private String consumableType;
 
     //Constructor
-    public ConsumableDispenser(String name) {
+    public ConsumableDispenser(String name, String consumableType) {
         super(name);
-        this.containers = containers;
+        this.containers = new HashMap<>();
         this.plugged = false;
+        this.consumableType = consumableType;
     }
 
     //Getters
     public HashMap<String, Container> getContainers() {
         return containers;
+    }
+
+    public String getConsumableType() {
+        return consumableType;
     }
 
     //Other Methods

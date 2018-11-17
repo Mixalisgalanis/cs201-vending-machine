@@ -11,6 +11,7 @@ public interface Consumer extends Pluggable {
     /**
      * Checks whether to accept or reject a consumable based on quantity & capacity restrictions.
      * If the consumable is accepted, it then loads it to the container
+     *
      * @param consumable to be set in the container
      */
     void acceptAndLoad(Consumable consumable);

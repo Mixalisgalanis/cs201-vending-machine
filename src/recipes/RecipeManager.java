@@ -77,7 +77,7 @@ public class RecipeManager {
                         break;
                     }
                 }
-            }
+            } else recipe.disable();
         }
     }
 

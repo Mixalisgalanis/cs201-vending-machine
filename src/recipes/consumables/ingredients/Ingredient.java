@@ -11,6 +11,7 @@ abstract public class Ingredient extends Consumable {
 
 
     //Other Methods
+
     /**
      * Creates a string which describes this ingredient - ex: "POW:COFFEE:40"
      *
