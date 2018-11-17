@@ -31,7 +31,7 @@ public class RecipeManager {
      * Loads all .rcp files in the ./recipes directory, creates the recipes by the disassemble recipe method and insert it into the HashMap
      */
     public void loadRecipes() {
-        File folder = new File("recipes");
+        File folder = new File("/recipes/");
         if (folder.isDirectory()) {
             for (File file : folder.listFiles()) {
                 int recipeCode = Integer.parseInt(file.getName().substring(0, file.getName().indexOf('.')));

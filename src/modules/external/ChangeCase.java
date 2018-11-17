@@ -14,12 +14,10 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
 
     //OtherMethods
     public void setChange(int change) {
-        //TODO ChangeCase - setChange
         this.change = change;
     }
 
     public void removeChange() {
-        //TODO ChangeCase - removeChange
         this.change = 0;
     }
 }
