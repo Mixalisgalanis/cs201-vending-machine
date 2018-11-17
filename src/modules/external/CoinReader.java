@@ -11,13 +11,13 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
     //Constructor
     public CoinReader() {
         super("CoinReader");
-        money = 0;
+        this.money = 0;
     }
 
     //Other Methods
     public int receiveMoney(int min) {
         while (money < min) {
-            money = money + getDevice().acceptCoin(min - money);
+            money += getDevice().acceptCoin(min - money);
         }
         return 0;
     }

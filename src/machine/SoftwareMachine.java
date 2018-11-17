@@ -5,20 +5,28 @@ import modules.containers.FlowContainer;
 import modules.containers.MaterialContainer;
 import modules.dispensers.ConsumableDispenser;
 import modules.external.*;
+import recipes.RecipeManager;
 import recipes.consumables.Consumable;
 
 public class SoftwareMachine {
 
     //Class Variables
+    private static SoftwareMachine instance;
+    private static boolean allowInstance = true;
     private Data data;
+    private RecipeManager rm;
 
     public SoftwareMachine() {
-        createDataCollection();
+        this.data = (Data.getInstance() != null) ? Data.getInstance() : new Data();
+        this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
         insertData();
+        //Prevent further instantiation
+        allowInstance = false;
+        instance = this;
     }
 
-    private void createDataCollection() {
-        if (Data.getInstance() == null) this.data = new Data();
+    public static SoftwareMachine getInstance() {
+        return instance;
     }
 
     private void insertData() {
@@ -58,6 +66,9 @@ public class SoftwareMachine {
         //MaterialContainers
         data.addHardwareEntity(new MaterialContainer("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, data.findConsumable("Cup")));
 
-
+        /*
+        Adding Recipes
+         */
+        rm.loadRecipes();
     }
 }

@@ -1,22 +1,15 @@
 package recipes;
 
-import machine.Data;
-import machine.SoftwareMachine;
 import org.junit.Before;
-import org.junit.Test;
-
-import java.util.ArrayList;
 
 public class RecipeManagerTest {
 
-    private RecipeManager recipeManager;
+    private RecipeManager rm;
     private boolean loaded = false;
-    private SoftwareMachine sm = new SoftwareMachine();
-    private Data data = Data.getInstance();
 
     @Before
-    public void setUp() throws Exception {
-        recipeManager = new RecipeManager();
+    public void setUp() {
+        this.rm = (RecipeManager.getInstance() != null)? RecipeManager.getInstance() : new RecipeManager();
         this.loadRecipes();
 
     }
@@ -24,30 +17,21 @@ public class RecipeManagerTest {
     @org.junit.Test
     public void loadRecipes() {
         if (!loaded) {
-            recipeManager.loadRecipes();
-            System.out.println("Number of recipes loaded: " + recipeManager.getRecipes().size());
+            rm.loadRecipes();
+            System.out.println("Number of recipes loaded: " + rm.getRecipes().size());
             loaded = true;
         }
-    }
-
-
-    @Test
-    public void getRecipes() {
-        recipeManager.getRecipes();
     }
 
     @org.junit.Test
     public void validateRecipes() {
         //Abundant Materials and affordable (Recipe Cost: 180)
-        recipeManager.validateRecipes(data.getContainers(), 200);
-        ArrayList<Recipe> availableRecipes = recipeManager.getEnabled();
-        System.out.println("Available Recipes: " + availableRecipes.size() + "/" + recipeManager.getRecipes().size());
+        rm.validateRecipes();
+        System.out.println("Available Recipes: " + rm.getAvailableRecipes().size() + "/" + rm.getRecipes().size());
 
         //Abundant Materials but not affordable (Recipe Cost: 180)
-        recipeManager.validateRecipes(data.getContainers(), 100);
-        availableRecipes.clear();
-        availableRecipes = recipeManager.getEnabled();
-        System.out.println("Available Recipes: " + availableRecipes.size() + "/" + recipeManager.getRecipes().size());
+        rm.validateRecipes();
+        System.out.println("Available Recipes: " + rm.getAvailableRecipes().size() + "/" + rm.getRecipes().size());
     }
 
     @org.junit.Test

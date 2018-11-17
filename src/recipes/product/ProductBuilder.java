@@ -7,11 +7,11 @@ public class ProductBuilder {
 
     //Class variables
     private Product product;
-    private RecipeManager recipeManager;
+    private RecipeManager rm;
 
-    public ProductBuilder(String productName, int productCost, RecipeManager recipeManager) {
+    public ProductBuilder(String productName, int productCost) {
         this.product = new Product(productName, productCost);
-        this.recipeManager = recipeManager;
+        this.rm = RecipeManager.getInstance();
     }
 
     //Getters & Setters
