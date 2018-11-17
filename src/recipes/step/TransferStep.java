@@ -61,6 +61,7 @@ public class TransferStep extends RecipeStep {
     }
 
     //Other Methods
+
     /**
      * Creates a string which describes this step - ex: "TRANSFER POWDERS BLENDER COFFEE 40"
      *
@@ -73,19 +74,19 @@ public class TransferStep extends RecipeStep {
 
     @Override
     public void executeStep() {
-        if (data.findDispenser(source) != null){
+        if (data.findDispenser(source) != null) {
             Dispenser dispenser = data.findDispenser(source);
             Consumer consumer = data.findConsumer(destination);
 
             dispenser.plug(consumer);
-            dispenser.prepareContainer(data.findContainerByConsumable(source,data.findConsumable(content)).getName(),consumer);
+            dispenser.prepareContainer(data.findContainerByConsumable(source, data.findConsumable(content)).getName(), consumer);
             dispenser.unPlug(consumer);
-        } else{
+        } else {
             Provider provider = data.findProvider(source);
             Consumer consumer = data.findConsumer(destination);
 
             provider.plug(consumer);
-            provider.provide(consumer,quantity);
+            provider.provide(consumer, quantity);
             provider.unPlug(consumer);
         }
     }

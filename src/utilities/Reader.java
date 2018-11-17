@@ -22,6 +22,7 @@ public class Reader {
 
     /**
      * Prints a message on the screen and asks for a String input
+     *
      * @param message to be displayed on screen
      * @return the String the user gave
      */
@@ -36,6 +37,7 @@ public class Reader {
 
     /**
      * Prints a message on the screen and asks for an Integer input
+     *
      * @param message to be displayed on screen
      * @return the Integer Number the user gave
      */
@@ -51,6 +53,7 @@ public class Reader {
 
     /**
      * Prints a message on the screen and asks for a Float input
+     *
      * @param message to be displayed on screen
      * @return the Float Number the user gave
      */
@@ -65,6 +68,7 @@ public class Reader {
 
     /**
      * Prints a message on the screen and asks for a Date input (String Format) - ex "1/1/2018"
+     *
      * @param message to be displayed on screen
      * @return the Date the user gave (Date Format)
      */
@@ -81,6 +85,7 @@ public class Reader {
 
     /**
      * Prints a message on the screen and asks for a Time input (String Format) - ex "04:35"
+     *
      * @param message to be displayed on screen
      * @return the String the user gave (Time Format)
      */

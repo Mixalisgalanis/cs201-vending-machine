@@ -38,6 +38,7 @@ public class OperateStep extends RecipeStep {
     }
 
     //Other Methods
+
     /**
      * Creates a string which describes this step - ex: "OPERATE BOILER 5"
      *

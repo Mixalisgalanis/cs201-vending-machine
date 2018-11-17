@@ -21,6 +21,7 @@ public interface Lockable extends Device {
 
     /**
      * This is a getter method to the locked boolean variable found in the class implementing this interface
+     *
      * @return the boolean locked variable itself
      */
     boolean isLocked();

@@ -81,9 +81,11 @@ public class Data {
     /*
     Other Methods
      */
+
     /**
      * This is the main insertion method for hardware objects. Depending on the type of the module being added, it may
      * also get added automatically in other behavioural interfaces collections like dispensers, consumers or providers.
+     *
      * @param module that is being added
      */
     public void addHardwareEntity(Module module) {
@@ -97,7 +99,7 @@ public class Data {
         } else if (module instanceof Container) {
             containers.put(module.getName(), (Container) module);
             providers.put(module.getName(), (Container) module);
-            findConsumableDispenserByContainer(module.getName()).addContainer((Container) module);
+            findConsumableDispenserByContainer((Container) module);
         } else if (module instanceof ProductCase) {
             consumers.put(module.getName(), (ProductCase) module);
         }
@@ -107,6 +109,7 @@ public class Data {
     /**
      * Main removal method for hardware objects. Works similar to addHardwareEntity method. The module is found by a name
      * and removed from any other possible lists.
+     *
      * @param moduleName required to find Module
      * @see public void addHardwareEntity(Module module)
      */
@@ -123,15 +126,16 @@ public class Data {
             } else if (module instanceof Container) {
                 containers.remove(module.getName());
                 providers.remove(module.getName());
-            } else if (module instanceof ProductCase){
+            } else if (module instanceof ProductCase) {
                 consumers.remove(module.getName());
             }
-                modules.remove(module.getName());
+            modules.remove(module.getName());
         }
     }
 
     /**
      * Insertion method for Consumables.
+     *
      * @param consumable to be added in consumables HashMap.
      */
     public void addConsumable(Consumable consumable) {
@@ -140,19 +144,22 @@ public class Data {
 
     /**
      * Removal method for Consumables. It also removes the Consumable from any containers that it may be added.
+     *
      * @param consumableName required to find Consumable and remove it.
      */
     public void removeConsumable(String consumableName) {
         consumables.remove(consumableName);
-        for (Container container : containers.values()){
+        for (Container container : containers.values()) {
             if (container.getConsumable().getName().equals(consumableName)) container.setConsumable(null);
         }
     }
 
 
     //Simple Finder Methods - Usually they get results from HashMap.get(key) method
+
     /**
      * Finds a Consumable (Class) based on it's name.
+     *
      * @param consumableName required to find a Consumable.
      * @return the Consumable if found. Returns null if not found.
      */
@@ -162,24 +169,27 @@ public class Data {
 
     /**
      * Finds a ConsumableDispenser (Class) based on it's name.
+     *
      * @param consumableDispenserName required to find a ConsumableDispenser.
      * @return the ConsumableDispenser if found. Returns null if not found.
      */
-    public ConsumableDispenser findConsumableDispenser(String consumableDispenserName){
+    public ConsumableDispenser findConsumableDispenser(String consumableDispenserName) {
         return consumableDispensers.get(consumableDispenserName);
     }
 
     /**
      * Finds a IngredientProcessor (Class) based on it's name.
+     *
      * @param ingredientProcessorName required to find an IngredientProcessor.
      * @return the IngredientProcessor if found. Returns null if not found.
      */
-    public IngredientProcessor findIngredientProcessor(String ingredientProcessorName){
+    public IngredientProcessor findIngredientProcessor(String ingredientProcessorName) {
         return ingredientProcessors.get(ingredientProcessorName);
     }
 
     /**
      * Finds a Provider (Interface) based on it's name.
+     *
      * @param providerName required to find a Provider.
      * @return the Provider if found. Returns null if not found.
      */
@@ -189,6 +199,7 @@ public class Data {
 
     /**
      * Finds a Consumer (Interface) based on it's name.
+     *
      * @param consumerName required to find a Consumer.
      * @return the Consumer if found. Returns null if not found.
      */
@@ -198,10 +209,11 @@ public class Data {
 
     /**
      * Finds a Dispenser (Interface) based on it's name.
+     *
      * @param dispenserName required to find a Dispenser.
      * @return the Dispenser if found. Returns null if not found.
      */
-    public Dispenser findDispenser(String dispenserName){
+    public Dispenser findDispenser(String dispenserName) {
         return dispensers.get(dispenserName);
     }
 
@@ -210,13 +222,14 @@ public class Data {
     /**
      * Finds a Container based on a dispenser name and a consumable - ex: "POWDERS" + Coffee (object) -> CoffeeContainer (object).
      * This is used in Recipe Steps.
+     *
      * @param dispenserName the name of the ConsumableDispenser.
-     * @param consumable the consumable object.
+     * @param consumable    the consumable object.
      * @return the Container if found. Returns null if not found.
      */
-    public Container findContainerByConsumable(String dispenserName, Consumable consumable){
+    public Container findContainerByConsumable(String dispenserName, Consumable consumable) {
         ConsumableDispenser consumableDispenser = findConsumableDispenser(dispenserName);
-        for (Container container : consumableDispenser.getContainers().values()){
+        for (Container container : consumableDispenser.getContainers().values()) {
             if (container.getConsumable().getName().equalsIgnoreCase(consumable.getName())) return container;
         }
         return null;
@@ -224,11 +237,15 @@ public class Data {
 
     /**
      * Finds a Consumable Dispenser based on a container name - ex: "WaterContainer" -> LIQUIDS (object)
-     * @param containerName the name of the container.
+     *
+     * @param container required to find Consumable Dispenser
      * @return the Consumable Dispenser if found. Returns null if not found.
      */
-    public ConsumableDispenser findConsumableDispenserByContainer(String containerName){
-        //TODO complete
+    public ConsumableDispenser findConsumableDispenserByContainer(Container container) {
+        for (ConsumableDispenser consumableDispenser : consumableDispensers.values()) {
+            if (consumableDispenser.getConsumableType().equals(container.getConsumable().getConsumableType()))
+                return consumableDispenser;
+        }
         return null;
     }
 }

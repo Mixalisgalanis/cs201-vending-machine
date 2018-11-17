@@ -8,6 +8,7 @@ public interface Provider extends Pluggable {
 
     /**
      * Provides part of a consumable of the class that's implementing this interface to a specific consumer
+     *
      * @param consumer to give part of a consumable
      * @param quantity the quantity of the consumable to provide
      */
@@ -15,6 +16,7 @@ public interface Provider extends Pluggable {
 
     /**
      * Provides the whole consumable quantity to a specific consumer
+     *
      * @param consumer to give the whole consumable
      */
     void provide(Consumer consumer);
