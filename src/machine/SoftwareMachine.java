@@ -93,7 +93,7 @@ public class SoftwareMachine {
             case "1":
                 display.displayMessage(ADMIN_SUBMENU);
                 switch (String.valueOf(numPad.readCode(1))) {
-                    case "1" : //TODO CreateRecipe
+                    case "1": //TODO CreateRecipe
                         break;
                     case "2": //TODO DeleteRecipe
                         break;
@@ -101,12 +101,13 @@ public class SoftwareMachine {
                         break;
                 }
                 break;
-            case "2": display.displayMessage(USER_SUBMENU);
-                switch (String.valueOf(numPad.readCode(1))){
+            case "2":
+                display.displayMessage(USER_SUBMENU);
+                switch (String.valueOf(numPad.readCode(1))) {
                     case "1": {
                         display.displayMessage(RECIPES_HEADER);
-                        for (Recipe recipe : rm.getAvailableRecipes().values()){
-                            display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice()+ ")");
+                        for (Recipe recipe : rm.getAvailableRecipes().values()) {
+                            display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
                         }
                         display.displayMessage(RECIPES_FOOTER);
                         Recipe recipe = rm.getRecipe(String.valueOf(numPad.readCode(3)));
@@ -117,7 +118,7 @@ public class SoftwareMachine {
                         rm.executeRecipe(recipe);
                         productCase.prepareProduct(recipe);
                     }
-                        break;
+                    break;
                 }
                 break;
         }

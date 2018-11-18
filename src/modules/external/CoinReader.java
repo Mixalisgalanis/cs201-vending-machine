@@ -19,10 +19,10 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
         while (money < min) {
             money += getDevice().acceptCoin(min - money);
         }
-        return money-min;
+        return money - min;
     }
 
-    public void clearMoney(){
+    public void clearMoney() {
         this.money = 0;
     }
 }
