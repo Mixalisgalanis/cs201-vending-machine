@@ -33,6 +33,7 @@ public class RecipeManager {
         availableRecipes = new HashMap<>();
         try {
             factory = DAOFactory.getDAOFactory("FileSystem");
+            recipeDAO = factory.getRecipeDAO();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -63,7 +64,7 @@ public class RecipeManager {
      * @param code of the desirable recipe
      * @return the desirable recipe
      */
-    public Recipe getRecipe(int code) {
+    public Recipe getRecipe(String code) {
         return recipes.get(code);
     }
 
@@ -88,18 +89,15 @@ public class RecipeManager {
      * Enables or Disables recipes based on the recipe requirements (Cost & Quantities)
      */
     public void validateRecipes() {
-        int balance = data.getCurrentBalance();
         for (Recipe recipe : recipes.values()) {
-            if (balance >= recipe.getPrice()) {
-                for (Ingredient ingredient : recipe.getIngredients()) {
-                    if (data.getContainers().get(recipe.classNameFinder(ingredient.getName())).getConsumable().getQuantity() >= ingredient.getQuantity())
-                        recipe.enable();
-                    else {
-                        recipe.disable();
-                        break;
-                    }
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                if (data.getContainers().get(recipe.classNameFinder(ingredient.getName())).getConsumable().getQuantity() >= ingredient.getQuantity())
+                    recipe.enable();
+                else {
+                    recipe.disable();
+                    break;
                 }
-            } else recipe.disable();
+            }
         }
         this.loadEnabledRecipes();
     }
@@ -110,7 +108,6 @@ public class RecipeManager {
      * @param recipe which is going to be executed
      */
     public void executeRecipe(Recipe recipe) {
-        data.setCurrentBalance(data.getCurrentBalance() - recipe.getPrice());
         while (recipe.hasMoreSteps()) {
             recipe.executeStep();
         }

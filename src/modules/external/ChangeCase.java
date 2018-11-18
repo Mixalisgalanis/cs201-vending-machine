@@ -16,9 +16,11 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
     //OtherMethods
     public void setChange(int change) {
         this.change = change;
+        //TODO Give Coins
     }
 
     public void removeChange() {
         this.change = 0;
+        //TODO Remove Change
     }
 }

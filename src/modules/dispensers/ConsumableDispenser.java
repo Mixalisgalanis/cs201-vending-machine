@@ -43,7 +43,7 @@ public class ConsumableDispenser extends Module<ContainerDevice> implements Disp
     @Override
     public void addContainer(Container container) {
         if (nameDecoder(container).equalsIgnoreCase(getName())) {
-            if (containers.get(container.getName()) != null) {
+            if (containers.get(container.getName()) == null) {
                 containers.put(container.getName(), container);
             } else {
                 container.getConsumable().refillPart(containers.get(container.getName()).getCapacity(), container.getConsumable().getQuantity());

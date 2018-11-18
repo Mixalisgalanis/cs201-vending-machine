@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class FsRecipeDAO implements RecipeDAO {
 
-    private static final String RECIPES_FOLDER = "/recipes/";
+    private static final String RECIPES_FOLDER = "recipes";
     private static final String RECIPES_FILE_SUFFIX = ".rcp";
     private File folder = new File(RECIPES_FOLDER);
 

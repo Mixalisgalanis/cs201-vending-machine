@@ -158,15 +158,20 @@ public class Recipe {
         //Extracting information from file
         try {
             //Basic recipe properties
-            String tempLine = data.substring(0, data.indexOf('\n'));          //Proceeds to next line
+            /*data += "\r\n";*/
+            String tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
+            data = data.substring(data.indexOf("\r\n") + 2, data.length());
             this.name = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //Extracts name
-            tempLine = data.substring(0, data.indexOf('\n'));                  //Proceeds to next line
+            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
+            data = data.substring(data.indexOf("\r\n") + 2, data.length());
             this.price = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length())); //Extracts price
-            tempLine = data.substring(0, data.indexOf('\n'));              //Proceeds to next line
+            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
+            data = data.substring(data.indexOf("\r\n") + 2, data.length());
             this.type = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //Extracts type
 
             //Ingredients - ex: "INGREDIENTS: POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
-            tempLine = data.substring(0, data.indexOf('\n'));
+            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
+            data = data.substring(data.indexOf("\r\n") + 2, data.length());
             String ingredientsLine = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //ex: "POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
             String[] allIngredients = ingredientsLine.split(",");      //ex: allIngredients[0] == POW:COFFEE:40
             for (String ingredient : allIngredients) {
@@ -182,8 +187,10 @@ public class Recipe {
 
             //Recipe Steps
             //Proceeds to next line recursively until the end of the file
-            tempLine = data.substring(0, data.indexOf('\n'));
-            tempLine = data.substring(0, data.indexOf('\n'));
+            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
+            data = data.substring(data.indexOf("\r\n") + 2, data.length());
+            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
+            data = data.substring(data.indexOf("\r\n") + 2, data.length());
             do {
                 //Creating TransferStep or OperateStep based on the step name in file
                 Class<?> clazz = Class.forName("recipes.step." + classNameFinder(tempLine.substring(0, tempLine.indexOf(" ")))); //Gets the class name based on the step name
@@ -194,8 +201,9 @@ public class Recipe {
                 Object object = ctor.newInstance(new Object[]{stepData, a}); //Creates object from that constructor
 
                 this.recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
-                tempLine = data.substring(0, data.indexOf('\n'));
-            } while (tempLine != null);
+                tempLine = (!(data).equals("")) ? data.substring(0, data.indexOf("\r\n")) : ""; //Proceeds to next line
+                data = (!(data).equals("")) ? data.substring(data.indexOf("\r\n") + 2, data.length()) : "";
+            } while (!tempLine.equals(""));
         } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

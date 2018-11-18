@@ -40,7 +40,7 @@ public class Data {
     private HashMap<String, Dispenser> dispensers;
     private HashMap<String, Consumer> consumers;
     private HashMap<String, Provider> providers;
-    private int currentBalance;
+
 
     /*
     Constructor
@@ -58,7 +58,6 @@ public class Data {
         dispensers = new HashMap<>();
         consumers = new HashMap<>();
         providers = new HashMap<>();
-        currentBalance = 0;
 
         //Prevents other instantiations
         instance = this;
@@ -78,14 +77,6 @@ public class Data {
 
     public HashMap<String, Container> getContainers() {
         return containers;
-    }
-
-    public int getCurrentBalance() {
-        return currentBalance;
-    }
-
-    public void setCurrentBalance(int currentBalance) {
-        this.currentBalance = currentBalance;
     }
 
     public HashMap<String, Consumable> getConsumables() {
@@ -113,7 +104,7 @@ public class Data {
         } else if (module instanceof Container) {
             containers.put(module.getName(), (Container) module);
             providers.put(module.getName(), (Container) module);
-            findConsumableDispenserByContainer((Container) module);
+            findConsumableDispenserByContainer((Container) module).addContainer((Container) module);
         } else if (module instanceof ProductCase) {
             consumers.put(module.getName(), (ProductCase) module);
         }
