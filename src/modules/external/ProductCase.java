@@ -4,7 +4,6 @@ import behaviour.Consumer;
 import devices.external.ProductCaseDevice;
 import modules.Module;
 import recipes.Recipe;
-import recipes.RecipeManager;
 import recipes.consumables.Consumable;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
@@ -18,10 +17,10 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
 
     //Constructor
-    public ProductCase(String productName, int procuctCost, RecipeManager recipeManager) {
+    public ProductCase(String productName, int procuctCost) {
         super("ProductCase");
         this.pluggable = false;
-        this.builder = new ProductBuilder(productName, procuctCost, recipeManager);
+        this.builder = new ProductBuilder(productName, procuctCost);
     }
 
     public ProductCase() {

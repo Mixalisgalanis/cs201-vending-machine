@@ -11,8 +11,6 @@ import java.util.Locale;
 public class Reader {
 
     //Class variables
-    private static final int POS_ERROR = -1;
-    private static final int NEG_ERROR = 1;
     private BufferedReader in;
 
     //Constructor
@@ -27,9 +25,9 @@ public class Reader {
      * @return the String the user gave
      */
     public String readString(String message) {
-        System.out.print(message);
+        System.out.println(message);
         try {
-            return this.in.readLine();
+            return (in.readLine());
         } catch (IOException ex) {
             return null;
         }

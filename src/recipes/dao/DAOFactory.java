@@ -1,16 +1,14 @@
 package recipes.dao;
 
-public class DAOFactory {
+abstract public class DAOFactory {
 
-    public DAOFactory getDAOFactory(String type) {
-        return null;
+    public static DAOFactory getDAOFactory(String type) throws IllegalAccessException {
+        if (type.equalsIgnoreCase("FileSystem")) {
+            return new FsDAOFactory();
+        } else {
+            throw new IllegalAccessException("Unknown Factory Type!");
+        }
     }
 
-    public RecipeDAO getRecipeDAO() {
-        return null;
-    }
-
-    //public OtherEtityDAO getOtherEntityDAO(){}
-
-
+    public abstract RecipeDAO getRecipeDAO();
 }

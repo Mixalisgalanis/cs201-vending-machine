@@ -1,6 +1,7 @@
 package recipes;
 
 import org.junit.Before;
+import org.junit.Test;
 
 public class RecipeManagerTest {
 
@@ -9,8 +10,8 @@ public class RecipeManagerTest {
 
     @Before
     public void setUp() {
-        this.rm = (RecipeManager.getInstance() != null)? RecipeManager.getInstance() : new RecipeManager();
-        this.loadRecipes();
+        this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
+        //this.loadRecipes();
 
     }
 
@@ -25,16 +26,16 @@ public class RecipeManagerTest {
 
     @org.junit.Test
     public void validateRecipes() {
-        //Abundant Materials and affordable (Recipe Cost: 180)
-        rm.validateRecipes();
-        System.out.println("Available Recipes: " + rm.getAvailableRecipes().size() + "/" + rm.getRecipes().size());
-
-        //Abundant Materials but not affordable (Recipe Cost: 180)
         rm.validateRecipes();
         System.out.println("Available Recipes: " + rm.getAvailableRecipes().size() + "/" + rm.getRecipes().size());
     }
 
     @org.junit.Test
     public void executeRecipe() {
+    }
+
+    @Test
+    public void createRecipe() {
+        rm.createRecipe();
     }
 }

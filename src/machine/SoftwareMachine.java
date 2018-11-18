@@ -13,6 +13,7 @@ public class SoftwareMachine {
     //Class Variables
     private static SoftwareMachine instance;
     private static boolean allowInstance = true;
+    private boolean useGraphics = false;
     private Data data;
     private RecipeManager rm;
 
@@ -66,9 +67,9 @@ public class SoftwareMachine {
         //MaterialContainers
         data.addHardwareEntity(new MaterialContainer("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, data.findConsumable("Cup")));
 
-        /*
-        Adding Recipes
-         */
-        rm.loadRecipes();
+    }
+
+    private void startCycle() {
+
     }
 }

@@ -2,13 +2,15 @@ package recipes.dao;
 
 import recipes.Recipe;
 
+import java.util.HashMap;
+
 public interface RecipeDAO {
 
-    Recipe[] loadRecipes();
+    HashMap<String, Recipe> loadRecipes();
 
-    Recipe loadRecipe(int code);
+    void storeRecipe(Recipe recipe);
 
-    void storeRecipe(Recipe r);
+    void deleteRecipe(String code);
 
-    void deleteRecipe(int code);
+    boolean checkIfExists(String code);
 }

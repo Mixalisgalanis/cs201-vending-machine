@@ -6,6 +6,7 @@ import modules.Module;
 public class ChangeCase extends Module<ChangeCaseDevice> {
 
     int change;
+
     //Constructor
     public ChangeCase() {
         super("ChangeCase");

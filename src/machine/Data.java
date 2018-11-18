@@ -88,6 +88,10 @@ public class Data {
         this.currentBalance = currentBalance;
     }
 
+    public HashMap<String, Consumable> getConsumables() {
+        return consumables;
+    }
+
     /*
     Other Methods
      */
