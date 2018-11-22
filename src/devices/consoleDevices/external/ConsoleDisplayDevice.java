@@ -13,6 +13,8 @@ public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice
 
     @Override
     public void clear() {
-        System.out.println(" ");
+        for (int i=0;i<100;i++){
+            System.out.println(" ");
+        }
     }
 }
