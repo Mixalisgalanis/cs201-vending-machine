@@ -1,26 +1,17 @@
 package devices.consoleDevices.external;
 
 import devices.external.NumPadDevice;
+import utilities.Reader;
 
 public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implements NumPadDevice {
 
-    @Override
-    public int readDigit() {
-        return 0;
+
+    public ConsoleNumPadDevice() {
+        super("NumPad");
     }
 
     @Override
-    public void lock() {
+    public int readDigit() { return 0;}
 
-    }
 
-    @Override
-    public void unLock() {
-
-    }
-
-    @Override
-    public boolean isLocked() {
-        return false;
-    }
 }
