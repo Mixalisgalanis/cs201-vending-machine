@@ -5,13 +5,19 @@ import utilities.Reader;
 
 public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implements NumPadDevice {
 
+    private Reader reader;
 
     public ConsoleNumPadDevice() {
         super("NumPad");
+        reader = new Reader();
     }
 
     @Override
-    public int readDigit() { return 0;}
+    public int readDigit() {
+        int digit;
+        digit = reader.readInt("Insert digit:");
+        return digit;
+    }
 
 
 }
