@@ -4,6 +4,10 @@ import devices.external.ProductCaseDevice;
 
 public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice implements ProductCaseDevice {
 
+    public ConsoleProductCaseDevice() {
+        super("ProductCase");
+    }
+
     @Override
     public void getProduct() {
 
