@@ -6,6 +6,7 @@ import devices.dispensers.DispenserDevice;
 
 public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDevice {
 
+
     @Override
     public ContainerDevice[] listContainers() {
         return new ContainerDevice[0];
@@ -13,16 +14,16 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
 
     @Override
     public void prepareContainer(ContainerDevice containerDevice) {
-
+        System.out.println("Prepared " + containerDevice.getName());
     }
 
     @Override
     public void addContainer(ContainerDevice containerDevice) {
-
+        System.out.println("Added " + containerDevice.getName());
     }
 
     @Override
     public void removeContainer(String name) {
-
+        System.out.println("Deleted " + name);
     }
 }

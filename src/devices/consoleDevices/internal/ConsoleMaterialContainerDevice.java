@@ -5,12 +5,12 @@ import devices.containers.MaterialContainerDevice;
 
 public class ConsoleMaterialContainerDevice extends ConsoleContainerDevice implements MaterialContainerDevice {
 
-    public ConsoleMaterialContainerDevice(int capacity) {
-        super("Material container", capacity);
+    public ConsoleMaterialContainerDevice(String name, int capacity) {
+        super(name, capacity);
     }
 
     @Override
     public void releaseMaterial(Device device) {
-        System.out.println("Tranfered from Material Container to " + device.getName());
+        System.out.println("Transferred from Material Container to " + device.getName());
     }
 }
