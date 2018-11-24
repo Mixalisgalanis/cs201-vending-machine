@@ -32,7 +32,11 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     @Override
     public void acceptAndLoad(Consumable consumable) {
         if (pluggable) {
-            if (product == null) this.product.setConsumables(consumable);
+            if (product == null) {
+                this.product.setConsumables(consumable);
+                getDevice().loadIngredient(consumable.toString());
+                //TODO check what "toString" returns
+            }
         }
         //TODO check if we need more if cases
     }
@@ -70,6 +74,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     public Product getProduct() {
         //no need to construct product in here because we will prepare the container then fill it(acceptAndLoad)and then we just need to return the product
+        getDevice().getProduct();
         return product;
     }
 

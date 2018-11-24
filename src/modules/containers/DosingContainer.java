@@ -10,5 +10,4 @@ public class DosingContainer extends Container<DosingContainerDevice> {
         super(name, capacity, consumable);
     }
 
-
 }

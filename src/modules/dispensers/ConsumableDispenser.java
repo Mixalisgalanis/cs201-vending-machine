@@ -2,13 +2,15 @@ package modules.dispensers;
 
 import behaviour.Consumer;
 import behaviour.Provider;
+import devices.consoleDevices.internal.ConsoleContainerDevice;
 import devices.containers.ContainerDevice;
+import devices.dispensers.DispenserDevice;
 import modules.Module;
 import modules.containers.Container;
 
 import java.util.HashMap;
 
-public class ConsumableDispenser extends Module<ContainerDevice> implements Dispenser {
+public class ConsumableDispenser extends Module<DispenserDevice> implements Dispenser {
 
     //Class variables
     private boolean plugged;
@@ -36,7 +38,11 @@ public class ConsumableDispenser extends Module<ContainerDevice> implements Disp
     @Override
     public Provider prepareContainer(String containerName, Consumer consumer) {
         Container container = containers.get(containerName);
-        if (container != null) container.plug(consumer);
+        if (container != null) {
+            container.plug(consumer);
+            ConsoleContainerDevice containerDevice= new ConsoleContainerDevice(containerName,container.getCapacity());
+            getDevice().prepareContainer(containerDevice);
+        }
         return container;
     }
 
@@ -45,6 +51,8 @@ public class ConsumableDispenser extends Module<ContainerDevice> implements Disp
         if (nameDecoder(container).equalsIgnoreCase(getName())) {
             if (containers.get(container.getName()) == null) {
                 containers.put(container.getName(), container);
+                ConsoleContainerDevice containerDevice= new ConsoleContainerDevice(container.getName(),container.getCapacity());
+                getDevice().addContainer(containerDevice);
             } else {
                 container.getConsumable().refillPart(containers.get(container.getName()).getCapacity(), container.getConsumable().getQuantity());
             }
@@ -54,6 +62,7 @@ public class ConsumableDispenser extends Module<ContainerDevice> implements Disp
     @Override
     public void removeContainer(String containerName) {
         containers.remove(containerName);
+        getDevice().removeContainer(containerName);
     }
 
     @Override

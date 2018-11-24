@@ -4,12 +4,20 @@ import devices.consoleDevices.ConsoleDevice;
 import devices.containers.ContainerDevice;
 import devices.dispensers.DispenserDevice;
 
+import java.util.ArrayList;
+
+
 public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDevice {
 
+    private ArrayList<ContainerDevice> containerDevices;
+
+    public ConsoleDispenserDevice() {
+        this.containerDevices = new ArrayList<ContainerDevice>();
+    }
 
     @Override
-    public ContainerDevice[] listContainers() {
-        return new ContainerDevice[0];
+    public ArrayList<ContainerDevice> listContainers() {
+        return containerDevices;
     }
 
     @Override
@@ -19,11 +27,18 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
 
     @Override
     public void addContainer(ContainerDevice containerDevice) {
+        this.containerDevices.add(containerDevice);
         System.out.println("Added " + containerDevice.getName());
     }
 
     @Override
     public void removeContainer(String name) {
-        System.out.println("Deleted " + name);
+        for(int i=0; i<containerDevices.size();i++){
+            if (containerDevices.get(i).getName().equalsIgnoreCase(name)){
+                this.containerDevices.remove(containerDevices.get(i));
+                System.out.println("Deleted " + name);
+                return;
+            }
+        }
     }
 }

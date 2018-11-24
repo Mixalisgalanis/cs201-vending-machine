@@ -22,6 +22,7 @@ public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice imple
 
     @Override
     public void removeChange() {
+        System.out.println("Removed change");
         this.change = 0;
     }
 }
