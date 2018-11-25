@@ -1,10 +1,15 @@
 package devices.consoleDevices.external;
 
+import devices.DeviceType;
 import devices.consoleDevices.ConsoleDevice;
 import devices.external.DisplayDevice;
 
 public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice {
 
+
+    public ConsoleDisplayDevice(String name, DeviceType deviceType) {
+        super("DisplayDevice", DeviceType.Display);
+    }
 
     @Override
     public void displayMsg(String message) {

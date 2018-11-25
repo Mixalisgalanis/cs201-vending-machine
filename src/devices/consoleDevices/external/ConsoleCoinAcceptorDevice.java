@@ -1,5 +1,6 @@
 package devices.consoleDevices.external;
 
+import devices.DeviceType;
 import devices.external.CoinAcceptorDevice;
 import utilities.Reader;
 
@@ -8,9 +9,10 @@ public class ConsoleCoinAcceptorDevice extends ConsoleLockableExternalDevice imp
     private Reader reader;
 
     public ConsoleCoinAcceptorDevice() {
-        super("CoinAcceptor");
+        super("CoinAcceptor", DeviceType.CoinReader);
         reader = new Reader();
     }
+
 
     @Override
     public int acceptCoin(int supTotal) {
