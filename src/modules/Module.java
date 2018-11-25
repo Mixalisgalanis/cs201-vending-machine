@@ -27,6 +27,10 @@ abstract public class Module<T extends Device> {
         return device;
     }
 
+    public void setDevice(T device) {
+        this.device = device;
+    }
+
     public DeviceType getType() {
         return device.getType();
     }

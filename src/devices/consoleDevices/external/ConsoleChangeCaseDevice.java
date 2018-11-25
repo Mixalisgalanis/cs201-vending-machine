@@ -17,7 +17,7 @@ public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice imple
 
     @Override
     public void giveChange(int coin) {
-        System.out.println(coin);
+        System.out.println(coin + "\t");
     }
 
     @Override

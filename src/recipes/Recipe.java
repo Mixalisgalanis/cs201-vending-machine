@@ -253,7 +253,7 @@ public class Recipe {
      * @param data the extracted text from the file
      * @return the class name found
      */
-    public String classNameFinder(String data) {
+    String classNameFinder(String data) {
         switch (data) {
             case "POW":
                 return "Powder";
@@ -274,8 +274,8 @@ public class Recipe {
      * @param input String to be converted.
      * @return the Camel Case String.
      */
-    public String toCamelCase(String input) {
+    private String toCamelCase(String input) {
         String temp = input.toLowerCase();
-        return (temp.substring(0, 1).toUpperCase() + temp.substring(1, temp.length()));
+        return (temp.substring(0, 1).toUpperCase() + temp.substring(1));
     }
 }

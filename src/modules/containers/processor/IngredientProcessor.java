@@ -7,7 +7,7 @@ import recipes.consumables.Consumable;
 
 import java.util.concurrent.TimeUnit;
 
-public class IngredientProcessor extends FlowContainer<ProcessorDevice> implements Processor {
+public class IngredientProcessor<T extends ProcessorDevice> extends FlowContainer<T> implements Processor {
 
     private boolean loaded;
     private boolean processed;
@@ -23,14 +23,17 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     @Override
     public void process(int duration) {
         if (loaded) {
+            getDevice().operateStart();
             try {
                 TimeUnit.SECONDS.sleep(duration);
-                processed = true;
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-        processed = false;
+            processed = true;
+            getDevice().operateStop();
+        } else
+            processed = false;
     }
 
     @Override

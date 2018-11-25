@@ -5,20 +5,19 @@ import devices.containers.FlowContainerDevice;
 
 public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implements FlowContainerDevice {
 
-    int streamRate;
+    private final int STREAM_RATE_SIZE = 5;
 
     public ConsoleFlowContainerDevice(String name, int capacity) {
         super(name, capacity);
-        this.streamRate = 5;
     }
 
     @Override
     public int streamRate() {
-        return this.streamRate;
+        return this.STREAM_RATE_SIZE;
     }
 
     @Override
     public void streamOut(Device device) {
-        System.out.println(device.getName() + " streamed out.");
+        System.out.println("Streamed out " + "ml of " + device.getName() + ".");
     }
 }

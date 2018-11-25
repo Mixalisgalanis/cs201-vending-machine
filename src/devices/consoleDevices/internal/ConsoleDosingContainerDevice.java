@@ -5,20 +5,20 @@ import devices.containers.DosingContainerDevice;
 
 public class ConsoleDosingContainerDevice extends ConsoleContainerDevice implements DosingContainerDevice {
 
-    int dose;
+    private final int DOSE_SIZE = 5;
 
     public ConsoleDosingContainerDevice(String name, int capacity) {
         super(name, capacity);
-        this.dose = 5;
     }
 
     @Override
     public void releaseDose(Device device) {
-        System.out.println(device.getName() + " released dose.");
+        System.out.println("Released " + DOSE_SIZE + "g of " + device.getName() + ".");
+        //TODO Insert Timer
     }
 
     @Override
     public int doseSize() {
-        return dose;
+        return DOSE_SIZE;
     }
 }

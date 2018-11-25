@@ -6,7 +6,7 @@ import devices.containers.ContainerDevice;
 import modules.Module;
 import recipes.consumables.Consumable;
 
-abstract public class Container<T extends ContainerDevice> extends Module<ContainerDevice> implements Provider {
+abstract public class Container<T extends ContainerDevice> extends Module<T> implements Provider {
 
     //Class Variables
     private int capacity;

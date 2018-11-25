@@ -6,13 +6,13 @@ import devices.containers.ContainerDevice;
 public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDevice {
 
     private String name;
-    private boolean open;
+    private boolean opened;
     private int capacity;
 
     public ConsoleContainerDevice(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
-        open = false;
+        opened = false;
     }
 
     @Override
@@ -22,18 +22,18 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
 
     @Override
     public void open() {
-        open = true;
-        System.out.println(this.name + "is open");
+        opened = true;
+        System.out.println(this.name + " is opened.");
     }
 
     @Override
     public void close() {
-        open = false;
-        System.out.println(this.name + "is closed");
+        opened = false;
+        System.out.println(this.name + " is closed.");
     }
 
     @Override
-    public boolean isOpen() {
-        return open;
+    public boolean isOpened() {
+        return opened;
     }
 }

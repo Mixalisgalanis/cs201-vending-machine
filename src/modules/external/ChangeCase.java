@@ -3,28 +3,24 @@ package modules.external;
 import devices.external.ChangeCaseDevice;
 import modules.Module;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class ChangeCase extends Module<ChangeCaseDevice> {
 
-    int change;
-    private ArrayList<Integer> coins;
+    private int change;
+    private final int[] coins = {200, 100, 50, 20, 10, 5, 2, 1};
 
     //Constructor
     public ChangeCase() {
         super("ChangeCase");
         this.change = 0;
-        coins = new ArrayList<Integer>(Arrays.asList(200, 100, 50, 20, 10));
     }
 
     //OtherMethods
     public void setChange(int change) {
         this.change = change;
-        for (int i = 0; i < coins.size(); ) {
-            if (change > coins.get(i)) {
-                change -= coins.get(i);
-                getDevice().giveChange(coins.get(i));
+        for (int i = 0; i < coins.length; ) {
+            if (this.change > coins[i]) {
+                getDevice().giveChange(coins[i]);
+                this.change -= coins[i];
             } else {
                 i += 1;
             }

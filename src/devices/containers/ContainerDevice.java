@@ -10,5 +10,5 @@ public interface ContainerDevice extends Device {
 
     void close();
 
-    boolean isOpen();
+    boolean isOpened();
 }

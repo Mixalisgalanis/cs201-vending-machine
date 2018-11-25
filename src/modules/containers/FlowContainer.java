@@ -7,7 +7,9 @@ import recipes.consumables.Consumable;
 
 import java.util.concurrent.TimeUnit;
 
-public class FlowContainer<T extends FlowContainerDevice> extends Container<FlowContainerDevice> {
+public class FlowContainer<T extends FlowContainerDevice> extends Container<T> {
+
+    private final int MULTIPLIER = 10;
 
     //Constructor
     public FlowContainer(String name, int capacity, Consumable consumable) {
@@ -18,11 +20,11 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
     public void provide(Consumer consumer, int quantity) {
         if (isPlugged()) {
             if (quantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
-                int streamRate = ((FlowContainerDevice) getDevice()).streamRate();
+                int streamRate = getDevice().streamRate();
                 try {
-                    TimeUnit.SECONDS.sleep(quantity / streamRate);
+                    TimeUnit.SECONDS.sleep(quantity / (MULTIPLIER*streamRate));
                     consumer.acceptAndLoad(getConsumable().getPart(quantity));
-                    ((FlowContainerDevice) getDevice()).streamOut(getDevice());
+                    getDevice().streamOut(getDevice());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -34,11 +36,11 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
     public void provide(Consumer consumer) {
         if (isPlugged()) {
             if (getType().equals(DeviceType.FlowContainer)) {
-                int streamRate = ((FlowContainerDevice) getDevice()).streamRate();
+                int streamRate = getDevice().streamRate();
                 try {
                     TimeUnit.SECONDS.sleep(getConsumable().getQuantity() / streamRate);
                     consumer.acceptAndLoad(getConsumable());
-                    ((FlowContainerDevice) getDevice()).streamOut(getDevice());
+                    getDevice().streamOut(getDevice());
                     setConsumable(null);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

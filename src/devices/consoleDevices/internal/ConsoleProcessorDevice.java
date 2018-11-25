@@ -25,17 +25,6 @@ public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implement
 
     @Override
     public String getProcessingLabel() {
-        switch (getName()) {
-            case "boiler":
-                return "boiled";
-            case "blender":
-                return "blended";
-            case "cooler":
-                return "cooled";
-            case "buffer":
-                return "buffed";
-            default:
-                return "not found";
-        }
+        return getName().substring(0,getName().length() - 1) + "d";
     }
 }

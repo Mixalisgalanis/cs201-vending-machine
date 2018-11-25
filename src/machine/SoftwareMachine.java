@@ -109,8 +109,13 @@ public class SoftwareMachine {
                         for (Recipe recipe : rm.getAvailableRecipes().values()) {
                             display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
                         }
-                        display.displayMessage(RECIPES_FOOTER);
-                        Recipe recipe = rm.getRecipe(String.valueOf(numPad.readCode(3)));
+                        Recipe recipe;
+                        do{
+                            display.displayMessage(RECIPES_FOOTER);
+                            int recipeCode = numPad.readCode(3);
+                            recipe = rm.getRecipe(String.valueOf(recipeCode));
+                            if (recipe == null) display.displayMessage("Recipe not Found!");
+                        } while(recipe==null);
                         int change = coinReader.receiveMoney(recipe.getPrice());
                         coinReader.clearMoney();
                         changeCase.setChange(change);

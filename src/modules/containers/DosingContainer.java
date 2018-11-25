@@ -14,13 +14,14 @@ public class DosingContainer extends Container<DosingContainerDevice> {
 
     @Override
     public void provide(Consumer consumer, int quantity) {
+        int remainingQuantity = quantity;
         if (isPlugged()) {
-            if (quantity <= getConsumable().getQuantity() && getType().equals(DeviceType.DosingContainer)) {
+            if (remainingQuantity <= getConsumable().getQuantity() && getType().equals(DeviceType.DosingContainer)) {
                 int dose = ((DosingContainerDevice) getDevice()).doseSize();
-                while (quantity > 0) {
+                while (remainingQuantity > 0) {
                     consumer.acceptAndLoad(getConsumable().getPart(dose));
                     ((DosingContainerDevice) getDevice()).releaseDose(getDevice());
-                    quantity -= dose;
+                    remainingQuantity -= dose;
                 }
             }
         }
