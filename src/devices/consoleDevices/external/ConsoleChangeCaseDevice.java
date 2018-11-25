@@ -1,5 +1,6 @@
 package devices.consoleDevices.external;
 
+import devices.DeviceType;
 import devices.external.ChangeCaseDevice;
 
 public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice implements ChangeCaseDevice {
@@ -7,9 +8,10 @@ public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice imple
     private int change;
 
     public ConsoleChangeCaseDevice() {
-        super("ChangeCase");
+        super("ChangeCase", DeviceType.ChangeCase);
         this.change = 0;
     }
+
 
     public void setChange(int change) {
         this.change = change;
