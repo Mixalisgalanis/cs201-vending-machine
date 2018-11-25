@@ -33,8 +33,8 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
 
     @Override
     public void removeContainer(String name) {
-        for(int i=0; i<containerDevices.size();i++){
-            if (containerDevices.get(i).getName().equalsIgnoreCase(name)){
+        for (int i = 0; i < containerDevices.size(); i++) {
+            if (containerDevices.get(i).getName().equalsIgnoreCase(name)) {
                 this.containerDevices.remove(containerDevices.get(i));
                 System.out.println("Deleted " + name);
                 return;

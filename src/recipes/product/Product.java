@@ -26,12 +26,12 @@ public class Product {
         return productName;
     }
 
-    public int getProductCost() {
-        return productCost;
-    }
-
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public int getProductCost() {
+        return productCost;
     }
 
     public void setProductCost(int productCost) {

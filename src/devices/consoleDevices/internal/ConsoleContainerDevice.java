@@ -8,6 +8,7 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
     private String name;
     private boolean open;
     private int capacity;
+
     public ConsoleContainerDevice(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;

@@ -21,6 +21,6 @@ public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice impl
 
     @Override
     public void loadIngredient(String type) {
-        System.out.println("Loading: "+ type);
+        System.out.println("Loading: " + type);
     }
 }

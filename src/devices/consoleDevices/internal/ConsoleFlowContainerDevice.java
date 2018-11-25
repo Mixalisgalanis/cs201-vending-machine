@@ -6,6 +6,7 @@ import devices.containers.FlowContainerDevice;
 public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implements FlowContainerDevice {
 
     int streamRate;
+
     public ConsoleFlowContainerDevice(String name, int capacity) {
         super(name, capacity);
         this.streamRate = 5;
