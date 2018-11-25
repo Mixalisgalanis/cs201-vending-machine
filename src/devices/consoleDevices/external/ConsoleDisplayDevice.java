@@ -7,7 +7,7 @@ import devices.external.DisplayDevice;
 public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice {
 
 
-    public ConsoleDisplayDevice(String name, DeviceType deviceType) {
+    public ConsoleDisplayDevice() {
         super("DisplayDevice", DeviceType.Display);
     }
 

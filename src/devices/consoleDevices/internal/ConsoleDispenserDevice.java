@@ -1,5 +1,6 @@
 package devices.consoleDevices.internal;
 
+import devices.DeviceType;
 import devices.consoleDevices.ConsoleDevice;
 import devices.containers.ContainerDevice;
 import devices.dispensers.DispenserDevice;
@@ -11,7 +12,8 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
 
     private ArrayList<ContainerDevice> containerDevices;
 
-    public ConsoleDispenserDevice() {
+    public ConsoleDispenserDevice(String name) {
+        super(name, DeviceType.Dispenser);
         this.containerDevices = new ArrayList<ContainerDevice>();
     }
 

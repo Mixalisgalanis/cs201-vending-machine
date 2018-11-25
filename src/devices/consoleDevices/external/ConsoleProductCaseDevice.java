@@ -1,12 +1,14 @@
 package devices.consoleDevices.external;
 
+import devices.DeviceType;
 import devices.external.ProductCaseDevice;
 
 public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice implements ProductCaseDevice {
 
     public ConsoleProductCaseDevice() {
-        super("ProductCase");
+        super("ProductCase", DeviceType.ProductCase);
     }
+
 
     @Override
     public void getProduct() {

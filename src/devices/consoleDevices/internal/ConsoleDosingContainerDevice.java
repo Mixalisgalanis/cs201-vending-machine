@@ -1,6 +1,7 @@
 package devices.consoleDevices.internal;
 
 import devices.Device;
+import devices.DeviceType;
 import devices.containers.DosingContainerDevice;
 
 public class ConsoleDosingContainerDevice extends ConsoleContainerDevice implements DosingContainerDevice {
@@ -8,7 +9,7 @@ public class ConsoleDosingContainerDevice extends ConsoleContainerDevice impleme
     private final int DOSE_SIZE = 5;
 
     public ConsoleDosingContainerDevice(String name, int capacity) {
-        super(name, capacity);
+        super(name, DeviceType.DosingContainer, capacity);
     }
 
     @Override

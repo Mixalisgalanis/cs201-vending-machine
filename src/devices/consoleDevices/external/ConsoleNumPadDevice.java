@@ -1,5 +1,6 @@
 package devices.consoleDevices.external;
 
+import devices.DeviceType;
 import devices.external.NumPadDevice;
 import utilities.Reader;
 
@@ -8,8 +9,8 @@ public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implement
     private Reader reader;
 
     public ConsoleNumPadDevice() {
-        super("NumPad");
-        reader = new Reader();
+        super("NumPad", DeviceType.Numpad);
+        this.reader = new Reader();
     }
 
     @Override

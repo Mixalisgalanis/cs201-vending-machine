@@ -1,11 +1,12 @@
 package devices.consoleDevices.internal;
 
+import devices.DeviceType;
 import devices.containers.processors.ProcessorDevice;
 
 public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implements ProcessorDevice {
 
     public ConsoleProcessorDevice(String name, int capacity) {
-        super(name, capacity);
+        super(name, DeviceType.Processor, capacity);
     }
 
     @Override

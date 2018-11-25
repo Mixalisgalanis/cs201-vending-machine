@@ -7,11 +7,9 @@ public enum DeviceType {
     ProductCase,
     Display,
     ChangeCase,
-    DosingDispenser,
+    Dispenser,
     DosingContainer,
-    FlowDispenser,
     FlowContainer,
-    MaterialDispenser,
     MaterialContainer,
     Processor
 }
