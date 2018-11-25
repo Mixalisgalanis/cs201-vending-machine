@@ -4,6 +4,7 @@ import behaviour.Consumer;
 import behaviour.Provider;
 import devices.consoleDevices.internal.ConsoleContainerDevice;
 import devices.dispensers.DispenserDevice;
+import devices.external.DisplayDevice;
 import modules.Module;
 import modules.containers.Container;
 
@@ -17,8 +18,8 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     private String consumableType;
 
     //Constructor
-    public ConsumableDispenser(String name, String consumableType) {
-        super(name);
+    public ConsumableDispenser(String name, String consumableType, DispenserDevice device) {
+        super(name, device);
         this.containers = new HashMap<>();
         this.plugged = false;
         this.consumableType = consumableType;
@@ -39,8 +40,6 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         Container container = containers.get(containerName);
         if (container != null) {
             container.plug(consumer);
-            ConsoleContainerDevice containerDevice = new ConsoleContainerDevice(containerName, container.getCapacity());
-            getDevice().prepareContainer(containerDevice);
         }
         return container;
     }
@@ -50,8 +49,6 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         if (nameDecoder(container).equalsIgnoreCase(getName())) {
             if (containers.get(container.getName()) == null) {
                 containers.put(container.getName(), container);
-                ConsoleContainerDevice containerDevice = new ConsoleContainerDevice(container.getName(), container.getCapacity());
-                getDevice().addContainer(containerDevice);
             } else {
                 container.getConsumable().refillPart(containers.get(container.getName()).getCapacity(), container.getConsumable().getQuantity());
             }

@@ -24,6 +24,7 @@ public class Data {
      */
     private static Data instance;
     private static boolean allowInstance = true;
+    public final int PROCESSOR_SIZE = 200;
     public final int STANDARD_DOSING_CONTAINER_SIZE = 500;
     public final int XL_DOSING_CONTAINER_SIZE = 1000;
     public final int STANDARD_FLOW_CONTAINER_SIZE = 1000;
@@ -252,5 +253,12 @@ public class Data {
                 return consumableDispenser;
         }
         return null;
+    }
+
+    //Other Methods
+    public void refillContainers(){
+        for (Container container : containers.values()){
+            container.getConsumable().setQuantity(container.getCapacity());
+        }
     }
 }

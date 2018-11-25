@@ -9,8 +9,8 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
     private final int[] coins = {200, 100, 50, 20, 10, 5, 2, 1};
 
     //Constructor
-    public ChangeCase() {
-        super("ChangeCase");
+    public ChangeCase(ChangeCaseDevice device) {
+        super("ChangeCase", device);
         this.change = 0;
     }
 

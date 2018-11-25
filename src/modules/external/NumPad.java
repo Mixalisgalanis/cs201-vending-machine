@@ -6,8 +6,8 @@ import modules.Module;
 public class NumPad extends Module<NumPadDevice> {
 
     //Constructor
-    public NumPad() {
-        super("NumPad");
+    public NumPad(NumPadDevice device) {
+        super("NumPad", device);
     }
 
     //Other Methods

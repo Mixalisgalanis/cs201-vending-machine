@@ -164,4 +164,8 @@ public class RecipeManager {
         loadEnabledRecipes();
         recipeDAO.storeRecipe(recipes.get(code));
     }
+
+    public void removeRecipe(String recipeCode){
+        recipeDAO.deleteRecipe(recipeCode);
+    }
 }

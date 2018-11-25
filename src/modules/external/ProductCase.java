@@ -17,14 +17,14 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
 
     //Constructor
-    public ProductCase(String productName, int procuctCost) {
-        super("ProductCase");
+    public ProductCase(String productName, int procuctCost, ProductCaseDevice device) {
+        super("ProductCase", device);
         this.pluggable = false;
         this.builder = new ProductBuilder(productName, procuctCost);
     }
 
-    public ProductCase() {
-        super("ProductCase");
+    public ProductCase(ProductCaseDevice device) {
+        super("ProductCase", device);
     }
 
 

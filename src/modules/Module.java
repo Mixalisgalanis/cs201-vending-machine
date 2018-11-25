@@ -14,6 +14,11 @@ abstract public class Module<T extends Device> {
         this.name = name;
     }
 
+    public Module(String name, T device) {
+        this.name = name;
+        this.device = device;
+    }
+
     //Getters & Setters
     public String getName() {
         return name;

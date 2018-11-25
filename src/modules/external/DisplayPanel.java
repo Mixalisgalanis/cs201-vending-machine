@@ -6,8 +6,8 @@ import modules.Module;
 public class DisplayPanel extends Module<DisplayDevice> {
 
     //Constructor
-    public DisplayPanel() {
-        super("DisplayPanel");
+    public DisplayPanel(DisplayDevice device) {
+        super("DisplayPanel", device);
     }
 
     //Other Methods

@@ -14,8 +14,8 @@ abstract public class Container<T extends ContainerDevice> extends Module<T> imp
     private boolean plugged;
 
     //Constructor
-    Container(String name, int capacity, Consumable consumable) {
-        super(name);
+    Container(String name, int capacity, Consumable consumable, ContainerDevice device) {
+        super(name, device);
         this.capacity = capacity;
         this.consumable = consumable;
         this.plugged = false;

@@ -15,6 +15,11 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
         opened = false;
     }
 
+
+    public ConsoleContainerDevice(String name, DeviceType deviceType) {
+        super(name, deviceType);
+    }
+
     @Override
     public int getCapacity() {
         return capacity;

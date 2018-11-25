@@ -9,8 +9,8 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
     private int money;
 
     //Constructor
-    public CoinReader() {
-        super("CoinReader");
+    public CoinReader(CoinAcceptorDevice device) {
+        super("CoinReader", device);
         this.money = 0;
     }
 
