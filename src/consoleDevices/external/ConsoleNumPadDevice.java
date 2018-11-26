@@ -14,16 +14,9 @@ public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implement
     }
 
     @Override
-    public int readDigit(String s) {
-        //TODO
-        return 0;
-    }
-
-    public int readDigit() {
+    public int readDigit(String s) {        //s : current code
         int digit;
-        digit = reader.readInt("Insert digit:");
+        digit = reader.readInt(s);
         return digit;
     }
-
-
 }

@@ -52,8 +52,15 @@ public class ConsoleDevice implements Device {
 
     @Override
     public List<Device> listConnectedDevices() {
-        //TODO
-        return null;
+        List<Device> connected;
+        //TODO figure out a way to get all the devices
+        /*DeviceType[] devices = DeviceType.values();
+        for (int i = 0; i<devices.length; i++){
+            if(){
+                connected.add()
+            }
+        }*/
+        return connected;
     }
 
     @Override
