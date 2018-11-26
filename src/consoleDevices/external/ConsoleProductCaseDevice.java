@@ -1,4 +1,4 @@
-package devices.consoleDevices.external;
+package consoleDevices.external;
 
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;

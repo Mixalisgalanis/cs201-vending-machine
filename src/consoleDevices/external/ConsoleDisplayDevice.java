@@ -1,6 +1,6 @@
-package devices.consoleDevices.external;
+package consoleDevices.external;
 
-import devices.consoleDevices.ConsoleDevice;
+import consoleDevices.ConsoleDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DisplayDevice;
 

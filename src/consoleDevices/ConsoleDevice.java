@@ -1,4 +1,4 @@
-package devices.consoleDevices;
+package consoleDevices;
 
 
 import tuc.ece.cs201.vm.hw.device.Device;

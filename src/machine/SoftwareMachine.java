@@ -1,8 +1,8 @@
 package machine;
 
-import devices.consoleDevices.external.*;
-import devices.consoleDevices.internal.ConsoleDispenserDevice;
-import devices.consoleDevices.internal.ConsoleProcessorDevice;
+import consoleDevices.external.*;
+import consoleDevices.internal.ConsoleDispenserDevice;
+import consoleDevices.internal.ConsoleProcessorDevice;
 import modules.containers.DosingContainer;
 import modules.containers.FlowContainer;
 import modules.containers.MaterialContainer;

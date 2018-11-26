@@ -1,6 +1,6 @@
-package devices.consoleDevices.internal;
+package consoleDevices.internal;
 
-import devices.consoleDevices.ConsoleDevice;
+import consoleDevices.ConsoleDevice;
 import tuc.ece.cs201.vm.hw.device.ContainerDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
