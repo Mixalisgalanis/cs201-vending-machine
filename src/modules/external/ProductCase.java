@@ -74,7 +74,6 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     public Product getProduct() {
         //no need to construct product in here because we will prepare the container then fill it(acceptAndLoad)and then we just need to return the product
-        //TODO check if any device operation is needed
         return product;
     }
 

@@ -1,20 +1,20 @@
 package modules.containers.processor;
 
 import behaviour.Consumer;
-import devices.containers.processors.ProcessorDevice;
 import modules.containers.FlowContainer;
 import recipes.consumables.Consumable;
+import tuc.ece.cs201.vm.hw.device.ProcessorDevice;
 
 import java.util.concurrent.TimeUnit;
 
-public class IngredientProcessor<T extends ProcessorDevice> extends FlowContainer<T> implements Processor {
+public class IngredientProcessor<T extends ProcessorDevice> extends FlowContainer<ProcessorDevice> implements Processor {
 
     private boolean loaded;
     private boolean processed;
     private boolean plugged;
 
-    public IngredientProcessor(String name, int capacity, Consumable consumable) {
-        super(name, capacity, consumable);
+    public IngredientProcessor(String name, int capacity, Consumable consumable,ProcessorDevice device) {
+        super(name, capacity, consumable, device);
         this.loaded = false;
         this.processed = false;
         this.plugged = false;

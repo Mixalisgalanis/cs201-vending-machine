@@ -43,6 +43,11 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
             }
         }
     }
+    @Override
+    public T getDevice() {
+        T device = (T)super.getDevice();
+        return device;
+    }
 
     @Override
     public void provide(Consumer consumer) {

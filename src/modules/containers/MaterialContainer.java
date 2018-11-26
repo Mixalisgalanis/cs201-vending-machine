@@ -2,7 +2,6 @@ package modules.containers;
 
 import behaviour.Consumer;
 import recipes.consumables.Consumable;
-import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.MaterialContainerDevice;
 
 public class MaterialContainer extends Container<MaterialContainerDevice> {
@@ -14,9 +13,9 @@ public class MaterialContainer extends Container<MaterialContainerDevice> {
 
     public void provide(Consumer consumer, int quantity) {
         if (isPlugged()) {
-            if (quantity <= getConsumable().getQuantity() && getType().equals(DeviceType.MaterialContainer)) {
+            if (quantity <= getConsumable().getQuantity()) {
                 consumer.acceptAndLoad(getConsumable().getPart(quantity));
-                ((MaterialContainerDevice) getDevice()).releaseMaterial(getDevice());
+                getDevice().releaseMaterial(getDevice());
             }
         }
     }

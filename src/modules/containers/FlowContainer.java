@@ -48,4 +48,10 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
             }
         }
     }
+
+    @Override
+    public T getDevice() {
+        T device = (T)super.getDevice();
+        return device;
+    }
 }
