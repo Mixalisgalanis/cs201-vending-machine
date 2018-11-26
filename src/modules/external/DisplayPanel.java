@@ -1,7 +1,8 @@
 package modules.external;
 
-import devices.external.DisplayDevice;
+
 import modules.Module;
+import tuc.ece.cs201.vm.hw.device.DisplayDevice;
 
 public class DisplayPanel extends Module<DisplayDevice> {
 

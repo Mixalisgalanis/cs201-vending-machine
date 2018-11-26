@@ -256,8 +256,8 @@ public class Data {
     }
 
     //Other Methods
-    public void refillContainers(){
-        for (Container container : containers.values()){
+    public void refillContainers() {
+        for (Container container : containers.values()) {
             container.getConsumable().setQuantity(container.getCapacity());
         }
     }

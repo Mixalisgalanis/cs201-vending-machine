@@ -10,7 +10,7 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
     private int capacity;
 
     public ConsoleContainerDevice(String name, DeviceType deviceType, int capacity) {
-        super(name,deviceType);
+        super(name, deviceType);
         this.capacity = capacity;
         opened = false;
     }

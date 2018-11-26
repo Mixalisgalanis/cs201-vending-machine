@@ -2,8 +2,8 @@ package devices.consoleDevices.external;
 
 
 import devices.consoleDevices.ConsoleDevice;
-import tuc.ece.cs201.vm.hw.device.LockableDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.LockableDevice;
 
 public class ConsoleLockableExternalDevice extends ConsoleDevice implements LockableDevice {
 

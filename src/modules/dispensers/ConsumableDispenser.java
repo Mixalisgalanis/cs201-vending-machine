@@ -2,11 +2,9 @@ package modules.dispensers;
 
 import behaviour.Consumer;
 import behaviour.Provider;
-import devices.consoleDevices.internal.ConsoleContainerDevice;
-import devices.dispensers.DispenserDevice;
-import devices.external.DisplayDevice;
 import modules.Module;
 import modules.containers.Container;
+import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 import java.util.HashMap;
 

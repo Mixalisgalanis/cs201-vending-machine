@@ -1,8 +1,8 @@
 package devices.consoleDevices.internal;
 
 
-import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.FlowContainerDevice;
 
 public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implements FlowContainerDevice {

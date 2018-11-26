@@ -45,7 +45,7 @@ public class ConsoleDevice implements Device {
     @Override
     public void disconnectAll() {
         List<Device> devices = listConnectedDevices();
-        for (int i =0; i<devices.size(); i++){
+        for (int i = 0; i < devices.size(); i++) {
             disconnect(devices.get(i));
         }
     }
