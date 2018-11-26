@@ -34,9 +34,8 @@ public class ConsoleDevice implements Device {
 
     @Override
     public void disconnect(Device device) {
-        this.connected = false;
         if (this.connected) {
-            this.disconnect(this);
+            this.connected = false;
             System.out.println(this.name + "disconnected");
         }
 
@@ -44,9 +43,8 @@ public class ConsoleDevice implements Device {
 
     @Override
     public void disconnectAll() {
-        List<Device> devices = listConnectedDevices();
-        for (int i = 0; i < devices.size(); i++) {
-            disconnect(devices.get(i));
+        for (Device device : listConnectedDevices()) {
+            disconnect(device);
         }
     }
 
