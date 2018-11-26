@@ -1,7 +1,6 @@
 package modules.containers;
 
 import behaviour.Consumer;
-import devices.DeviceType;
 import devices.containers.FlowContainerDevice;
 import recipes.consumables.Consumable;
 

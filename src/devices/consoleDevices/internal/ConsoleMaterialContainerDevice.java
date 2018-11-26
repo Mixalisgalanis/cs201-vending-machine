@@ -1,8 +1,8 @@
 package devices.consoleDevices.internal;
 
-import devices.Device;
-import devices.DeviceType;
-import devices.containers.MaterialContainerDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.MaterialContainerDevice;
 
 public class ConsoleMaterialContainerDevice extends ConsoleContainerDevice implements MaterialContainerDevice {
 

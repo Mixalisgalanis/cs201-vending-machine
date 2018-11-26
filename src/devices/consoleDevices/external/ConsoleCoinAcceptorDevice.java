@@ -1,7 +1,7 @@
 package devices.consoleDevices.external;
 
-import devices.DeviceType;
-import devices.external.CoinAcceptorDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.CoinAcceptorDevice;
 import utilities.Reader;
 
 public class ConsoleCoinAcceptorDevice extends ConsoleLockableExternalDevice implements CoinAcceptorDevice {

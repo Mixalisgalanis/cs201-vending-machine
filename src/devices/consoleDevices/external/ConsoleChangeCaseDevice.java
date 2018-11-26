@@ -1,7 +1,8 @@
 package devices.consoleDevices.external;
 
-import devices.DeviceType;
-import devices.external.ChangeCaseDevice;
+
+import tuc.ece.cs201.vm.hw.device.ChangeCaseDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 
 public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice implements ChangeCaseDevice {
 
