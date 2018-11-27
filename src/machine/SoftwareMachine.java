@@ -3,6 +3,7 @@ package machine;
 
 import modules.Module;
 import modules.ModuleFactory;
+import modules.containers.Container;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 
@@ -29,13 +30,29 @@ public class SoftwareMachine {
     }
 
     //Other Methods
+    public Module getModule(String moduleName){
+        return modules.get(moduleName);
+    }
+
     public static SoftwareMachine getInstance() {
         return (instance != null) ? instance : new SoftwareMachine();
+    }
+
+    public static SoftwareMachine getInstance(HardwareMachine machine) {
+        return (instance != null) ? instance : new SoftwareMachine(machine);
     }
 
     private void probeHardware(HardwareMachine machine){
         for (Device device : machine.listDevices()){
             modules.put(device.getName(), ModuleFactory.createModule(device));
+        }
+    }
+
+    public void refillContainers(){
+        for (Module module : modules.values()){
+            if (module instanceof Container) {
+                ((Container) module).getConsumable().refill(((Container) module).getCapacity());
+            }
         }
     }
 

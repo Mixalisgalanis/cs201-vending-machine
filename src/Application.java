@@ -1,29 +1,60 @@
-package machine;
-
+import consoleDevices.internal.ConsoleDispenserDevice;
+import machine.ConsoleMachine;
+import machine.SoftwareMachine;
+import machine.SwingMachine;
 import modules.external.*;
 import recipes.Recipe;
+import recipes.RecipeManager;
+import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 public class Application {
+    //Class variables
+    private static ConsoleMachine console;
+    private static SwingMachine gui;
+    private static RecipeManager rm;
     //Constants
-    private static final String MAIN_MENU = "=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. User\n=======================\nPlease select type: ";
+   /* private static final String MAIN_MENU = "=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. User\n=======================\nPlease select type: ";
     private static final String ADMIN_SUBMENU = "----Administrator Submenu----\nActions:\n1. Create Recipes\n2. Delete Recipes\n3. Refill Containers\nPlease select action: ";
     private static final String USER_SUBMENU = "----User Submenu----\nActions:\n1. Buy a drink\nPlease select actiion: ";
     private static final String RECIPES_HEADER = "----Available Recipes----\n";
-    private static final String RECIPES_FOOTER = "Please select recipe code to execute: ";
+    private static final String RECIPES_FOOTER = "Please select recipe code to execute: ";*/
 
     public static void main(String args[]){
+        console = new ConsoleMachine();
+        gui = new SwingMachine();
+        insertConsoleDevices();
+        insertGuiDevices();
 
+        rm = RecipeManager.getInstance();
+        SoftwareMachine machine = SoftwareMachine.getInstance(console);
+        startCycleOf(machine);
     }
 
-    public void startCycle() {
+    public static void insertConsoleDevices(){
+        //Dispensers
+        DispenserDevice dispenserDevice = new ConsoleDispenserDevice("POWDERS");
+
+
+        console.addDevice(dispenserDevice);
+    }
+
+    public static void insertGuiDevices(){
+        //Dispensers
+        DispenserDevice dispenserDevice = new SwingDispenserDevice("POWDERS");
+
+
+        gui.addDevice(dispenserDevice);
+    }
+
+    public static void startCycleOf(SoftwareMachine machine) {
         rm.loadRecipes();
         rm.validateRecipes();
         rm.loadEnabledRecipes();
-        DisplayPanel display = (DisplayPanel) data.getModules().get("DisplayPanel");
-        NumPad numPad = (NumPad) data.getModules().get("NumPad");
-        CoinReader coinReader = (CoinReader) data.getModules().get("CoinReader");
-        ChangeCase changeCase = (ChangeCase) data.getModules().get("ChangeCase");
-        ProductCase productCase = (ProductCase) data.getModules().get("ProductCase");
+        DisplayPanel display = (DisplayPanel) machine.getModule("DisplayPanel");
+        NumPad numPad = (NumPad) machine.getModule("NumPad");
+        CoinReader coinReader = (CoinReader) machine.getModule("CoinReader");
+        ChangeCase changeCase = (ChangeCase) machine.getModule("ChangeCase");
+        ProductCase productCase = (ProductCase) machine.getModule("ProductCase");
 
         display.displayMessage("Welcome to Vending Machine v1.0 (alpha)");
         display.displayMessage(MAIN_MENU);
@@ -45,7 +76,7 @@ public class Application {
                         break;
                     }
                     case "3":
-                        data.refillContainers();
+                        machine.refillContainers();
                         break;
                 }
                 break;
