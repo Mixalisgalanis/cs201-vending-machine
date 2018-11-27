@@ -14,8 +14,7 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
 
     public ConsoleDispenserDevice(String name) {
         super(name, DeviceType.Dispenser);
-        //TODO
-        this.containerDevices = new ArrayList<ContainerDevice>();
+        this.containerDevices = new ArrayList<>();
     }
 
     @Override

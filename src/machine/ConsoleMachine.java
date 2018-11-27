@@ -1,10 +1,12 @@
 package machine;
 
+import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 
 import java.util.HashMap;
+import java.util.List;
 
-public class ConsoleMachine implements Machine {
+public class ConsoleMachine implements HardwareMachine {
 
     //Class variables
     private HashMap<String, Device> devices;
@@ -16,8 +18,8 @@ public class ConsoleMachine implements Machine {
 
     //Methods
     @Override
-    public Device[] listDevices() {
-        return (Device[]) devices.values().toArray();
+    public List<Device> listDevices() {
+        return (List<Device>) devices.values();
     }
 
     @Override
@@ -25,7 +27,7 @@ public class ConsoleMachine implements Machine {
         return null;
     }
 
-    @Override
+
     public void addDevice(Device device) {
         this.devices.put(device.getName(), device);
     }

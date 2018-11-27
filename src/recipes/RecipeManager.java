@@ -16,7 +16,6 @@ import java.util.HashMap;
 public class RecipeManager {
 
     private static RecipeManager instance;
-    private static boolean allowInstance = true;
     //Class Variables
     private HashMap<String, Recipe> recipes;
     private HashMap<String, Recipe> availableRecipes;
@@ -27,7 +26,7 @@ public class RecipeManager {
 
 
     //Constructor
-    public RecipeManager() {
+    private RecipeManager() {
         data = Data.getInstance();
         recipes = new HashMap<>();
         availableRecipes = new HashMap<>();
@@ -40,11 +39,10 @@ public class RecipeManager {
 
         //Prevents further instantiations
         instance = this;
-        allowInstance = false;
     }
 
     public static RecipeManager getInstance() {
-        return instance;
+        return (instance != null)? instance : new RecipeManager();
     }
 
     //Getters

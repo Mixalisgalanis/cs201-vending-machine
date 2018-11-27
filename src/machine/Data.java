@@ -23,7 +23,6 @@ public class Data {
     Class variables
      */
     private static Data instance;
-    private static boolean allowInstance = true;
     public final int PROCESSOR_SIZE = 200;
     public final int STANDARD_DOSING_CONTAINER_SIZE = 500;
     public final int XL_DOSING_CONTAINER_SIZE = 1000;
@@ -50,7 +49,7 @@ public class Data {
     /**
      * Initializes all lists and prevents this class from being instantiated again.
      */
-    public Data() {
+    private Data() {
         modules = new HashMap<>();
         containers = new HashMap<>();
         consumableDispensers = new HashMap<>();
@@ -62,14 +61,13 @@ public class Data {
 
         //Prevents other instantiations
         instance = this;
-        allowInstance = false;
     }
 
     /*
     Getters
      */
     public static Data getInstance() {
-        return instance;
+        return (instance != null) ? instance : new Data();
     }
 
     public HashMap<String, Module> getModules() {
