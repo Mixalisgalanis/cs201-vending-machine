@@ -1,4 +1,6 @@
-import consoleDevices.internal.ConsoleDispenserDevice;
+import consoleDevices.internal.ConsoleDosingDispenserDevice;
+import consoleDevices.internal.ConsoleFlowDispenserDevice;
+import consoleDevices.internal.ConsoleMaterialDispenserDevice;
 import machine.ConsoleMachine;
 import machine.SoftwareMachine;
 import machine.SwingMachine;
@@ -32,10 +34,13 @@ public class Application {
 
     public static void insertConsoleDevices(){
         //Dispensers
-        DispenserDevice dispenserDevice = new ConsoleDispenserDevice("POWDERS");
-
-
-        console.addDevice(dispenserDevice);
+        DispenserDevice dosingDispenserDevice = new ConsoleDosingDispenserDevice("POWDERS");
+        DispenserDevice flowDispenserDevice = new ConsoleFlowDispenserDevice("LIQUIDS");
+        DispenserDevice materialDispenserDevice = new ConsoleMaterialDispenserDevice("MATERIALS");
+        
+        console.addDevice(dosingDispenserDevice);
+        console.addDevice(materialDispenserDevice);
+        console.addDevice(flowDispenserDevice);
     }
 
     public static void insertGuiDevices(){

@@ -8,12 +8,12 @@ import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 import java.util.ArrayList;
 
 
-public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDevice {
+public class ConsoleDosingDispenserDevice extends ConsoleDevice implements DispenserDevice {
 
     private ArrayList<ContainerDevice> containerDevices;
 
-    public ConsoleDispenserDevice(String name) {
-        super(name, DeviceType.Dispenser);
+    public ConsoleDosingDispenserDevice(String name) {
+        super(name, DeviceType.DosingDispenser);
         this.containerDevices = new ArrayList<>();
     }
 
