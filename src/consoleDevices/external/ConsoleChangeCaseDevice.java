@@ -1,6 +1,5 @@
 package consoleDevices.external;
 
-
 import tuc.ece.cs201.vm.hw.device.ChangeCaseDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
