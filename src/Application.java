@@ -1,13 +1,18 @@
-import consoleDevices.internal.ConsoleDosingDispenserDevice;
-import consoleDevices.internal.ConsoleFlowDispenserDevice;
-import consoleDevices.internal.ConsoleMaterialDispenserDevice;
+import consoleDevices.internal.*;
 import machine.ConsoleMachine;
 import machine.SoftwareMachine;
 import machine.SwingMachine;
+import modules.containers.processor.IngredientProcessor;
+import modules.containers.processor.Processor;
 import modules.external.*;
 import recipes.Recipe;
 import recipes.RecipeManager;
+import recipes.consumables.Cup;
+import recipes.consumables.ingredients.Liquid;
+import recipes.consumables.ingredients.Powder;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
+import tuc.ece.cs201.vm.hw.device.ProcessorDevice;
 
 public class Application {
     //Class variables
@@ -21,7 +26,9 @@ public class Application {
     private static final String RECIPES_HEADER = "----Available Recipes----\n";
     private static final String RECIPES_FOOTER = "Please select recipe code to execute: ";*/
 
-    public static void main(String args[]){
+
+
+    public static void main(String args[]) {
         console = new ConsoleMachine();
         gui = new SwingMachine();
         insertConsoleDevices();
@@ -32,26 +39,60 @@ public class Application {
         startCycleOf(machine);
     }
 
-    public static void insertConsoleDevices(){
+    private static void insertConsoleDevices() {
         //Dispensers
-        DispenserDevice dosingDispenserDevice = new ConsoleDosingDispenserDevice("POWDERS");
-        DispenserDevice flowDispenserDevice = new ConsoleFlowDispenserDevice("LIQUIDS");
-        DispenserDevice materialDispenserDevice = new ConsoleMaterialDispenserDevice("MATERIALS");
-        
+        DispenserDevice dosingDispenserDevice = new ConsoleDispenserDevice("POWDERS", DeviceType.DosingDispenser);
+        DispenserDevice flowDispenserDevice = new ConsoleDispenserDevice("LIQUIDS", DeviceType.FlowDispenser);
+        DispenserDevice materialDispenserDevice = new ConsoleDispenserDevice("MATERIALS", DeviceType.MaterialDispenser);
+
+        //Containers
+        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
+        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
+
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
+
+        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
+        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
+
+        //Processors
+        ProcessorDevice boiler = (new ConsoleProcessorDevice("BoilerDevice", console.PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice cooler = (new ConsoleProcessorDevice("CoolerDevice", console.PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice blender = (new ConsoleProcessorDevice("BlenderDevice", console.PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice buffer = (new ConsoleProcessorDevice("BufferDevice", console.PROCESSOR_CONTAINER_SIZE));
+
+        //Consumables
+        Powder coffe = new Powder("Coffee",console.POWDER_CONTAINER_REGULAR_SIZE);
+        Powder chocolate = new Powder("Chocolate",console.POWDER_CONTAINER_REGULAR_SIZE);
+        Powder sugar = new Powder("Sugar",console.POWDER_CONTAINER_REGULAR_SIZE);
+
+        Liquid water = new Liquid("Water",console.LIQUID_CONTAINER_REGULAR_SIZE);
+        Liquid milk = new Liquid("Milk",console.LIQUID_CONTAINER_REGULAR_SIZE);
+
+        Cup regularCup = new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE,"Normal");
+
+        //Inserting Consumables into Containers
+
+
+        //Adding all these Devices
         console.addDevice(dosingDispenserDevice);
         console.addDevice(materialDispenserDevice);
         console.addDevice(flowDispenserDevice);
+
+        console.addDevice(boiler);
+        console.addDevice(cooler);
+        console.addDevice(blender);
+        console.addDevice(buffer);
+
+
+
     }
 
-    public static void insertGuiDevices(){
-        //Dispensers
-        DispenserDevice dispenserDevice = new SwingDispenserDevice("POWDERS");
-
-
-        gui.addDevice(dispenserDevice);
+    private static void insertGuiDevices() {
+        //Same as insertConsoleDevices()
     }
 
-    public static void startCycleOf(SoftwareMachine machine) {
+    private static void startCycleOf(SoftwareMachine machine) {
         rm.loadRecipes();
         rm.validateRecipes();
         rm.loadEnabledRecipes();

@@ -8,6 +8,10 @@ import java.util.List;
 
 public class SwingMachine implements HardwareMachine {
 
+    public final int POWDER_CONTAINER_REGULAR_SIZE = 500;
+    public final int LIQUID_CONTAINER_REGULAR_SIZE = 1000;
+    public final int CUP_CONTAINER_REGULAR_SIZE = 20;
+
     //Class variables
     private HashMap<String, Device> devices;
 

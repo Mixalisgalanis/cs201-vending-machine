@@ -11,9 +11,13 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     private final int MULTIPLIER = 10;
 
-    //Constructor
+    //Constructors
     public FlowContainer(String name, int capacity, Consumable consumable, FlowContainerDevice device) {
         super(name, capacity, consumable, device);
+    }
+
+    public FlowContainer(FlowContainerDevice device) {
+        super(device);
     }
 
     @Override
@@ -51,7 +55,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     @Override
     public T getDevice() {
-        T device = (T)super.getDevice();
+        T device = (T) super.getDevice();
         return device;
     }
 }

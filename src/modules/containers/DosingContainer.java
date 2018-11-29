@@ -6,9 +6,13 @@ import tuc.ece.cs201.vm.hw.device.DosingContainerDevice;
 
 public class DosingContainer extends Container<DosingContainerDevice> {
 
-    //Constructor
+    //Constructors
     public DosingContainer(String name, int capacity, Consumable consumable, DosingContainerDevice device) {
         super(name, capacity, consumable, device);
+    }
+
+    public DosingContainer(DosingContainerDevice device) {
+        super(device);
     }
 
     @Override
@@ -16,7 +20,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
         int remainingQuantity = quantity;
         if (isPlugged()) {
             if (remainingQuantity <= getConsumable().getQuantity()) {
-                int dose =  getDevice().doseSize();
+                int dose = getDevice().doseSize();
                 while (remainingQuantity > 0) {
                     consumer.acceptAndLoad(getConsumable().getPart(dose));
                     getDevice().releaseDose(getDevice());

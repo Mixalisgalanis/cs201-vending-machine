@@ -12,9 +12,8 @@ public class NumPad extends Module<NumPadDevice> {
 
     //Other Methods
     public int readCode(int length) {
-        //TODO
-        int code = 0;
-        for (int i = 0; i < length; i++) code += 10 ^ (i) * getDevice().readDigit(Integer.toString(code));
-        return code;
+        String code = "";
+        for (int i = 0; i < length; i++) code += getDevice().readDigit(code);
+        return Integer.parseInt(code);
     }
 }

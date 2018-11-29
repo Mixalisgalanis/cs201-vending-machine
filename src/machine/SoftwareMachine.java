@@ -22,7 +22,7 @@ public class SoftwareMachine {
         instance = this;
     }
 
-    private SoftwareMachine(HardwareMachine machine){
+    private SoftwareMachine(HardwareMachine machine) {
         modules = new HashMap<>();
         //Prevents further instantiation
         instance = this;
@@ -30,7 +30,7 @@ public class SoftwareMachine {
     }
 
     //Other Methods
-    public Module getModule(String moduleName){
+    public Module getModule(String moduleName) {
         return modules.get(moduleName);
     }
 
@@ -42,14 +42,14 @@ public class SoftwareMachine {
         return (instance != null) ? instance : new SoftwareMachine(machine);
     }
 
-    private void probeHardware(HardwareMachine machine){
-        for (Device device : machine.listDevices()){
-            modules.put(device.getName(), ModuleFactory.createModule(device));
+    private void probeHardware(HardwareMachine machine) {
+        for (Device device : machine.listDevices()) {
+            modules.put(device.getType().toString(), ModuleFactory.createModule(device));
         }
     }
 
-    public void refillContainers(){
-        for (Module module : modules.values()){
+    public void refillContainers() {
+        for (Module module : modules.values()) {
             if (module instanceof Container) {
                 ((Container) module).getConsumable().refill(((Container) module).getCapacity());
             }

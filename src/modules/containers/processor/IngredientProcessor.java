@@ -9,17 +9,24 @@ import java.util.concurrent.TimeUnit;
 
 public class IngredientProcessor<T extends ProcessorDevice> extends FlowContainer<ProcessorDevice> implements Processor {
 
+    //class variables
     private boolean loaded;
     private boolean processed;
     private boolean plugged;
 
-    public IngredientProcessor(String name, int capacity, Consumable consumable,ProcessorDevice device) {
+    //Constructors
+    public IngredientProcessor(String name, int capacity, Consumable consumable, ProcessorDevice device) {
         super(name, capacity, consumable, device);
         this.loaded = false;
         this.processed = false;
         this.plugged = false;
     }
 
+    public IngredientProcessor(ProcessorDevice device) {
+        super(device);
+    }
+
+    //Other Methods
     @Override
     public void process(int duration) {
         if (loaded) {
