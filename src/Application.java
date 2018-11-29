@@ -7,10 +7,6 @@ import machine.SwingMachine;
 import modules.external.*;
 import recipes.Recipe;
 import recipes.RecipeManager;
-import recipes.consumables.Cup;
-import recipes.consumables.Material;
-import recipes.consumables.ingredients.Liquid;
-import recipes.consumables.ingredients.Powder;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 public class Application {
@@ -41,6 +37,7 @@ public class Application {
         DispenserDevice dosingDispenserDevice = new ConsoleDosingDispenserDevice("POWDERS");
         DispenserDevice flowDispenserDevice = new ConsoleFlowDispenserDevice("LIQUIDS");
         DispenserDevice materialDispenserDevice = new ConsoleMaterialDispenserDevice("MATERIALS");
+        
         console.addDevice(dosingDispenserDevice);
         console.addDevice(materialDispenserDevice);
         console.addDevice(flowDispenserDevice);
