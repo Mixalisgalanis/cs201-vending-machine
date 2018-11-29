@@ -1,19 +1,19 @@
 package modules.containers;
 
 import behaviour.Consumer;
-import devices.DeviceType;
-import devices.containers.FlowContainerDevice;
 import recipes.consumables.Consumable;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.FlowContainerDevice;
 
 import java.util.concurrent.TimeUnit;
 
-public class FlowContainer<T extends FlowContainerDevice> extends Container<T> {
+public class FlowContainer<T extends FlowContainerDevice> extends Container<FlowContainerDevice> {
 
     private final int MULTIPLIER = 10;
 
     //Constructor
-    public FlowContainer(String name, int capacity, Consumable consumable) {
-        super(name, capacity, consumable);
+    public FlowContainer(String name, int capacity, Consumable consumable, FlowContainerDevice device) {
+        super(name, capacity, consumable, device);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<T> {
             if (quantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
                 int streamRate = getDevice().streamRate();
                 try {
-                    TimeUnit.SECONDS.sleep(quantity / (MULTIPLIER*streamRate));
+                    TimeUnit.SECONDS.sleep(quantity / (MULTIPLIER * streamRate));
                     consumer.acceptAndLoad(getConsumable().getPart(quantity));
                     getDevice().streamOut(getDevice());
                 } catch (InterruptedException e) {

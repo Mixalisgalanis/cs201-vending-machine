@@ -1,8 +1,8 @@
-package devices.consoleDevices.internal;
+package consoleDevices.internal;
 
-import devices.DeviceType;
-import devices.consoleDevices.ConsoleDevice;
-import devices.containers.ContainerDevice;
+import consoleDevices.ConsoleDevice;
+import tuc.ece.cs201.vm.hw.device.ContainerDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 
 public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDevice {
 
@@ -10,15 +10,15 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
     private int capacity;
 
     public ConsoleContainerDevice(String name, DeviceType deviceType, int capacity) {
-        super(name,deviceType);
+        super(name, deviceType);
         this.capacity = capacity;
         opened = false;
     }
 
-
     public ConsoleContainerDevice(String name, DeviceType deviceType) {
         super(name, deviceType);
     }
+
 
     @Override
     public int getCapacity() {
@@ -38,7 +38,7 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
     }
 
     @Override
-    public boolean isOpened() {
+    public boolean isOpen() {
         return opened;
     }
 }

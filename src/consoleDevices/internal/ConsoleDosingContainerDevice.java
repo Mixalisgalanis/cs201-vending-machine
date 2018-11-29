@@ -1,8 +1,8 @@
-package devices.consoleDevices.internal;
+package consoleDevices.internal;
 
-import devices.Device;
-import devices.DeviceType;
-import devices.containers.DosingContainerDevice;
+import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.DosingContainerDevice;
 
 public class ConsoleDosingContainerDevice extends ConsoleContainerDevice implements DosingContainerDevice {
 
@@ -22,4 +22,5 @@ public class ConsoleDosingContainerDevice extends ConsoleContainerDevice impleme
     public int doseSize() {
         return DOSE_SIZE;
     }
+
 }

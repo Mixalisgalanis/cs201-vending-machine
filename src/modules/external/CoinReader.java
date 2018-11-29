@@ -1,7 +1,8 @@
 package modules.external;
 
-import devices.external.CoinAcceptorDevice;
+
 import modules.Module;
+import tuc.ece.cs201.vm.hw.device.CoinAcceptorDevice;
 
 public class CoinReader extends Module<CoinAcceptorDevice> {
 

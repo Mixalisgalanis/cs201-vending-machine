@@ -1,7 +1,8 @@
-package devices.consoleDevices.internal;
+package consoleDevices.internal;
 
-import devices.DeviceType;
-import devices.containers.processors.ProcessorDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.ProcessorDevice;
+
 
 public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implements ProcessorDevice {
 
@@ -10,7 +11,7 @@ public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implement
     }
 
     @Override
-    public void streamln() {
+    public void streamIn() {
         System.out.println(getName() + " streamed in.");
     }
 
@@ -26,6 +27,6 @@ public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implement
 
     @Override
     public String getProcessingLabel() {
-        return getName().substring(0,getName().length() - 1) + "d";
+        return getName().substring(0, getName().length() - 1) + "d";
     }
 }

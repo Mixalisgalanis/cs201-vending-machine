@@ -1,12 +1,12 @@
 package modules.external;
 
 import behaviour.Consumer;
-import devices.external.ProductCaseDevice;
 import modules.Module;
 import recipes.Recipe;
 import recipes.consumables.Consumable;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
+import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
 
 public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
@@ -74,7 +74,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     public Product getProduct() {
         //no need to construct product in here because we will prepare the container then fill it(acceptAndLoad)and then we just need to return the product
-        getDevice().getProduct();
+        //TODO check if any device operation is needed
         return product;
     }
 

@@ -2,11 +2,11 @@ package modules.containers;
 
 import behaviour.Consumer;
 import behaviour.Provider;
-import devices.containers.ContainerDevice;
 import modules.Module;
 import recipes.consumables.Consumable;
+import tuc.ece.cs201.vm.hw.device.ContainerDevice;
 
-abstract public class Container<T extends ContainerDevice> extends Module<T> implements Provider {
+abstract public class Container<T extends ContainerDevice> extends Module<ContainerDevice> implements Provider {
 
     //Class Variables
     private int capacity;
@@ -14,7 +14,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<T> imp
     private boolean plugged;
 
     //Constructor
-    Container(String name, int capacity, Consumable consumable, ContainerDevice device) {
+    Container(String name, int capacity, Consumable consumable, T device) {
         super(name, device);
         this.capacity = capacity;
         this.consumable = consumable;

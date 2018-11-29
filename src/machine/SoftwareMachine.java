@@ -1,8 +1,8 @@
 package machine;
 
-import devices.consoleDevices.external.*;
-import devices.consoleDevices.internal.ConsoleDispenserDevice;
-import devices.consoleDevices.internal.ConsoleProcessorDevice;
+import consoleDevices.external.*;
+import consoleDevices.internal.ConsoleDispenserDevice;
+import consoleDevices.internal.ConsoleProcessorDevice;
 import modules.containers.DosingContainer;
 import modules.containers.FlowContainer;
 import modules.containers.MaterialContainer;
@@ -61,16 +61,16 @@ public class SoftwareMachine {
         Adding Modules
          */
         //External Modules
-        data.addHardwareEntity(new NumPad((GUI)? null : new ConsoleNumPadDevice()));
-        data.addHardwareEntity(new CoinReader((GUI)? null : new ConsoleCoinAcceptorDevice()));
-        data.addHardwareEntity(new ChangeCase((GUI)? null : new ConsoleChangeCaseDevice()));
-        data.addHardwareEntity(new DisplayPanel((GUI)? null : new ConsoleDisplayDevice()));
-        data.addHardwareEntity(new ProductCase((GUI)? null : new ConsoleProductCaseDevice()));
+        data.addHardwareEntity(new NumPad((GUI) ? null : new ConsoleNumPadDevice()));
+        data.addHardwareEntity(new CoinReader((GUI) ? null : new ConsoleCoinAcceptorDevice()));
+        data.addHardwareEntity(new ChangeCase((GUI) ? null : new ConsoleChangeCaseDevice()));
+        data.addHardwareEntity(new DisplayPanel((GUI) ? null : new ConsoleDisplayDevice()));
+        data.addHardwareEntity(new ProductCase((GUI) ? null : new ConsoleProductCaseDevice()));
 
         //ConsumableDispensers
-        data.addHardwareEntity(new ConsumableDispenser("POWDERS", "Powder", (GUI)? null : new ConsoleDispenserDevice("PowderDevice")));
-        data.addHardwareEntity(new ConsumableDispenser("LIQUIDS", "Liquid", (GUI)? null : new ConsoleDispenserDevice("LiquidDevice")));
-        data.addHardwareEntity(new ConsumableDispenser("MATERIALS", "Material", (GUI)? null : new ConsoleDispenserDevice("MaterialDevice")));
+        data.addHardwareEntity(new ConsumableDispenser("POWDERS", "Powder", (GUI) ? null : new ConsoleDispenserDevice("PowderDevice")));
+        data.addHardwareEntity(new ConsumableDispenser("LIQUIDS", "Liquid", (GUI) ? null : new ConsoleDispenserDevice("LiquidDevice")));
+        data.addHardwareEntity(new ConsumableDispenser("MATERIALS", "Material", (GUI) ? null : new ConsoleDispenserDevice("MaterialDevice")));
 
         //DosingContainers
         data.addHardwareEntity(new DosingContainer("Coffee", data.STANDARD_DOSING_CONTAINER_SIZE, data.findConsumable("Coffee")));
@@ -81,10 +81,10 @@ public class SoftwareMachine {
         data.addHardwareEntity(new MaterialContainer("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, data.findConsumable("Cup")));
 
         //Ingredientrocessors
-        data.addHardwareEntity(new IngredientProcessor("Boiler",data.PROCESSOR_SIZE,null, new ConsoleProcessorDevice()));
-        data.addHardwareEntity(new IngredientProcessor("Cooler",data.PROCESSOR_SIZE,null, new ConsoleProcessorDevice()));
-        data.addHardwareEntity(new IngredientProcessor("Blender",data.PROCESSOR_SIZE,null, new ConsoleProcessorDevice()));
-        data.addHardwareEntity(new IngredientProcessor("Buffer",data.PROCESSOR_SIZE,null, new ConsoleProcessorDevice()));
+        data.addHardwareEntity(new IngredientProcessor("Boiler", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
+        data.addHardwareEntity(new IngredientProcessor("Cooler", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
+        data.addHardwareEntity(new IngredientProcessor("Blender", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
+        data.addHardwareEntity(new IngredientProcessor("Buffer", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
 
     }
 
@@ -104,7 +104,8 @@ public class SoftwareMachine {
             case "1":
                 display.displayMessage(ADMIN_SUBMENU);
                 switch (String.valueOf(numPad.readCode(1))) {
-                    case "1": rm.createRecipe();
+                    case "1":
+                        rm.createRecipe();
                         break;
                     case "2": {
                         display.displayMessage(RECIPES_HEADER);
@@ -116,7 +117,8 @@ public class SoftwareMachine {
                         rm.removeRecipe(String.valueOf(recipeCode));
                         break;
                     }
-                    case "3": data.refillContainers();
+                    case "3":
+                        data.refillContainers();
                         break;
                 }
                 break;
@@ -129,12 +131,12 @@ public class SoftwareMachine {
                             display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
                         }
                         Recipe recipe;
-                        do{
+                        do {
                             display.displayMessage(RECIPES_FOOTER);
                             int recipeCode = numPad.readCode(3);
                             recipe = rm.getRecipe(String.valueOf(recipeCode));
                             if (recipe == null) display.displayMessage("Recipe not Found!");
-                        } while(recipe==null);
+                        } while (recipe == null);
                         int change = coinReader.receiveMoney(recipe.getPrice());
                         coinReader.clearMoney();
                         changeCase.setChange(change);

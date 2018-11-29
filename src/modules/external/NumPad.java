@@ -1,7 +1,7 @@
 package modules.external;
 
-import devices.external.NumPadDevice;
 import modules.Module;
+import tuc.ece.cs201.vm.hw.device.NumPadDevice;
 
 public class NumPad extends Module<NumPadDevice> {
 
@@ -13,7 +13,7 @@ public class NumPad extends Module<NumPadDevice> {
     //Other Methods
     public int readCode(int length) {
         int code = 0;
-        for (int i = 0; i < length; i++) code += 10 ^ (i) * getDevice().readDigit();
+        for (int i = 0; i < length; i++) code += 10 ^ (i) * getDevice().readDigit(Integer.toString(code));
         return code;
     }
 }

@@ -1,10 +1,11 @@
-package devices.consoleDevices.external;
+package consoleDevices.external;
 
-import behaviour.Lockable;
-import devices.DeviceType;
-import devices.consoleDevices.ConsoleDevice;
 
-public class ConsoleLockableExternalDevice extends ConsoleDevice implements Lockable {
+import consoleDevices.ConsoleDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.LockableDevice;
+
+public class ConsoleLockableExternalDevice extends ConsoleDevice implements LockableDevice {
 
     private Boolean locked;
 

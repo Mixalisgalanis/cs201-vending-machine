@@ -1,9 +1,9 @@
 package modules.containers;
 
 import behaviour.Consumer;
-import devices.DeviceType;
-import devices.containers.DosingContainerDevice;
 import recipes.consumables.Consumable;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.DosingContainerDevice;
 
 public class DosingContainer extends Container<DosingContainerDevice> {
 

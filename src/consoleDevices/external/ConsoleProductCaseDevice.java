@@ -1,7 +1,7 @@
-package devices.consoleDevices.external;
+package consoleDevices.external;
 
-import devices.DeviceType;
-import devices.external.ProductCaseDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
 
 public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice implements ProductCaseDevice {
 
@@ -9,11 +9,6 @@ public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice impl
         super("ProductCase", DeviceType.ProductCase);
     }
 
-
-    @Override
-    public void getProduct() {
-        System.out.println("Your drink is ready");
-    }
 
     @Override
     public void putMaterial(String type) {

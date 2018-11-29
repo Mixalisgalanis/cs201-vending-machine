@@ -1,7 +1,10 @@
-package devices.consoleDevices;
+package consoleDevices;
 
-import devices.Device;
-import devices.DeviceType;
+
+import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+
+import java.util.List;
 
 public class ConsoleDevice implements Device {
 
@@ -40,17 +43,24 @@ public class ConsoleDevice implements Device {
     }
 
     @Override
-    public Device[] listConnected() {
-        //TODO
-        return new Device[0];
+    public void disconnectAll() {
+        List<Device> devices = listConnectedDevices();
+        for (int i = 0; i < devices.size(); i++) {
+            disconnect(devices.get(i));
+        }
     }
 
     @Override
-    public void disconnectAll() {
-        Device[] devices = listConnected();
-        for (int i =0; i<devices.length; i++){
-            disconnect(devices[i]);
-        }
+    public List<Device> listConnectedDevices() {
+        List<Device> connected;
+        //TODO figure out a way to get all the devices
+        /*DeviceType[] devices = DeviceType.values();
+        for (int i = 0; i<devices.length; i++){
+            if(){
+                connected.add()
+            }
+        }*/
+        return connected;
     }
 
     @Override

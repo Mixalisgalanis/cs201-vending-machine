@@ -1,8 +1,8 @@
-package devices.consoleDevices.external;
+package consoleDevices.external;
 
-import devices.DeviceType;
-import devices.consoleDevices.ConsoleDevice;
-import devices.external.DisplayDevice;
+import consoleDevices.ConsoleDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.DisplayDevice;
 
 public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice {
 

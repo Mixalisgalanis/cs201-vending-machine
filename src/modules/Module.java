@@ -1,7 +1,7 @@
 package modules;
 
-import devices.Device;
-import devices.DeviceType;
+import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 
 abstract public class Module<T extends Device> {
 

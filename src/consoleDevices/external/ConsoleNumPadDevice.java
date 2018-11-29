@@ -1,7 +1,7 @@
-package devices.consoleDevices.external;
+package consoleDevices.external;
 
-import devices.DeviceType;
-import devices.external.NumPadDevice;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+import tuc.ece.cs201.vm.hw.device.NumPadDevice;
 import utilities.Reader;
 
 public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implements NumPadDevice {
@@ -9,16 +9,14 @@ public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implement
     private Reader reader;
 
     public ConsoleNumPadDevice() {
-        super("NumPad", DeviceType.Numpad);
+        super("NumPad", DeviceType.NumPad);
         this.reader = new Reader();
     }
 
     @Override
-    public int readDigit() {
+    public int readDigit(String s) {        //s : current code
         int digit;
-        digit = reader.readInt("Insert digit:");
+        digit = reader.readInt(s);
         return digit;
     }
-
-
 }
