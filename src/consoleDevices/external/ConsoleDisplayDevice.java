@@ -6,11 +6,12 @@ import tuc.ece.cs201.vm.hw.device.DisplayDevice;
 
 public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice {
 
-
+    //Constructor
     public ConsoleDisplayDevice() {
         super("DisplayDevice", DeviceType.Display);
     }
 
+    //Implemented Methods
     @Override
     public void displayMsg(String message) {
         System.out.println(message);
@@ -22,4 +23,10 @@ public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice
             System.out.println(" ");
         }
     }
+
+
+    public void displayRecipesFooter(){
+        System.out.println();
+    }
+
 }

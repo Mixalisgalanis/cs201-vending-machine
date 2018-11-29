@@ -4,6 +4,7 @@ import behaviour.Consumer;
 import behaviour.Provider;
 import modules.Module;
 import modules.containers.Container;
+import tuc.ece.cs201.vm.hw.device.ContainerDevice;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 import java.util.HashMap;
@@ -61,6 +62,15 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
                 container.getConsumable().refillPart(containers.get(container.getName()).getCapacity(), container.getConsumable().getQuantity());
             }
         }
+    }
+
+    public Container getNextAvailableContainer(){
+        for (Container container : containers.values()){
+            if (container.getConsumable() == null){
+                return container; //There is an available Container
+            }
+        }
+        return null; //All Containers are full
     }
 
     @Override

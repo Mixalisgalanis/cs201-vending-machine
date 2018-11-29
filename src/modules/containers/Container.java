@@ -23,6 +23,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
 
     Container(T device) {
         super(device);
+        this.capacity = device.getCapacity();
     }
 
     //Getters & Setters
