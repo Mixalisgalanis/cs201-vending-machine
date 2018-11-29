@@ -6,9 +6,13 @@ import tuc.ece.cs201.vm.hw.device.MaterialContainerDevice;
 
 public class MaterialContainer extends Container<MaterialContainerDevice> {
 
-    //Constructor
+    //Constructors
     public MaterialContainer(String name, int capacity, Consumable consumable, MaterialContainerDevice device) {
         super(name, capacity, consumable, device);
+    }
+
+    public MaterialContainer(MaterialContainerDevice device) {
+        super(device);
     }
 
     public void provide(Consumer consumer, int quantity) {

@@ -14,7 +14,7 @@ abstract public class Consumable {
         this.consumableType = consumableType;
     }
 
-    public Consumable(int quantity, String consumableType){
+    public Consumable(int quantity, String consumableType) {
         this.quantity = quantity;
         this.consumableType = consumableType;
     }
@@ -47,7 +47,7 @@ abstract public class Consumable {
         this.quantity += ((quantity + this.quantity > containerCapacity) ? (containerCapacity - this.quantity) : quantity);
     }
 
-    public void refill(int containerCapacity){
+    public void refill(int containerCapacity) {
         this.quantity = containerCapacity;
     }
 

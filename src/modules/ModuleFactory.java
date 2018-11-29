@@ -14,27 +14,27 @@ public class ModuleFactory {
 
         switch (device.getType()) {
             case FlowContainer:
-                return new FlowContainer(, , , (FlowContainerDevice) device);
+                return new FlowContainer((FlowContainerDevice) device);
             case DosingContainer:
-                return new DosingContainer(, , , (DosingContainerDevice) device);
+                return new DosingContainer((DosingContainerDevice) device);
             case MaterialContainer:
-                return new MaterialContainer(, , , (MaterialContainerDevice) device);
+                return new MaterialContainer((MaterialContainerDevice) device);
             case Processor:
-                return new IngredientProcessor(, , , (ProcessorDevice) device);
+                return new IngredientProcessor((ProcessorDevice) device);
             case FlowDispenser:
-                ConsumableDispenser dispenser = ConsumableDispenser(, , (DispenserDevice) device);
+                ConsumableDispenser dispenser = new ConsumableDispenser((DispenserDevice) device);
                 for (Device containerDevice : device.listConnectedDevices()) {
                     dispenser.addContainer((FlowContainer) createModule(containerDevice));
                 }
                 return dispenser;
             case DosingDispenser:
-                dispenser = ConsumableDispenser(, , (DispenserDevice) device);
+                dispenser = new ConsumableDispenser((DispenserDevice) device);
                 for (Device containerDevice : device.listConnectedDevices()) {
                     dispenser.addContainer((DosingContainer) createModule(containerDevice));
                 }
                 return dispenser;
             case MaterialDispenser:
-                dispenser = ConsumableDispenser(, , (DispenserDevice) device);
+                dispenser = new ConsumableDispenser((DispenserDevice) device);
                 for (Device containerDevice : device.listConnectedDevices()) {
                     dispenser.addContainer((MaterialContainer) createModule(containerDevice));
                 }

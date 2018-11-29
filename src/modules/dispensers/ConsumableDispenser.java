@@ -15,7 +15,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     private HashMap<String, Container> containers;
     private String consumableType;
 
-    //Constructor
+    //Constructors
     public ConsumableDispenser(String name, String consumableType, DispenserDevice device) {
         super(name, device);
         this.containers = new HashMap<>();
@@ -23,13 +23,23 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         this.consumableType = consumableType;
     }
 
-    //Getters
+    public ConsumableDispenser(DispenserDevice device) {
+        super(device);
+        this.containers = new HashMap<>();
+        this.plugged = false;
+    }
+
+    //Getters & Setters
     public HashMap<String, Container> getContainers() {
         return containers;
     }
 
     public String getConsumableType() {
         return consumableType;
+    }
+
+    public void setConsumableType(String consumableType) {
+        this.consumableType = consumableType;
     }
 
     //Other Methods

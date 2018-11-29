@@ -42,7 +42,7 @@ public class RecipeManager {
     }
 
     public static RecipeManager getInstance() {
-        return (instance != null)? instance : new RecipeManager();
+        return (instance != null) ? instance : new RecipeManager();
     }
 
     //Getters

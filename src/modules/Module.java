@@ -10,8 +10,8 @@ abstract public class Module<T extends Device> {
     private T device;
 
     //Constructor
-    public Module(String name) {
-        this.name = name;
+    public Module(T device) {
+        this.device = device;
     }
 
     public Module(String name, T device) {

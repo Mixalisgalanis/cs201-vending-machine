@@ -28,13 +28,13 @@ public class ProcessedIngredient extends Ingredient {
         return null;
     }
 
-    public void addIngredients(Ingredient ingredient){
+    public void addIngredients(Ingredient ingredient) {
         ingredients.put(ingredient.getName(), ingredient);
     }
 
-    public String generateName(){
+    public String generateName() {
         String name = "";
-        for (Ingredient ingredient : ingredients.values()){
+        for (Ingredient ingredient : ingredients.values()) {
             name = name.concat(ingredient.getName() + "\t");
         }
         return name;

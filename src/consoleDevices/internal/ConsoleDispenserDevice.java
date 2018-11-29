@@ -7,13 +7,12 @@ import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 import java.util.ArrayList;
 
-
-public class ConsoleDosingDispenserDevice extends ConsoleDevice implements DispenserDevice {
+public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDevice {
 
     private ArrayList<ContainerDevice> containerDevices;
 
-    public ConsoleDosingDispenserDevice(String name) {
-        super(name, DeviceType.DosingDispenser);
+    public ConsoleDispenserDevice(String name, DeviceType deviceType) {
+        super(name, deviceType);
         this.containerDevices = new ArrayList<>();
     }
 
@@ -45,3 +44,4 @@ public class ConsoleDosingDispenserDevice extends ConsoleDevice implements Dispe
         }
     }
 }
+
