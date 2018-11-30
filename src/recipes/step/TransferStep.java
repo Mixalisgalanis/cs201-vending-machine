@@ -21,9 +21,9 @@ public class TransferStep extends RecipeStep {
     }
 
     public TransferStep(String[] data, int quantity) {
-        this.source = data[0];
-        this.destination = data[1];
-        this.content = data[2];
+        source = data[0];
+        destination = data[1];
+        content = data[2];
         this.quantity = quantity;
     }
 
@@ -76,14 +76,14 @@ public class TransferStep extends RecipeStep {
     public void executeStep() {
         if (sm.findDispenser(source) != null) {
             Dispenser dispenser = sm.findDispenser(source);
-            Consumer consumer = (Consumer) sm.getContainer(destination);
+            Consumer consumer = (Consumer) sm.findContainer(destination);
 
             dispenser.plug(consumer);
-            dispenser.prepareContainer(sm.getContainer(content).getName(), consumer);
+            dispenser.prepareContainer(sm.findContainer(content).getName(), consumer);
             dispenser.unPlug(consumer);
         } else {
-            Provider provider = sm.getContainer(source);
-            Consumer consumer =(Consumer) sm.getContainer(destination);
+            Provider provider = sm.findContainer(source);
+            Consumer consumer = (Consumer) sm.findContainer(destination);
 
             provider.plug(consumer);
             provider.provide(consumer, quantity);

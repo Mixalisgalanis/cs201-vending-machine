@@ -4,6 +4,8 @@ package machine;
 import modules.Module;
 import modules.ModuleFactory;
 import modules.containers.Container;
+import modules.containers.processor.IngredientProcessor;
+import modules.containers.processor.Processor;
 import modules.dispensers.ConsumableDispenser;
 import modules.dispensers.Dispenser;
 import recipes.consumables.Consumable;
@@ -11,14 +13,13 @@ import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SoftwareMachine {
 
     //Class variables
     private static SoftwareMachine instance;
-    private HashMap<String, Module> modules;
+    private final HashMap<String, Module> modules;
 
     //Constructors
     private SoftwareMachine() {
@@ -53,10 +54,9 @@ public class SoftwareMachine {
         }
     }
 
-    public void addConsumable(Consumable consumable){
-        ArrayList<ConsumableDispenser> dispensers = getDispensers();
-        for (ConsumableDispenser dispenser : dispensers){
-            if (dispenser.getConsumableType().equals(consumable.getConsumableType())){
+    public void addConsumable(Consumable consumable) {
+        for (ConsumableDispenser dispenser : getDispensers().values()) {
+            if (dispenser.getConsumableType().equals(consumable.getConsumableType())) {
                 Container container = dispenser.getNextAvailableContainer();
                 container.setName(consumable.getName() + Container.class.getSimpleName());
                 container.setConsumable(consumable);
@@ -72,60 +72,77 @@ public class SoftwareMachine {
         }
     }
 
-    public ArrayList<ConsumableDispenser> getDispensers(){
-        ArrayList<ConsumableDispenser> dispensers = new ArrayList<>();
-        for (Module module : modules.values()){
+
+    //Data Gathering
+    public HashMap<String, ConsumableDispenser> getDispensers() {
+        HashMap<String, ConsumableDispenser> dispensers = new HashMap<>();
+        for (Module module : modules.values()) {
             if (module.getType() == DeviceType.DosingDispenser ||
                     module.getType() == DeviceType.FlowDispenser ||
-                    module.getType() == DeviceType.MaterialDispenser)
-                dispensers.add((ConsumableDispenser) module);
+                    module.getType() == DeviceType.MaterialDispenser) {
+                dispensers.put(module.getName(), (ConsumableDispenser) module);
+            }
         }
         return dispensers;
     }
 
-    public HashMap<String,Container> getContainers(){
-        HashMap<String,Container> containers = new HashMap<>();
-        for (ConsumableDispenser dispenser : getDispensers()){
-            for (Container container: dispenser.getContainers().values()) {
+    public HashMap<String, IngredientProcessor> getProcessors() {
+        HashMap<String, IngredientProcessor> processors = new HashMap<>();
+        for (Module module : modules.values()) {
+            if (module.getType() == DeviceType.Processor) {
+                processors.put(module.getName(), (IngredientProcessor) module);
+            }
+        }
+        return processors;
+    }
+
+    public HashMap<String, Container> getContainers() {
+        HashMap<String, Container> containers = new HashMap<>();
+        for (ConsumableDispenser dispenser : getDispensers().values()) {
+            for (Container container : dispenser.getContainers().values()) {
                 containers.put(container.getName(), container);
             }
         }
         return containers;
     }
 
-    public HashMap<String,Consumable> getConsumables(){
-        HashMap<String,Consumable> consumables = new HashMap<>();
-        for (ConsumableDispenser dispenser : getDispensers()){
-            for (Container container: dispenser.getContainers().values()) {
-                consumables.put(container.getConsumable().getName(), container.getConsumable());
-            }
+    public HashMap<String, Consumable> getConsumables() {
+        HashMap<String, Consumable> consumables = new HashMap<>();
+        for (Container container : getContainers().values()) {
+            consumables.put(container.getConsumable().getName(), container.getConsumable());
         }
+        /*
+        TO BE TESTED - LAMDA EXPRESSION
+        getContainers().values().forEach((Container container) -> consumables.put(container.getConsumable().getName()
+                , container.getConsumable()));*/
         return consumables;
     }
 
-    public Container getContainer (String name){
-        for ( Module module: modules.values()){
-            if ((module.getType() == DeviceType.DosingContainer||
-                    module.getType() == DeviceType.FlowContainer||
-                    module.getType() == DeviceType.MaterialContainer)&&
-                    ((Container) module).getConsumable().getName().equalsIgnoreCase(name)){
-                    return (Container)module;
-            }
-            if (module.getName().equalsIgnoreCase(name) &&
-                    (module.getType() == DeviceType.Processor||
-                    module.getType() == DeviceType.ProductCase)){
-                return (Container)module;
+
+    //Finder Methods
+    public Container findContainer(String name) {
+        for (Container container : getContainers().values()) {
+            if (container.getConsumable().getName().equalsIgnoreCase(name)) {
+                return container;
             }
         }
-        return  null;
+        return null;
     }
 
-    public Dispenser findDispenser (String name){
-        for ( Module module: modules.values()){
-            if (module.getType() == DeviceType.DosingDispenser ||
-                    module.getType() == DeviceType.FlowDispenser ||
-                    module.getType() == DeviceType.MaterialDispenser)
-                if (((ConsumableDispenser) module).getContainers().containsKey(name)) return (Dispenser) module;
+    public Processor findProcessor(String name) {
+        for (IngredientProcessor processor : getProcessors().values()) {
+            if (processor.getName().equalsIgnoreCase(name)) {
+                return processor;
+            }
+        }
+        return null;
+    }
+
+    public Dispenser findDispenser(String name) {
+        for (ConsumableDispenser dispenser : getDispensers().values()) {
+            if (dispenser.getContainers().containsKey(name)) {
+                return dispenser;
+            }
         }
         return null;
     }

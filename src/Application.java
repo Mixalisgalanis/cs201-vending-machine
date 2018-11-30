@@ -1,18 +1,15 @@
+import consoleDevices.external.*;
 import consoleDevices.internal.*;
 import machine.ConsoleMachine;
 import machine.SoftwareMachine;
 import machine.SwingMachine;
-import modules.containers.processor.IngredientProcessor;
-import modules.containers.processor.Processor;
 import modules.external.*;
 import recipes.Recipe;
 import recipes.RecipeManager;
 import recipes.consumables.Cup;
 import recipes.consumables.ingredients.Liquid;
 import recipes.consumables.ingredients.Powder;
-import tuc.ece.cs201.vm.hw.device.DeviceType;
-import tuc.ece.cs201.vm.hw.device.DispenserDevice;
-import tuc.ece.cs201.vm.hw.device.ProcessorDevice;
+import tuc.ece.cs201.vm.hw.device.*;
 
 public class Application {
 
@@ -21,16 +18,20 @@ public class Application {
     private static SwingMachine gui;
     private static SoftwareMachine machine;
     private static RecipeManager rm;
+    private static final boolean GUI_ENABLED = false; //Change this to switch between Graphical & Console Implementation
 
     //Constants
-    public static void main(String args[]) {
-        console = new ConsoleMachine();
-        gui = new SwingMachine();
-        insertConsoleDevices();
-        insertGuiDevices();
+    public static void main(String[] args) {
+        if (GUI_ENABLED) {
+            gui = new SwingMachine();
+            insertGuiDevices();
+        } else {
+            console = new ConsoleMachine();
+            insertConsoleDevices();
+        }
 
         rm = RecipeManager.getInstance();
-        machine = SoftwareMachine.getInstance(console);
+        machine = SoftwareMachine.getInstance((GUI_ENABLED) ? gui : console);
         insertConsumables();
         startCycleOf(machine);
     }
@@ -57,6 +58,14 @@ public class Application {
         ProcessorDevice blender = (new ConsoleProcessorDevice("BlenderDevice", console.PROCESSOR_CONTAINER_SIZE));
         ProcessorDevice buffer = (new ConsoleProcessorDevice("BufferDevice", console.PROCESSOR_CONTAINER_SIZE));
 
+        //External
+        NumPadDevice numPadDevice = new ConsoleNumPadDevice();
+        CoinAcceptorDevice coinAcceptorDevice = new ConsoleCoinAcceptorDevice();
+        DisplayDevice displayDevice = new ConsoleDisplayDevice();
+        ChangeCaseDevice changeCaseDevice = new ConsoleChangeCaseDevice();
+        ProductCaseDevice productCaseDevice = new ConsoleProductCaseDevice();
+
+
         //Adding all these Devices
         console.addDevice(dosingDispenserDevice);
         console.addDevice(materialDispenserDevice);
@@ -67,24 +76,30 @@ public class Application {
         console.addDevice(blender);
         console.addDevice(buffer);
 
+        console.addDevice(numPadDevice);
+        console.addDevice(coinAcceptorDevice);
+        console.addDevice(displayDevice);
+        console.addDevice(changeCaseDevice);
+        console.addDevice(productCaseDevice);
+
     }
 
     private static void insertGuiDevices() {
         //Same as insertConsoleDevices()
     }
 
-    private static void insertConsumables(){
+    private static void insertConsumables() {
         //Powders
-        machine.addConsumable(new Powder("Coffee",console.POWDER_CONTAINER_REGULAR_SIZE));
-        machine.addConsumable(new Powder("Chocolate",console.POWDER_CONTAINER_REGULAR_SIZE));
-        machine.addConsumable(new Powder("Sugar",console.POWDER_CONTAINER_REGULAR_SIZE));
+        machine.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
+        machine.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
+        machine.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
 
         //Liquids
-        machine.addConsumable(new Liquid("Water",console.LIQUID_CONTAINER_REGULAR_SIZE));
-        machine.addConsumable(new Liquid("Milk",console.LIQUID_CONTAINER_REGULAR_SIZE));
+        machine.addConsumable(new Liquid("Water", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        machine.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
 
         //Materials
-        machine.addConsumable(new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE,"Normal"));
+        machine.addConsumable(new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE, "Normal"));
     }
 
     private static void startCycleOf(SoftwareMachine machine) {
@@ -143,7 +158,9 @@ public class Application {
 
                             int recipeCode = numPad.readCode(3);
                             recipe = rm.getRecipe(String.valueOf(recipeCode));
-                            if (recipe == null) display.displayMessage("Recipe not Found!");
+                            if (recipe == null) {
+                                display.displayMessage("Recipe not Found!");
+                            }
                         } while (recipe == null);
                         //Receive Money and check if there is any change to return
                         int change = coinReader.receiveMoney(recipe.getPrice());

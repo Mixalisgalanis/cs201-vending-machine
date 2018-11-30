@@ -25,7 +25,7 @@ public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice
     }
 
 
-    public void displayRecipesFooter(){
+    public void displayRecipesFooter() {
         System.out.println();
     }
 

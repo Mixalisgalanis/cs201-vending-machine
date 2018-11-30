@@ -9,7 +9,7 @@ public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implement
 
     private final int STREAM_RATE_SIZE = 5;
 
-    public ConsoleFlowContainerDevice(String name,DeviceType deviceType , int capacity) {
+    public ConsoleFlowContainerDevice(String name, DeviceType deviceType, int capacity) {
         super(name, deviceType, capacity);
     }
 

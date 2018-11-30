@@ -63,9 +63,9 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         }
     }
 
-    public Container getNextAvailableContainer(){
-        for (Container container : containers.values()){
-            if (container.getConsumable() == null){
+    public Container getNextAvailableContainer() {
+        for (Container container : containers.values()) {
+            if (container.getConsumable() == null) {
                 return container; //There is an available Container
             }
         }
