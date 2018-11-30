@@ -1,6 +1,7 @@
 package recipes;
 
 import machine.Data;
+import machine.SoftwareMachine;
 import recipes.consumables.Consumable;
 import recipes.consumables.ingredients.Ingredient;
 import recipes.dao.DAOFactory;
@@ -22,12 +23,12 @@ public class RecipeManager {
     private DAOFactory factory;
     private RecipeDAO recipeDAO;
     private Reader reader;
-    private Data data;
+    private SoftwareMachine sm;
 
 
     //Constructor
     private RecipeManager() {
-        data = Data.getInstance();
+        sm = SoftwareMachine.getInstance();
         recipes = new HashMap<>();
         availableRecipes = new HashMap<>();
         try {

@@ -83,4 +83,21 @@ public class SoftwareMachine {
         return dispensers;
     }
 
+    public Container getContainer (String name){
+        for ( Module module: modules.values()){
+            if ((module.getType() == DeviceType.DosingContainer||
+                    module.getType() == DeviceType.FlowContainer||
+                    module.getType() == DeviceType.MaterialContainer)&&
+                    ((Container) module).getConsumable().getName().equalsIgnoreCase(name)){
+                    return (Container)module;
+            }
+            if (module.getName().equalsIgnoreCase(name) &&
+                    (module.getType() == DeviceType.Processor||
+                    module.getType() == DeviceType.ProductCase)){
+                return (Container)module;
+            }
+        }
+        return  null;
+    }
+
 }

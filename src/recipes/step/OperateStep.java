@@ -51,7 +51,7 @@ public class OperateStep extends RecipeStep {
 
     @Override
     public void executeStep() {
-        Processor tempProcessor = data.findIngredientProcessor(processor);
+        Processor tempProcessor =(Processor) sm.getContainer(processor);
         tempProcessor.process(duration);
     }
 }

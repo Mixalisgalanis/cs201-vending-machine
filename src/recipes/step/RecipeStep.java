@@ -1,11 +1,11 @@
 package recipes.step;
 
-import machine.Data;
+import machine.SoftwareMachine;
 
 abstract public class RecipeStep {
 
     //Class Variable
-    Data data = Data.getInstance();
+    SoftwareMachine sm = SoftwareMachine.getInstance();
 
     //Other Methods
     abstract public String describe();
