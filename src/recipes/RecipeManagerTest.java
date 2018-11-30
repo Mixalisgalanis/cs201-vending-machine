@@ -10,7 +10,7 @@ public class RecipeManagerTest {
 
     @Before
     public void setUp() {
-        this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
+       // this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
         //this.loadRecipes();
 
     }

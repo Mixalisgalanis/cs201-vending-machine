@@ -74,16 +74,16 @@ public class TransferStep extends RecipeStep {
 
     @Override
     public void executeStep() {
-        if (data.findDispenser(source) != null) {
-            Dispenser dispenser = data.findDispenser(source);
-            Consumer consumer = data.findConsumer(destination);
+        if (sm.findDispenser(source) != null) {
+            Dispenser dispenser = sm.findDispenser(source);
+            Consumer consumer = (Consumer) sm.getContainer(destination);
 
             dispenser.plug(consumer);
-            dispenser.prepareContainer(data.findContainerByConsumable(source, data.findConsumable(content)).getName(), consumer);
+            dispenser.prepareContainer(sm.getContainer(content).getName(), consumer);
             dispenser.unPlug(consumer);
         } else {
-            Provider provider = data.findProvider(source);
-            Consumer consumer = data.findConsumer(destination);
+            Provider provider = sm.getContainer(source);
+            Consumer consumer =(Consumer) sm.getContainer(destination);
 
             provider.plug(consumer);
             provider.provide(consumer, quantity);

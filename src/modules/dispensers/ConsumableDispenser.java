@@ -4,7 +4,6 @@ import behaviour.Consumer;
 import behaviour.Provider;
 import modules.Module;
 import modules.containers.Container;
-import tuc.ece.cs201.vm.hw.device.ContainerDevice;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 import java.util.HashMap;

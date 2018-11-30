@@ -5,6 +5,7 @@ import modules.Module;
 import modules.ModuleFactory;
 import modules.containers.Container;
 import modules.dispensers.ConsumableDispenser;
+import modules.dispensers.Dispenser;
 import recipes.consumables.Consumable;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
@@ -63,7 +64,6 @@ public class SoftwareMachine {
         }
     }
 
-
     public void refillContainers() {
         for (Module module : modules.values()) {
             if (module instanceof Container) {
@@ -83,6 +83,26 @@ public class SoftwareMachine {
         return dispensers;
     }
 
+    public HashMap<String,Container> getContainers(){
+        HashMap<String,Container> containers = new HashMap<>();
+        for (ConsumableDispenser dispenser : getDispensers()){
+            for (Container container: dispenser.getContainers().values()) {
+                containers.put(container.getName(), container);
+            }
+        }
+        return containers;
+    }
+
+    public HashMap<String,Consumable> getConsumables(){
+        HashMap<String,Consumable> consumables = new HashMap<>();
+        for (ConsumableDispenser dispenser : getDispensers()){
+            for (Container container: dispenser.getContainers().values()) {
+                consumables.put(container.getConsumable().getName(), container.getConsumable());
+            }
+        }
+        return consumables;
+    }
+
     public Container getContainer (String name){
         for ( Module module: modules.values()){
             if ((module.getType() == DeviceType.DosingContainer||
@@ -100,4 +120,13 @@ public class SoftwareMachine {
         return  null;
     }
 
+    public Dispenser findDispenser (String name){
+        for ( Module module: modules.values()){
+            if (module.getType() == DeviceType.DosingDispenser ||
+                    module.getType() == DeviceType.FlowDispenser ||
+                    module.getType() == DeviceType.MaterialDispenser)
+                if (((ConsumableDispenser) module).getContainers().containsKey(name)) return (Dispenser) module;
+        }
+        return null;
+    }
 }

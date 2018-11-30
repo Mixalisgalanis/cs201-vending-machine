@@ -45,8 +45,8 @@ public class Application {
         dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
         dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
 
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", DeviceType.FlowContainer, console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", DeviceType.FlowContainer, console.LIQUID_CONTAINER_REGULAR_SIZE));
 
         materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
         materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));

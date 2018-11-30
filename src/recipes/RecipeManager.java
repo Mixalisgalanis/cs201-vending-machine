@@ -1,6 +1,5 @@
 package recipes;
 
-import machine.Data;
 import machine.SoftwareMachine;
 import recipes.consumables.Consumable;
 import recipes.consumables.ingredients.Ingredient;
@@ -90,7 +89,7 @@ public class RecipeManager {
     public void validateRecipes() {
         for (Recipe recipe : recipes.values()) {
             for (Ingredient ingredient : recipe.getIngredients()) {
-                if (data.getContainers().get(recipe.classNameFinder(ingredient.getName())).getConsumable().getQuantity() >= ingredient.getQuantity())
+                if (sm.getContainers().get(recipe.classNameFinder(ingredient.getName())).getConsumable().getQuantity() >= ingredient.getQuantity())
                     recipe.enable();
                 else {
                     recipe.disable();
@@ -139,14 +138,14 @@ public class RecipeManager {
         //Ingredients
         System.out.println("Available Consumables ----------");
         int i = 0;
-        for (Consumable consumable : data.getConsumables().values()) {
+        for (Consumable consumable : sm.getConsumables().values()) {
             System.out.println((++i) + consumable.getName() + "[" + consumable.getConsumableType() + "]");
         }
         String[] ingredientsData = reader.readString("Please Enter Ingredients using the above options (ex: 'Coffee,40,Water,60')").split(",");
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         for (int j = 0; j < ingredientsData.length / 2; j++) {
             try {
-                Class<?> clazz = Class.forName("recipes.consumables.ingredients" + data.getConsumables().get(ingredientsData[2 * j]));
+                Class<?> clazz = Class.forName("recipes.consumables.ingredients" + sm.getConsumables().get(ingredientsData[2 * j]));
                 Constructor<?> ctor = clazz.getConstructors()[0];
                 Object object = ctor.newInstance(new Object[]{ingredientsData[2 * j], Integer.parseInt(ingredientsData[2 * j + 1])});
                 ingredients.add((Ingredient) object);
