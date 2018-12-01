@@ -22,21 +22,21 @@ public class ModuleFactory {
             case Processor:
                 return new IngredientProcessor((ProcessorDevice) device);
             case FlowDispenser:
-                ConsumableDispenser dispenser = new ConsumableDispenser((DispenserDevice) device, "Liquid");
-                for (Object containerDevice : ((DispenserDevice) device).listContainers()) {
-                    dispenser.addContainer((FlowContainer) createModule((Device) containerDevice));
+                ConsumableDispenser dispenser = new ConsumableDispenser((DispenserDevice) device);
+                for (Device containerDevice : device.listConnectedDevices()) {
+                    dispenser.addContainer((FlowContainer) createModule(containerDevice));
                 }
                 return dispenser;
             case DosingDispenser:
-                dispenser = new ConsumableDispenser((DispenserDevice) device, "Powder");
-                for (Object containerDevice :((DispenserDevice) device).listContainers()) {
-                    dispenser.addContainer((DosingContainer) createModule((Device) containerDevice));
+                dispenser = new ConsumableDispenser((DispenserDevice) device);
+                for (Device containerDevice : device.listConnectedDevices()) {
+                    dispenser.addContainer((DosingContainer) createModule(containerDevice));
                 }
                 return dispenser;
             case MaterialDispenser:
-                dispenser = new ConsumableDispenser((DispenserDevice) device, "Material");
-                for (Object containerDevice : ((DispenserDevice) device).listContainers()) {
-                    dispenser.addContainer((MaterialContainer) createModule((Device)containerDevice));
+                dispenser = new ConsumableDispenser((DispenserDevice) device);
+                for (Device containerDevice : device.listConnectedDevices()) {
+                    dispenser.addContainer((MaterialContainer) createModule(containerDevice));
                 }
                 return dispenser;
             case ProductCase:

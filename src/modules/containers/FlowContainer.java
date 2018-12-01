@@ -18,7 +18,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     public FlowContainer(FlowContainerDevice device) {
         super(device);
-        setName(device.getName().substring(0,(device.getName().length()-6)));
+        setName(getClass().getSimpleName());
     }
 
     @Override

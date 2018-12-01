@@ -13,7 +13,7 @@ public class MaterialContainer extends Container<MaterialContainerDevice> {
 
     public MaterialContainer(MaterialContainerDevice device) {
         super(device);
-        setName(device.getName().substring(0,(device.getName().length()-6)));
+        setName(getClass().getSimpleName());
     }
 
     @Override

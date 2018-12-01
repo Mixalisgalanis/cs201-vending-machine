@@ -6,7 +6,6 @@ import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDevice {
 
@@ -14,7 +13,7 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
 
     public ConsoleDispenserDevice(String name, DeviceType deviceType) {
         super(name, deviceType);
-        this.containerDevices = new ArrayList<ContainerDevice>();
+        this.containerDevices = new ArrayList<>();
     }
 
     @Override
