@@ -74,8 +74,8 @@ public class TransferStep extends RecipeStep {
 
     @Override
     public void executeStep() {
-        if (sm.findDispenser(source) != null) {
-            Dispenser dispenser = sm.findDispenser(source);
+        if (sm.getDispensers().get(source) != null) {
+            Dispenser dispenser = sm.getDispensers().get(source);
             Consumer consumer = (Consumer) sm.findContainer(destination);
 
             dispenser.plug(consumer);

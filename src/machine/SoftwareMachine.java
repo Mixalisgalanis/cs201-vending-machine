@@ -141,9 +141,9 @@ public class SoftwareMachine {
         return null;
     }
 
-    public Dispenser findDispenser(String name) {
+    public Dispenser findDispenser(String containerName) {
         for (ConsumableDispenser dispenser : getDispensers().values()) {
-            if (dispenser.getContainers().containsKey(name)) {
+            if (dispenser.getContainers().containsKey(containerName)) {
                 return dispenser;
             }
         }

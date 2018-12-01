@@ -13,7 +13,7 @@ public class FsRecipeDAO implements RecipeDAO {
 
     private static final String RECIPES_FOLDER = "recipes";
     private static final String RECIPES_FILE_SUFFIX = ".rcp";
-    private File folder = new File(RECIPES_FOLDER);
+    private final File folder = new File(RECIPES_FOLDER);
 
     @Override
     public HashMap<String, Recipe> loadRecipes() {
@@ -46,9 +46,8 @@ public class FsRecipeDAO implements RecipeDAO {
 
     @Override
     public void deleteRecipe(String code) {
-        for (File file : folder.listFiles()) {
-            if (file.getName().equals(code)) file.delete();
-        }
+        File file = new File(RECIPES_FOLDER + "/" + code + RECIPES_FILE_SUFFIX);
+        file.delete();
     }
 
 

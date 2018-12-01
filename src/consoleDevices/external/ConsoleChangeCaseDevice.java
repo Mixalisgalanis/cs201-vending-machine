@@ -12,7 +12,7 @@ public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice imple
 
     @Override
     public void giveChange(int coin) {
-        System.out.println("Exporting " + coin + "c");
+        System.out.println("Exported " + coin + "c.");
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
@@ -22,6 +22,12 @@ public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice imple
 
     @Override
     public void removeChange() {
-        System.out.println("Removed change");
+        System.out.println("Assuming change is taken. Clearing change. . .");
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Change Cleared!");
     }
 }

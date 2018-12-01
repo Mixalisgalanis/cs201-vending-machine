@@ -19,7 +19,7 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
     public void setChange(int change) {
         this.change = change;
         for (int i = 0; i < coins.length; ) {
-            if (this.change > coins[i]) {
+            if (this.change >= coins[i]) {
                 getDevice().giveChange(coins[i]);
                 this.change -= coins[i];
             } else {

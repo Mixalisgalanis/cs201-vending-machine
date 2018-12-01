@@ -162,6 +162,7 @@ public class Application {
                     display.displayMessage("Enter recipe code to delete: ");
                     int recipeCode = numPad.readCode(3);
                     rm.removeRecipe(String.valueOf(recipeCode));
+                    display.displayMessage("Recipe removed successfully!");
                     selection = EXIT_SELECTION;
                     break;
 
@@ -171,25 +172,29 @@ public class Application {
                     break;
 
                 case "121": //Buy a Drink
-                    display.displayMessage("--------Available Recipes--------\n");
+                    //Display available recipes
+                    display.displayMessage("------Available Recipes------");
                     for (Recipe recipe : rm.getAvailableRecipes().values()) {
                         display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + "c)");
                     }
+                    display.displayMessage("-----------------------------");
                     Recipe recipe;
+
                     //Select Recipe
                     do {
-                        display.displayMessage("Please select recipe code to execute (Insert Digits one by one): ");
+                        display.displayMessage("Please enter desired recipe code (one digit at a time): ");
                         recipeCode = numPad.readCode(3);
                         recipe = rm.getRecipe(String.valueOf(recipeCode));
                         if (recipe == null) {
-                            display.displayMessage("Recipe not Found!");
+                            display.displayMessage("Recipe not found!");
                         }
                     } while (recipe == null);
+                    display.displayMessage("You have selected " + recipe.getName() + "!");
+
                     //Receive Money and check if there is any change to return
                     int change = coinReader.receiveMoney(recipe.getPrice());
                     display.displayMessage("You have filled " + ((change == 0) ? "exactly " : "") + "the required " +
-                            "amount!" + ((change == 0) ? "" : ("\nYou may now take your change (" + change + "c)" +
-                            ":")));
+                            "amount!" + ((change == 0) ? "" : ("\nYou may now take your change (" + change + "c)" + ":")));
                     changeCase.setChange(change);
                     //Execute Recipe
                     rm.executeRecipe(recipe);
@@ -227,11 +232,9 @@ public class Application {
                     "\n=======================================\n"); //WELCOME MESSAGE
             actionCodes.put("100", "==========MAIN MENU==========\n1. Administrator\n2. " +
                     "User\n=============================\nPlease select user type: "); //MAIN MENU
-            actionCodes.put("110", "--------Administrator Submenu--------\n1. Create Recipes\n2. Delete " +
-                    "Recipes\n3." +
-                    " Refill Containers\n-------------------------------------\nPlease select action: "); //ADMIN MAIN
-            // MENU
-            actionCodes.put("120", "---------User Submenu--------\n" +
+            actionCodes.put("110", "\n--------Administrator Submenu--------\n1. Create Recipes\n2. Delete " +
+                    "Recipes\n3. Refill Containers\n-------------------------------------\nPlease select action: ");//ADMIN MAIN MENU
+            actionCodes.put("120", "\n---------User Submenu--------\n" +
                     "1. Buy a drink\n-----------------------------\nPlease select action: "); //USER MAIN MENU
             actionCodes.put("111", "You have chosen to Create a Recipe!"); //Create Recipe (Admin)
             actionCodes.put("112", "You have chosen to Delete a Recipe!"); //Delete Recipe (Admin)

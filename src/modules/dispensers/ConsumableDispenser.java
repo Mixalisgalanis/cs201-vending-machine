@@ -26,7 +26,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
 
     public ConsumableDispenser(DispenserDevice device) {
         super(device);
-        setName(nameDeoder(device.getType()));
+        setName(nameDecoder(device.getType()));
         setConsumableType(consumableTypeDecoder(device.getType()));
         containers = new HashMap<>();
         plugged = false;
@@ -119,7 +119,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         this.plugged = plugged;
     }
 
-    private String nameDeoder(DeviceType deviceType) {
+    private String nameDecoder(DeviceType deviceType) {
         switch (deviceType) {
             case DosingDispenser:
                 return "POWDERS";
