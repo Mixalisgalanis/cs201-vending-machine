@@ -52,11 +52,11 @@ public class Application {
         DispenserDevice materialDispenserDevice = new ConsoleDispenserDevice("MATERIALS", DeviceType.MaterialDispenser);
 
         //Containers
-        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
         dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
+        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
 
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
         flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
 
         materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
         materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
@@ -96,13 +96,13 @@ public class Application {
         ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
 
         //Powders
-        sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
         sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
         //sm.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
 
         //Liquids
-        sm.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
         sm.addConsumable(new Liquid("Water", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
 
         //Materials
         sm.addConsumable(new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE, "Regular"));
@@ -114,7 +114,7 @@ public class Application {
 
     private static void startCycleOf(SoftwareMachine machine) {
         //Loading external modules
-        DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName().substring(0,7));
+        DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName());
         NumPad numPad = (NumPad) machine.getModule(NumPad.class.getSimpleName());
         CoinReader coinReader = (CoinReader) machine.getModule(CoinReader.class.getSimpleName());
         ChangeCase changeCase = (ChangeCase) machine.getModule(ChangeCase.class.getSimpleName());
