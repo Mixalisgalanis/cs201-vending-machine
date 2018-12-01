@@ -23,10 +23,11 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         this.consumableType = consumableType;
     }
 
-    public ConsumableDispenser(DispenserDevice device) {
+    public ConsumableDispenser(DispenserDevice device,String consumableType) {
         super(device);
         this.containers = new HashMap<>();
         this.plugged = false;
+        this.consumableType = consumableType;
     }
 
     //Getters & Setters
@@ -54,7 +55,10 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
 
     @Override
     public void addContainer(Container container) {
-        if (nameDecoder(container).equalsIgnoreCase(getName())) {
+        if (nameDecoder(container) == null){
+            containers.put(container.getName(), container);
+        }
+        else if (nameDecoder(container).equalsIgnoreCase(getName())) {
             if (containers.get(container.getName()) == null) {
                 containers.put(container.getName(), container);
             } else {
@@ -115,14 +119,17 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     }
 
     private String nameDecoder(Container container) {
-        switch (container.getConsumable().getConsumableType()) {
-            case "Powder":
-                return "Powders";
-            case "Liquid":
-                return "Liquids";
-            default:
-                return container.getConsumable().getConsumableType();
+        if (container.getConsumable()!= null) {
+            switch (container.getConsumable().getConsumableType()) {
+                case "Powder":
+                    return "Powders";
+                case "Liquid":
+                    return "Liquids";
+                default:
+                    return container.getConsumable().getConsumableType();
+            }
         }
+        return null;
     }
 
 }

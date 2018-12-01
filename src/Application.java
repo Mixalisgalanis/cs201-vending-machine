@@ -97,7 +97,7 @@ public class Application {
 
         //Powders
         sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
-        sm.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
+        //sm.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
         sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
 
         //Liquids

@@ -4,6 +4,7 @@ package consoleDevices;
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConsoleDevice implements Device {
@@ -11,11 +12,13 @@ public class ConsoleDevice implements Device {
     private String name;
     private DeviceType deviceType;
     private boolean connected;
+    private ArrayList<Device> connectedDevices;
 
     public ConsoleDevice(String name, DeviceType deviceType) {
         this.name = name;
         this.deviceType = deviceType;
         this.connected = false;
+        this.connectedDevices = new ArrayList<Device>();
     }
 
     @Override
@@ -27,8 +30,9 @@ public class ConsoleDevice implements Device {
     public void connect(Device device) {
         if (!this.connected) {
             this.connected = true;
-            this.connect(this);
+            device.connect(this);
             System.out.println(this.name + "connected");
+            this.connectedDevices.add(device);
         }
     }
 
@@ -36,7 +40,9 @@ public class ConsoleDevice implements Device {
     public void disconnect(Device device) {
         if (this.connected) {
             this.connected = false;
+            device.disconnect(this);
             System.out.println(this.name + "disconnected");
+            this.connectedDevices.remove(device);
         }
 
     }
@@ -46,12 +52,12 @@ public class ConsoleDevice implements Device {
         for (Device device : listConnectedDevices()) {
             disconnect(device);
         }
+        connectedDevices.clear();
     }
 
     @Override
     public List<Device> listConnectedDevices() {
-        //TODO
-        return null;
+        return connectedDevices;
     }
 
     @Override
