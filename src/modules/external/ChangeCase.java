@@ -26,9 +26,10 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
                 i += 1;
             }
         }
+        removeChange();
     }
 
-    public void removeChange() {
+    private void removeChange() {
         change = 0;
         getDevice().removeChange();
     }

@@ -13,9 +13,13 @@ public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implement
         super(name, deviceType, capacity);
     }
 
+    public ConsoleFlowContainerDevice(String name, int capacity) {
+        super(name, DeviceType.FlowContainer, capacity);
+    }
+
     @Override
     public int streamRate() {
-        return this.STREAM_RATE_SIZE;
+        return STREAM_RATE_SIZE;
     }
 
     @Override

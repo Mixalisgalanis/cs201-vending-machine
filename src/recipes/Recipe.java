@@ -76,45 +76,22 @@ public class Recipe {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public boolean isAvailable() {
         return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
     }
 
     public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public ArrayList<RecipeStep> getRecipeSteps() {
-        return recipeSteps;
-    }
-
-    public RecipeStep getCurrentRecipeStep() {
-        return recipeSteps.get(currentRecipeStepNumber);
-    }
     //Other Methods
 
     /**

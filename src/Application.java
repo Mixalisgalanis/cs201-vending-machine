@@ -9,6 +9,7 @@ import recipes.RecipeManager;
 import recipes.consumables.Cup;
 import recipes.consumables.ingredients.Liquid;
 import recipes.consumables.ingredients.Powder;
+import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.*;
 
 import java.util.HashMap;
@@ -17,28 +18,34 @@ public class Application {
 
     private static final boolean GUI_ENABLED = false; //Change this to switch between Graphical & Console Implementation
     //Class variables
-    private static ConsoleMachine console;
-    private static SwingMachine gui;
-    private static SoftwareMachine machine;
+    private static HardwareMachine machine;
+    private static SoftwareMachine sm;
     private static RecipeManager rm;
 
     //Constants
     public static void main(String[] args) {
+        //Machine Preparation
+        machine = (GUI_ENABLED) ? new SwingMachine() : new ConsoleMachine();
+        insertDevices();
+        sm = SoftwareMachine.getInstance(machine);
+        rm = RecipeManager.getInstance();
+        insertConsumables();
+
+        //Start Cycle
+        startCycleOf(sm);
+    }
+
+    private static void insertDevices() {
         if (GUI_ENABLED) {
-            gui = new SwingMachine();
             insertGuiDevices();
         } else {
-            console = new ConsoleMachine();
             insertConsoleDevices();
         }
-
-        rm = RecipeManager.getInstance();
-        machine = SoftwareMachine.getInstance((GUI_ENABLED) ? gui : console);
-        insertConsumables();
-        startCycleOf(machine);
     }
 
     private static void insertConsoleDevices() {
+        ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
+
         //Dispensers
         DispenserDevice dosingDispenserDevice = new ConsoleDispenserDevice("POWDERS", DeviceType.DosingDispenser);
         DispenserDevice flowDispenserDevice = new ConsoleDispenserDevice("LIQUIDS", DeviceType.FlowDispenser);
@@ -48,8 +55,8 @@ public class Application {
         dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
         dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
 
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", DeviceType.FlowContainer, console.LIQUID_CONTAINER_REGULAR_SIZE));
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", DeviceType.FlowContainer, console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
 
         materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
         materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
@@ -83,48 +90,50 @@ public class Application {
         console.addDevice(displayDevice);
         console.addDevice(changeCaseDevice);
         console.addDevice(productCaseDevice);
+    }
 
+    private static void insertConsumables() {
+        ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
+
+        //Powders
+        sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
+
+        //Liquids
+        sm.addConsumable(new Liquid("Water", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
+
+        //Materials
+        sm.addConsumable(new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE, "Regular"));
     }
 
     private static void insertGuiDevices() {
         //Same as insertConsoleDevices()
     }
 
-    private static void insertConsumables() {
-        //Powders
-        machine.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
-        machine.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
-        machine.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
-
-        //Liquids
-        machine.addConsumable(new Liquid("Water", console.LIQUID_CONTAINER_REGULAR_SIZE));
-        machine.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
-
-        //Materials
-        machine.addConsumable(new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE, "Normal"));
-    }
-
     private static void startCycleOf(SoftwareMachine machine) {
-        rm.loadRecipes();
-        rm.validateRecipes();
-        rm.loadEnabledRecipes();
+        //Loading external modules
         DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName());
         NumPad numPad = (NumPad) machine.getModule(NumPad.class.getSimpleName());
         CoinReader coinReader = (CoinReader) machine.getModule(CoinReader.class.getSimpleName());
         ChangeCase changeCase = (ChangeCase) machine.getModule(ChangeCase.class.getSimpleName());
         ProductCase productCase = (ProductCase) machine.getModule(ProductCase.class.getSimpleName());
 
-        //Display Welcome Message and Main Menu
-        display.displayMessage("Welcome to Vending Machine v1.0 (alpha)");
+        //Loading Recipes
+        rm.loadRecipes();
+        rm.validateRecipes();
 
-
-        //NEW IMPLEMENTATION OF MENU
+        //New Menu Implementation
         new Menu();
         int EXIT_SELECTION = -1;
         int selection = 0;
         while (selection != EXIT_SELECTION) {
             display.displayMessage(Menu.getMenu());
             switch (Menu.calculateActionCode(selection)) {
+                case "000": //Welcome Message
+                    selection = 1;
+                    break;
                 case "100": //MAIN MENU
                     selection = numPad.readCode(1);
                     break;
@@ -155,8 +164,12 @@ public class Application {
                     selection = EXIT_SELECTION;
                     break;
 
+                case "113": //Refill Containers
+                    machine.refillContainers();
+                    selection = EXIT_SELECTION;
+                    break;
+
                 case "121": //Buy a Drink
-                    //Display Recipes Header
                     display.displayMessage("----Available Recipes----\n");
                     for (Recipe recipe : rm.getAvailableRecipes().values()) {
                         display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
@@ -164,9 +177,7 @@ public class Application {
                     Recipe recipe;
                     //Select Recipe
                     do {
-                        //Display Recipes Footer
                         display.displayMessage("Please select recipe code to execute: ");
-
                         recipeCode = numPad.readCode(3);
                         recipe = rm.getRecipe(String.valueOf(recipeCode));
                         if (recipe == null) {
@@ -175,15 +186,13 @@ public class Application {
                     } while (recipe == null);
                     //Receive Money and check if there is any change to return
                     int change = coinReader.receiveMoney(recipe.getPrice());
-                    coinReader.clearMoney();
                     changeCase.setChange(change);
-                    changeCase.removeChange();
                     //Execute Recipe
                     rm.executeRecipe(recipe);
                     productCase.prepareProduct(recipe);
                     selection = EXIT_SELECTION;
                     break;
-                default: //Code not recognised
+                default: //Action Code not recognised
                     display.displayMessage("Action not found!");
             }
         }
@@ -210,6 +219,7 @@ public class Application {
 
         //Other Methods
         static void insertActionCodes() {
+            actionCodes.put("000", "Welcome to Vending Machine v1.0 (alpha)"); //WELCOME MESSAGE
             actionCodes.put("100", "=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. " +
                     "User\n=======================\nPlease select type: "); //MAIN MENU
             actionCodes.put("110", "----Administrator Submenu----\nActions:\n1. Create Recipes\n2. Delete Recipes\n3." +
@@ -218,6 +228,7 @@ public class Application {
                     "1. Buy a drink\nPlease select action: "); //USER MAIN MENU
             actionCodes.put("111", "You have chosen to Create a Recipe!"); //Create Recipe (Admin)
             actionCodes.put("112", "You have chosen to Delete a Recipe!"); //Delete Recipe (Admin)
+            actionCodes.put("113", "You have chosen to Refill Containers!"); //Refill Containers (Admin)
             actionCodes.put("121", "You have chosen to Buy a Drink!"); //Buy a Drink (User)
         }
 

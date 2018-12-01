@@ -1,6 +1,7 @@
 package recipes;
 
 import machine.SoftwareMachine;
+import modules.containers.Container;
 import recipes.consumables.Consumable;
 import recipes.consumables.ingredients.Ingredient;
 import recipes.dao.DAOFactory;
@@ -17,12 +18,12 @@ public class RecipeManager {
 
     private static RecipeManager instance;
     //Class Variables
-    private HashMap<String, Recipe> recipes;
-    private HashMap<String, Recipe> availableRecipes;
+    private final HashMap<String, Recipe> recipes;
+    private final HashMap<String, Recipe> availableRecipes;
     private DAOFactory factory;
     private RecipeDAO recipeDAO;
     private Reader reader;
-    private SoftwareMachine sm;
+    private final SoftwareMachine sm;
 
 
     //Constructor
@@ -70,16 +71,19 @@ public class RecipeManager {
      * Loads all .rcp files in the ./recipes directory, creates the recipes by the disassemble recipe method and insert it into the HashMap
      */
     public void loadRecipes() {
-        recipes = recipeDAO.loadRecipes();
+        recipes.clear();
+        recipes.putAll(recipeDAO.loadRecipes());
     }
 
     /**
      * Finds and adds to the available recipes list just the enabled ones (ones which can be executed).
      */
-    public void loadEnabledRecipes() {
+    private void loadEnabledRecipes() {
         availableRecipes.clear();
         for (Recipe recipe : recipes.values()) {
-            if (recipe.isAvailable()) availableRecipes.put(recipe.getCode(), recipe);
+            if (recipe.isAvailable()) {
+                availableRecipes.put(recipe.getCode(), recipe);
+            }
         }
     }
 
@@ -89,15 +93,16 @@ public class RecipeManager {
     public void validateRecipes() {
         for (Recipe recipe : recipes.values()) {
             for (Ingredient ingredient : recipe.getIngredients()) {
-                if (sm.getContainers().get(recipe.classNameFinder(ingredient.getName())).getConsumable().getQuantity() >= ingredient.getQuantity())
+                Container tempContainer = sm.getContainers().get(ingredient.getName() + Container.class.getSimpleName());
+                if (tempContainer.getConsumable().getQuantity() >= ingredient.getQuantity()) {
                     recipe.enable();
-                else {
+                } else {
                     recipe.disable();
                     break;
                 }
             }
         }
-        this.loadEnabledRecipes();
+        loadEnabledRecipes();
     }
 
     /**
@@ -128,11 +133,15 @@ public class RecipeManager {
             }
         } else {
             int testCode = 100;
-            while (recipeDAO.checkIfExists(String.valueOf(testCode))) testCode++;
+            while (recipeDAO.checkIfExists(String.valueOf(testCode))) {
+                testCode++;
+            }
             code = String.valueOf(testCode);
         }
         int price = reader.readInt("Enter " + name + "'s cost: ");
-        while (price <= 0) price = reader.readInt("Invalid price amount, try again: ");
+        while (price <= 0) {
+            price = reader.readInt("Invalid price amount, try again: ");
+        }
         String type = reader.readString("Enter Recipe Type: ");
 
         //Ingredients
@@ -159,7 +168,6 @@ public class RecipeManager {
 
         recipes.put(code, new Recipe(name, code, price, type, ingredients, steps));
         validateRecipes();
-        loadEnabledRecipes();
         recipeDAO.storeRecipe(recipes.get(code));
     }
 

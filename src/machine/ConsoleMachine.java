@@ -3,6 +3,7 @@ package machine;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class ConsoleMachine implements HardwareMachine {
     public final int PROCESSOR_CONTAINER_SIZE = 500;
 
     //Class variables
-    private HashMap<String, Device> devices;
+    private final HashMap<String, Device> devices;
 
     //Constructor
     public ConsoleMachine() {
@@ -24,7 +25,7 @@ public class ConsoleMachine implements HardwareMachine {
     //Methods
     @Override
     public List<Device> listDevices() {
-        return (List<Device>) devices.values();
+        return new ArrayList<>(devices.values());
     }
 
     @Override
@@ -34,6 +35,6 @@ public class ConsoleMachine implements HardwareMachine {
 
 
     public void addDevice(Device device) {
-        this.devices.put(device.getName(), device);
+        devices.put(device.getName(), device);
     }
 }
