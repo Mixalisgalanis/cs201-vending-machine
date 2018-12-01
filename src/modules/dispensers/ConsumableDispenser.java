@@ -25,6 +25,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
 
     public ConsumableDispenser(DispenserDevice device,String consumableType) {
         super(device);
+        setName(device.getType().toString());
         this.containers = new HashMap<>();
         this.plugged = false;
         this.consumableType = consumableType;
