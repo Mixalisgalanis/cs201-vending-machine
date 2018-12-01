@@ -58,8 +58,8 @@ public class Application {
         flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
         flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
 
-        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
-        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.CUP_CONTAINER_REGULAR_SIZE));
+        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.SMALL_CUP_CONTAINER));
+        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.BIG_CUP_CONTAINER));
 
         //Processors
         ProcessorDevice boiler = (new ConsoleProcessorDevice("BoilerDevice", console.PROCESSOR_CONTAINER_SIZE));
@@ -97,7 +97,6 @@ public class Application {
 
         //Powders
         sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
-        sm.addConsumable(new Powder("Chocolate", console.POWDER_CONTAINER_REGULAR_SIZE));
         sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
 
         //Liquids
@@ -105,7 +104,8 @@ public class Application {
         sm.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
 
         //Materials
-        sm.addConsumable(new Cup("Cup", console.CUP_CONTAINER_REGULAR_SIZE, "Regular"));
+        sm.addConsumable(new Cup("SmallCup", console.SMALL_CUP_CONTAINER, "Small"));
+        sm.addConsumable(new Cup("BigCup", console.BIG_CUP_CONTAINER, "Big"));
     }
 
     private static void insertGuiDevices() {
@@ -129,8 +129,9 @@ public class Application {
         int EXIT_SELECTION = -1;
         int selection = 0;
         while (selection != EXIT_SELECTION) {
+            String actionCode = Menu.calculateActionCode(selection);
             display.displayMessage(Menu.getMenu());
-            switch (Menu.calculateActionCode(selection)) {
+            switch (actionCode) {
                 case "000": //Welcome Message
                     selection = 1;
                     break;
@@ -170,14 +171,14 @@ public class Application {
                     break;
 
                 case "121": //Buy a Drink
-                    display.displayMessage("----Available Recipes----\n");
+                    display.displayMessage("--------Available Recipes--------\n");
                     for (Recipe recipe : rm.getAvailableRecipes().values()) {
-                        display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
+                        display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + "c)");
                     }
                     Recipe recipe;
                     //Select Recipe
                     do {
-                        display.displayMessage("Please select recipe code to execute: ");
+                        display.displayMessage("Please select recipe code to execute (Insert Digits one by one): ");
                         recipeCode = numPad.readCode(3);
                         recipe = rm.getRecipe(String.valueOf(recipeCode));
                         if (recipe == null) {
@@ -186,6 +187,9 @@ public class Application {
                     } while (recipe == null);
                     //Receive Money and check if there is any change to return
                     int change = coinReader.receiveMoney(recipe.getPrice());
+                    display.displayMessage("You have filled " + ((change == 0) ? "exactly " : "") + "the required " +
+                            "amount!" + ((change == 0) ? "" : ("\nYou may now take your change (" + change + "c)" +
+                            ":")));
                     changeCase.setChange(change);
                     //Execute Recipe
                     rm.executeRecipe(recipe);
@@ -202,7 +206,7 @@ public class Application {
     private static class Menu {
 
         //Class variables
-        static final String INITIAL_CODE = "100";
+        static final String INITIAL_CODE = "000";
         static HashMap<String, String> actionCodes = new HashMap<>();
         //Current state
         static String currentActionCode = INITIAL_CODE;
@@ -212,20 +216,23 @@ public class Application {
             insertActionCodes();
         }
 
-        //Getter
+        //Getters
         static String getMenu() {
             return actionCodes.get(currentActionCode);
         }
 
         //Other Methods
         static void insertActionCodes() {
-            actionCodes.put("000", "Welcome to Vending Machine v1.0 (alpha)"); //WELCOME MESSAGE
-            actionCodes.put("100", "=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. " +
-                    "User\n=======================\nPlease select type: "); //MAIN MENU
-            actionCodes.put("110", "----Administrator Submenu----\nActions:\n1. Create Recipes\n2. Delete Recipes\n3." +
-                    " Refill Containers\nPlease select action: "); //ADMIN MAIN MENU
-            actionCodes.put("120", "----User Submenu----\nActions:\n" +
-                    "1. Buy a drink\nPlease select action: "); //USER MAIN MENU
+            actionCodes.put("000", "=======================================\nWelcome to Vending Machine v1.0 (alpha)" +
+                    "\n=======================================\n"); //WELCOME MESSAGE
+            actionCodes.put("100", "==========MAIN MENU==========\n1. Administrator\n2. " +
+                    "User\n=============================\nPlease select user type: "); //MAIN MENU
+            actionCodes.put("110", "--------Administrator Submenu--------\n1. Create Recipes\n2. Delete " +
+                    "Recipes\n3." +
+                    " Refill Containers\n-------------------------------------\nPlease select action: "); //ADMIN MAIN
+            // MENU
+            actionCodes.put("120", "---------User Submenu--------\n" +
+                    "1. Buy a drink\n-----------------------------\nPlease select action: "); //USER MAIN MENU
             actionCodes.put("111", "You have chosen to Create a Recipe!"); //Create Recipe (Admin)
             actionCodes.put("112", "You have chosen to Delete a Recipe!"); //Delete Recipe (Admin)
             actionCodes.put("113", "You have chosen to Refill Containers!"); //Refill Containers (Admin)
@@ -234,7 +241,8 @@ public class Application {
 
         static String calculateActionCode(int selection) {
             String prefix = currentActionCode.substring(0, currentActionCode.indexOf('0'));
-            return prefix + selection + currentActionCode.substring(currentActionCode.indexOf('0') + 1);
+            currentActionCode = prefix + selection + currentActionCode.substring(currentActionCode.indexOf('0') + 1);
+            return currentActionCode;
         }
     }
 }

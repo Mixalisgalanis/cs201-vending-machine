@@ -6,6 +6,8 @@ import tuc.ece.cs201.vm.hw.device.MaterialContainerDevice;
 
 public class MaterialContainer extends Container<MaterialContainerDevice> {
 
+    private static int instance = 1;
+
     //Constructors
     public MaterialContainer(String name, int capacity, Consumable consumable, MaterialContainerDevice device) {
         super(name, capacity, consumable, device);
@@ -13,7 +15,7 @@ public class MaterialContainer extends Container<MaterialContainerDevice> {
 
     public MaterialContainer(MaterialContainerDevice device) {
         super(device);
-        setName(getClass().getSimpleName());
+        setName(getClass().getSimpleName() + (instance++));
     }
 
     @Override

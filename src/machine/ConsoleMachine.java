@@ -11,7 +11,8 @@ public class ConsoleMachine implements HardwareMachine {
 
     public final int POWDER_CONTAINER_REGULAR_SIZE = 500;
     public final int LIQUID_CONTAINER_REGULAR_SIZE = 1000;
-    public final int CUP_CONTAINER_REGULAR_SIZE = 20;
+    public final int SMALL_CUP_CONTAINER = 25;
+    public final int BIG_CUP_CONTAINER = 15;
     public final int PROCESSOR_CONTAINER_SIZE = 500;
 
     //Class variables

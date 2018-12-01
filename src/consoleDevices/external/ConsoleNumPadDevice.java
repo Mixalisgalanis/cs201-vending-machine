@@ -6,24 +6,15 @@ import utilities.Reader;
 
 public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implements NumPadDevice {
 
-    private Reader reader;
+    private final Reader reader;
 
     public ConsoleNumPadDevice() {
         super("NumPad", DeviceType.NumPad);
-        this.reader = new Reader();
+        reader = new Reader();
     }
 
     @Override
     public int readDigit(String s) {
-        //TODO
-        return 0;
+        return reader.readInt(s);
     }
-
-    public int readDigit() {
-        int digit;
-        digit = reader.readInt("Insert digit:");
-        return digit;
-    }
-
-
 }

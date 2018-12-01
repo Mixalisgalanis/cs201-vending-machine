@@ -4,6 +4,7 @@ import behaviour.Consumer;
 import behaviour.Provider;
 import modules.Module;
 import modules.containers.Container;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
 import java.util.HashMap;
@@ -12,21 +13,23 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
 
     //Class variables
     private boolean plugged;
-    private HashMap<String, Container> containers;
+    private final HashMap<String, Container> containers;
     private String consumableType;
 
     //Constructors
     public ConsumableDispenser(String name, String consumableType, DispenserDevice device) {
         super(name, device);
-        this.containers = new HashMap<>();
-        this.plugged = false;
+        containers = new HashMap<>();
+        plugged = false;
         this.consumableType = consumableType;
     }
 
     public ConsumableDispenser(DispenserDevice device) {
         super(device);
-        this.containers = new HashMap<>();
-        this.plugged = false;
+        setName(nameDeoder(device.getType()));
+        setConsumableType(consumableTypeDecoder(device.getType()));
+        containers = new HashMap<>();
+        plugged = false;
     }
 
     //Getters & Setters
@@ -54,7 +57,9 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
 
     @Override
     public void addContainer(Container container) {
-        if (nameDecoder(container).equalsIgnoreCase(getName())) {
+        if ((container.getType() == DeviceType.DosingContainer && getType() == DeviceType.DosingDispenser) ||
+                (container.getType() == DeviceType.FlowContainer && getType() == DeviceType.FlowDispenser) ||
+                (container.getType() == DeviceType.MaterialContainer && getType() == DeviceType.MaterialDispenser)) {
             if (containers.get(container.getName()) == null) {
                 containers.put(container.getName(), container);
             } else {
@@ -114,14 +119,29 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         this.plugged = plugged;
     }
 
-    private String nameDecoder(Container container) {
-        switch (container.getConsumable().getConsumableType()) {
-            case "Powder":
-                return "Powders";
-            case "Liquid":
-                return "Liquids";
+    private String nameDeoder(DeviceType deviceType) {
+        switch (deviceType) {
+            case DosingDispenser:
+                return "POWDERS";
+            case FlowDispenser:
+                return "LIQUIDS";
+            case MaterialDispenser:
+                return "CUPS";
             default:
-                return container.getConsumable().getConsumableType();
+                return "?";
+        }
+    }
+
+    private String consumableTypeDecoder(DeviceType deviceType) {
+        switch (deviceType) {
+            case DosingDispenser:
+                return "Powder";
+            case FlowDispenser:
+                return "Liquid";
+            case MaterialDispenser:
+                return "Cup";
+            default:
+                return "?";
         }
     }
 

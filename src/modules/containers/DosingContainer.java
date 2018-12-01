@@ -6,6 +6,8 @@ import tuc.ece.cs201.vm.hw.device.DosingContainerDevice;
 
 public class DosingContainer extends Container<DosingContainerDevice> {
 
+    private static int instance = 1;
+
     //Constructors
     public DosingContainer(String name, int capacity, Consumable consumable, DosingContainerDevice device) {
         super(name, capacity, consumable, device);
@@ -13,7 +15,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
 
     public DosingContainer(DosingContainerDevice device) {
         super(device);
-        setName(getClass().getSimpleName());
+        setName(getClass().getSimpleName() + (instance++));
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class FlowContainer<T extends FlowContainerDevice> extends Container<FlowContainerDevice> {
 
     private final int MULTIPLIER = 10;
+    private static int instance = 1;
 
     //Constructors
     public FlowContainer(String name, int capacity, Consumable consumable, FlowContainerDevice device) {
@@ -18,7 +19,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     public FlowContainer(FlowContainerDevice device) {
         super(device);
-        setName(getClass().getSimpleName());
+        setName(getClass().getSimpleName() + (instance++));
     }
 
     @Override

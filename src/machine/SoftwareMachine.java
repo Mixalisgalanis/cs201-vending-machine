@@ -49,7 +49,10 @@ public class SoftwareMachine {
 
     private void probeHardware(HardwareMachine machine) {
         for (Device device : machine.listDevices()) {
-            modules.put(device.getType().toString(), ModuleFactory.createModule(device));
+            Module module = ModuleFactory.createModule(device);
+            if (module != null) {
+                modules.put(module.getName(), module);
+            }
         }
     }
 
@@ -59,6 +62,7 @@ public class SoftwareMachine {
                 Container container = dispenser.getNextAvailableContainer();
                 container.setName(consumable.getName() + Container.class.getSimpleName());
                 container.setConsumable(consumable);
+                return;
             }
         }
     }

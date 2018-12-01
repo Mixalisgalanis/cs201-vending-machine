@@ -23,20 +23,20 @@ public class ModuleFactory {
                 return new IngredientProcessor((ProcessorDevice) device);
             case FlowDispenser:
                 ConsumableDispenser dispenser = new ConsumableDispenser((DispenserDevice) device);
-                for (Device containerDevice : device.listConnectedDevices()) {
-                    dispenser.addContainer((FlowContainer) createModule(containerDevice));
+                for (Object containerDevice : ((DispenserDevice) device).listContainers()) {
+                    dispenser.addContainer((FlowContainer) createModule((FlowContainerDevice) containerDevice));
                 }
                 return dispenser;
             case DosingDispenser:
                 dispenser = new ConsumableDispenser((DispenserDevice) device);
-                for (Device containerDevice : device.listConnectedDevices()) {
-                    dispenser.addContainer((DosingContainer) createModule(containerDevice));
+                for (Object containerDevice : ((DispenserDevice) device).listContainers()) {
+                    dispenser.addContainer((DosingContainer) createModule((DosingContainerDevice) containerDevice));
                 }
                 return dispenser;
             case MaterialDispenser:
                 dispenser = new ConsumableDispenser((DispenserDevice) device);
-                for (Device containerDevice : device.listConnectedDevices()) {
-                    dispenser.addContainer((MaterialContainer) createModule(containerDevice));
+                for (Object containerDevice : ((DispenserDevice) device).listContainers()) {
+                    dispenser.addContainer((MaterialContainer) createModule((MaterialContainerDevice) containerDevice));
                 }
                 return dispenser;
             case ProductCase:
