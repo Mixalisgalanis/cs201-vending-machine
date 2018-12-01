@@ -7,13 +7,16 @@ public class NumPad extends Module<NumPadDevice> {
 
     //Constructor
     public NumPad(NumPadDevice device) {
-        super("NumPad", device);
+        super(device);
+        setName(getClass().getSimpleName());
     }
 
     //Other Methods
     public int readCode(int length) {
         String code = "";
-        for (int i = 0; i < length; i++) code += getDevice().readDigit(code);
+        for (int i = 0; i < length; i++) {
+            code += getDevice().readDigit(code);
+        }
         return Integer.parseInt(code);
     }
 }

@@ -13,8 +13,10 @@ public class MaterialContainer extends Container<MaterialContainerDevice> {
 
     public MaterialContainer(MaterialContainerDevice device) {
         super(device);
+        setName(getClass().getSimpleName());
     }
 
+    @Override
     public void provide(Consumer consumer, int quantity) {
         if (isPlugged()) {
             if (quantity <= getConsumable().getQuantity()) {

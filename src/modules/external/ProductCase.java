@@ -18,9 +18,10 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     //Constructor
     public ProductCase(String productName, int procuctCost, ProductCaseDevice device) {
-        super("ProductCase", device);
-        this.pluggable = false;
-        this.builder = new ProductBuilder(productName, procuctCost);
+        super(device);
+        setName(getClass().getSimpleName());
+        pluggable = false;
+        builder = new ProductBuilder(productName, procuctCost);
     }
 
     public ProductCase(ProductCaseDevice device) {
@@ -33,7 +34,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     public void acceptAndLoad(Consumable consumable) {
         if (pluggable) {
             if (product == null) {
-                this.product.setConsumables(consumable);
+                product.setConsumables(consumable);
                 getDevice().loadIngredient(consumable.toString());
                 //TODO check what "toString" returns
             }
@@ -64,12 +65,12 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     @Override
     public boolean isPlugged() {
-        return this.pluggable;
+        return pluggable;
     }
 
     @Override
     public void setPlugged(boolean plugged) {
-        this.pluggable = plugged;
+        pluggable = plugged;
     }
 
     public Product getProduct() {

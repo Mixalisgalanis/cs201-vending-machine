@@ -8,7 +8,8 @@ public class DisplayPanel extends Module<DisplayDevice> {
 
     //Constructor
     public DisplayPanel(DisplayDevice device) {
-        super("DisplayPanel", device);
+        super(device);
+        setName(getClass().getSimpleName());
     }
 
     //Other Methods

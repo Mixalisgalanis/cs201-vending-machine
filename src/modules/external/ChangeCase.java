@@ -10,8 +10,9 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
 
     //Constructor
     public ChangeCase(ChangeCaseDevice device) {
-        super("ChangeCase", device);
-        this.change = 0;
+        super(device);
+        setName(getClass().getSimpleName());
+        change = 0;
     }
 
     //OtherMethods
@@ -28,7 +29,7 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
     }
 
     public void removeChange() {
-        this.change = 0;
+        change = 0;
         getDevice().removeChange();
     }
 }

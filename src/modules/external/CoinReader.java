@@ -11,8 +11,9 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
 
     //Constructor
     public CoinReader(CoinAcceptorDevice device) {
-        super("CoinReader", device);
-        this.money = 0;
+        super(device);
+        setName(getClass().getSimpleName());
+        money = 0;
     }
 
     //Other Methods
@@ -24,6 +25,6 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
     }
 
     public void clearMoney() {
-        this.money = 0;
+        money = 0;
     }
 }

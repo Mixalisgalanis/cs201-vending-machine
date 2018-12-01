@@ -13,6 +13,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
 
     public DosingContainer(DosingContainerDevice device) {
         super(device);
+        setName(getClass().getSimpleName());
     }
 
     @Override

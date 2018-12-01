@@ -18,12 +18,12 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
         super(name, device);
         this.capacity = capacity;
         this.consumable = consumable;
-        this.plugged = false;
+        plugged = false;
     }
 
     Container(T device) {
         super(device);
-        this.capacity = device.getCapacity();
+        capacity = device.getCapacity();
     }
 
     //Getters & Setters

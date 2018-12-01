@@ -11,14 +11,16 @@ import recipes.consumables.ingredients.Liquid;
 import recipes.consumables.ingredients.Powder;
 import tuc.ece.cs201.vm.hw.device.*;
 
+import java.util.HashMap;
+
 public class Application {
 
+    private static final boolean GUI_ENABLED = false; //Change this to switch between Graphical & Console Implementation
     //Class variables
     private static ConsoleMachine console;
     private static SwingMachine gui;
     private static SoftwareMachine machine;
     private static RecipeManager rm;
-    private static final boolean GUI_ENABLED = false; //Change this to switch between Graphical & Console Implementation
 
     //Constants
     public static void main(String[] args) {
@@ -106,75 +108,122 @@ public class Application {
         rm.loadRecipes();
         rm.validateRecipes();
         rm.loadEnabledRecipes();
-        DisplayPanel display = (DisplayPanel) machine.getModule("DisplayPanel");
-        NumPad numPad = (NumPad) machine.getModule("NumPad");
-        CoinReader coinReader = (CoinReader) machine.getModule("CoinReader");
-        ChangeCase changeCase = (ChangeCase) machine.getModule("ChangeCase");
-        ProductCase productCase = (ProductCase) machine.getModule("ProductCase");
+        DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName());
+        NumPad numPad = (NumPad) machine.getModule(NumPad.class.getSimpleName());
+        CoinReader coinReader = (CoinReader) machine.getModule(CoinReader.class.getSimpleName());
+        ChangeCase changeCase = (ChangeCase) machine.getModule(ChangeCase.class.getSimpleName());
+        ProductCase productCase = (ProductCase) machine.getModule(ProductCase.class.getSimpleName());
 
         //Display Welcome Message and Main Menu
         display.displayMessage("Welcome to Vending Machine v1.0 (alpha)");
-        display.displayMessage("=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. User\n=======================\nPlease select type: ");
-        switch (String.valueOf(numPad.readCode(1))) {
-            case "1":
-                //Display Admin Submenu
-                display.displayMessage("----Administrator Submenu----\nActions:\n1. Create Recipes\n2. Delete Recipes\n3. Refill Containers\nPlease select action: ");
-                switch (String.valueOf(numPad.readCode(1))) {
-                    case "1":
-                        rm.createRecipe();
-                        break;
-                    case "2": {
-                        //Display Recipes Header
-                        display.displayMessage("----Available Recipes----\n");
-                        for (Recipe recipe : rm.getRecipes().values()) {
-                            display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
-                        }
-                        //Display Recipes Footer
-                        display.displayMessage("Enter recipe code to delete: ");
-                        int recipeCode = numPad.readCode(3);
-                        rm.removeRecipe(String.valueOf(recipeCode));
-                        break;
-                    }
-                    case "3":
-                        machine.refillContainers();
-                        break;
-                }
-                break;
-            case "2":
-                //Display User Sub Menu
-                display.displayMessage("----User Submenu----\nActions:\n1. Buy a drink\nPlease select actiion: ");
-                switch (String.valueOf(numPad.readCode(1))) {
-                    case "1": {
-                        //Display Recipes Header
-                        display.displayMessage("----Available Recipes----\n");
-                        for (Recipe recipe : rm.getAvailableRecipes().values()) {
-                            display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
-                        }
-                        Recipe recipe;
-                        //Select Recipe
-                        do {
-                            //Display Recipes Footer
-                            display.displayMessage("Please select recipe code to execute: ");
 
-                            int recipeCode = numPad.readCode(3);
-                            recipe = rm.getRecipe(String.valueOf(recipeCode));
-                            if (recipe == null) {
-                                display.displayMessage("Recipe not Found!");
-                            }
-                        } while (recipe == null);
-                        //Receive Money and check if there is any change to return
-                        int change = coinReader.receiveMoney(recipe.getPrice());
-                        coinReader.clearMoney();
-                        changeCase.setChange(change);
-                        changeCase.removeChange();
-                        //Execute Recipe
-                        rm.executeRecipe(recipe);
-                        productCase.prepareProduct(recipe);
-                    }
+
+        //NEW IMPLEMENTATION OF MENU
+        new Menu();
+        int EXIT_SELECTION = -1;
+        int selection = 0;
+        while (selection != EXIT_SELECTION) {
+            display.displayMessage(Menu.getMenu());
+            switch (Menu.calculateActionCode(selection)) {
+                case "100": //MAIN MENU
+                    selection = numPad.readCode(1);
                     break;
-                }
-                break;
+
+                case "110": //ADMIN MAIN MENU
+                    selection = numPad.readCode(1);
+                    break;
+
+                case "120": //USER MAIN MENU
+                    selection = numPad.readCode(1);
+                    break;
+
+                case "111": //Create Recipes
+                    rm.createRecipe();
+                    selection = EXIT_SELECTION;
+                    break;
+
+                case "112": //Delete Recipes
+                    //Display Recipes Header
+                    display.displayMessage("----Available Recipes----\n");
+                    for (Recipe recipe : rm.getRecipes().values()) {
+                        display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
+                    }
+                    //Display Recipes Footer
+                    display.displayMessage("Enter recipe code to delete: ");
+                    int recipeCode = numPad.readCode(3);
+                    rm.removeRecipe(String.valueOf(recipeCode));
+                    selection = EXIT_SELECTION;
+                    break;
+
+                case "121": //Buy a Drink
+                    //Display Recipes Header
+                    display.displayMessage("----Available Recipes----\n");
+                    for (Recipe recipe : rm.getAvailableRecipes().values()) {
+                        display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
+                    }
+                    Recipe recipe;
+                    //Select Recipe
+                    do {
+                        //Display Recipes Footer
+                        display.displayMessage("Please select recipe code to execute: ");
+
+                        recipeCode = numPad.readCode(3);
+                        recipe = rm.getRecipe(String.valueOf(recipeCode));
+                        if (recipe == null) {
+                            display.displayMessage("Recipe not Found!");
+                        }
+                    } while (recipe == null);
+                    //Receive Money and check if there is any change to return
+                    int change = coinReader.receiveMoney(recipe.getPrice());
+                    coinReader.clearMoney();
+                    changeCase.setChange(change);
+                    changeCase.removeChange();
+                    //Execute Recipe
+                    rm.executeRecipe(recipe);
+                    productCase.prepareProduct(recipe);
+                    selection = EXIT_SELECTION;
+                    break;
+                default: //Code not recognised
+                    display.displayMessage("Action not found!");
+            }
+        }
+    }
+
+
+    private static class Menu {
+
+        //Class variables
+        static final String INITIAL_CODE = "100";
+        static HashMap<String, String> actionCodes = new HashMap<>();
+        //Current state
+        static String currentActionCode = INITIAL_CODE;
+
+        //Constructor
+        Menu() {
+            insertActionCodes();
         }
 
+        //Getter
+        static String getMenu() {
+            return actionCodes.get(currentActionCode);
+        }
+
+        //Other Methods
+        static void insertActionCodes() {
+            actionCodes.put("100", "=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. " +
+                    "User\n=======================\nPlease select type: "); //MAIN MENU
+            actionCodes.put("110", "----Administrator Submenu----\nActions:\n1. Create Recipes\n2. Delete Recipes\n3." +
+                    " Refill Containers\nPlease select action: "); //ADMIN MAIN MENU
+            actionCodes.put("120", "----User Submenu----\nActions:\n" +
+                    "1. Buy a drink\nPlease select action: "); //USER MAIN MENU
+            actionCodes.put("111", "You have chosen to Create a Recipe!"); //Create Recipe (Admin)
+            actionCodes.put("112", "You have chosen to Delete a Recipe!"); //Delete Recipe (Admin)
+            actionCodes.put("121", "You have chosen to Buy a Drink!"); //Buy a Drink (User)
+        }
+
+        static String calculateActionCode(int selection) {
+            String prefix = currentActionCode.substring(0, currentActionCode.indexOf('0'));
+            return prefix + selection + currentActionCode.substring(currentActionCode.indexOf('0') + 1);
+        }
     }
 }
