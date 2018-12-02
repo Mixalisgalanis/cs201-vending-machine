@@ -2,6 +2,7 @@ package recipes.step;
 
 import behaviour.Consumer;
 import behaviour.Provider;
+import modules.dispensers.ConsumableDispenser;
 import modules.dispensers.Dispenser;
 
 public class TransferStep extends RecipeStep {
@@ -76,14 +77,15 @@ public class TransferStep extends RecipeStep {
     public void executeStep() {
         if (sm.getDispensers().get(source) != null) {
             Dispenser dispenser = sm.getDispensers().get(source);
-            Consumer consumer = (Consumer) sm.findContainer(destination);
+            Consumer consumer = sm.findProcessor(NameDecoder(destination));
+            if (destination.equalsIgnoreCase("cup_case")) consumer = sm.getProductCase();
 
             dispenser.plug(consumer);
-            dispenser.prepareContainer(sm.findContainer(content).getName(), consumer);
+            dispenser.prepareContainer(sm.findContainer(NameDecoder(content)).getName(), consumer);
             dispenser.unPlug(consumer);
         } else {
-            Provider provider = sm.findContainer(source);
-            Consumer consumer = (Consumer) sm.findContainer(destination);
+            Provider provider = (Provider) sm.findProcessor(NameDecoder(source));
+            Consumer consumer = sm.findProcessor(NameDecoder(destination));
 
             provider.plug(consumer);
             provider.provide(consumer, quantity);

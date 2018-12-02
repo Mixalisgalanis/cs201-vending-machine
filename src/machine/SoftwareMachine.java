@@ -1,5 +1,6 @@
 package machine;
 
+import behaviour.Consumer;
 import modules.Module;
 import modules.ModuleFactory;
 import modules.containers.Container;
@@ -12,6 +13,7 @@ import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
+import java.security.Provider;
 import java.util.HashMap;
 
 public class SoftwareMachine {
@@ -121,11 +123,20 @@ public class SoftwareMachine {
         return consumables;
     }
 
+    public Consumer getProductCase(){
+        for (Module module : this.modules.values()) {
+            if (module.getType().equals(DeviceType.ProductCase)) {
+                return (Consumer)module;
+            }
+        }
+        return null;
+    }
+
 
     //Finder Methods
     public Container findContainer(String name) {
         for (Container container : getContainers().values()) {
-            if (container.getConsumable().getName().equalsIgnoreCase(name)) {
+            if (container.getConsumable() != null && container.getConsumable().getName().equalsIgnoreCase(name)) {
                 return container;
             }
         }
@@ -134,7 +145,7 @@ public class SoftwareMachine {
 
     public Processor findProcessor(String name) {
         for (IngredientProcessor processor : getProcessors().values()) {
-            if (processor.getName().equalsIgnoreCase(name)) {
+            if (processor.getDevice().getName().equalsIgnoreCase(name+"Device")) {
                 return processor;
             }
         }

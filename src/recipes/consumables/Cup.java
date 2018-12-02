@@ -4,7 +4,7 @@ public class Cup extends Material {
     private String size;
 
     public Cup(String name, int quantity, String size) {
-        super("Cup", quantity);
+        super(name, quantity, "Cup");
         this.size = size;
     }
 
