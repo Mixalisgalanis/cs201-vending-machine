@@ -70,10 +70,8 @@ public class SoftwareMachine {
     }
 
     public void refillContainers() {
-        for (Module module : modules.values()) {
-            if (module instanceof Container) {
-                ((Container) module).getConsumable().refill(((Container) module).getCapacity());
-            }
+        for (Container container : getContainers().values()) {
+                container.getConsumable().refill(container.getCapacity());
         }
     }
 

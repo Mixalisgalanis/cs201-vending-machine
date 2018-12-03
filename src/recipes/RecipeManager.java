@@ -154,18 +154,31 @@ public class RecipeManager {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         for (int j = 0; j < ingredientsData.length / 2; j++) {
             try {
-                Class<?> clazz = Class.forName("recipes.consumables.ingredients" + sm.getConsumables().get(ingredientsData[2 * j]));
+                Class<?> clazz = (sm.getConsumables().get(ingredientsData[2 * j]).getClass());
                 Constructor<?> ctor = clazz.getConstructors()[0];
                 Object object = ctor.newInstance(new Object[]{ingredientsData[2 * j], Integer.parseInt(ingredientsData[2 * j + 1])});
                 ingredients.add((Ingredient) object);
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            } catch (  IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
 
         //Steps
+        String[] stepsData = reader.readString("Please Enter Steps (ex: Transfer Powders Mixer Coffee 40,)").split(",");
         ArrayList<RecipeStep> steps = new ArrayList<>();
-
+        for (int j = 0; j < stepsData.length; j++) {
+            try {
+                String currentStep = stepsData[j];
+                Class<?> clazz = Class.forName("recipes.step." + currentStep.substring(0,currentStep.indexOf(" ")) + "Step");
+                Constructor<?> ctor = clazz.getConstructors()[1];
+                int a = Integer.parseInt(currentStep.substring(currentStep.lastIndexOf(" ") + 1));
+                String[] stepData = currentStep.substring(currentStep.indexOf(" ") + 1, currentStep.lastIndexOf(" ")).split(" ");
+                Object object = ctor.newInstance(new Object[]{stepData, a}); //Creates object from that constructor
+                steps.add((RecipeStep) object);
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
         recipes.put(code, new Recipe(name, code, price, type, ingredients, steps));
         validateRecipes();
         recipeDAO.storeRecipe(recipes.get(code));
