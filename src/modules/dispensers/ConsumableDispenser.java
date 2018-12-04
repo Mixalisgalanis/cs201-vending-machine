@@ -48,7 +48,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     //Other Methods
     @Override
     public Provider prepareContainer(String containerName, Consumer consumer) {
-        Container container = containers.get(containerName);
+        Container container = getContainer(containerName);
         if (container != null) {
             container.plug(consumer);
         }
@@ -66,6 +66,13 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
                 container.getConsumable().refillPart(containers.get(container.getName()).getCapacity(), container.getConsumable().getQuantity());
             }
         }
+    }
+
+    public Container getContainer(String name){
+        for (Container container : containers.values()) {
+            if (container.getName().equalsIgnoreCase(name)) return container;
+        }
+        return null;
     }
 
     public Container getNextAvailableContainer() {

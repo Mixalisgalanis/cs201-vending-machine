@@ -8,8 +8,8 @@ public class ProcessedIngredient extends Ingredient {
     private HashMap<String, Ingredient> ingredients;
 
     //Constructor
-    public ProcessedIngredient(int quantity, String ingredientType) {
-        super(quantity, ingredientType);
+    public ProcessedIngredient(String name) {
+        super(name, 0);
         ingredients = new HashMap<>();
     }
 
@@ -30,6 +30,7 @@ public class ProcessedIngredient extends Ingredient {
 
     public void addIngredients(Ingredient ingredient) {
         ingredients.put(ingredient.getName(), ingredient);
+        this.setQuantity(this.getQuantity()+ingredient.getQuantity());
     }
 
     public String generateName() {

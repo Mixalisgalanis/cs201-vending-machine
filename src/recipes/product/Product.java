@@ -16,6 +16,8 @@ public class Product {
         this.productCost = productCost;
     }
 
+    public Product(){}
+
     //Getters & Setters
 
     public void setConsumables(Consumable consumables) {

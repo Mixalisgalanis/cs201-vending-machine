@@ -3,6 +3,8 @@ package modules.containers.processor;
 import behaviour.Consumer;
 import modules.containers.FlowContainer;
 import recipes.consumables.Consumable;
+import recipes.consumables.ingredients.Ingredient;
+import recipes.consumables.ingredients.ProcessedIngredient;
 import tuc.ece.cs201.vm.hw.device.ProcessorDevice;
 
 import java.util.concurrent.TimeUnit;
@@ -13,17 +15,19 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     private boolean loaded;
     private boolean processed;
     private boolean plugged;
-
+    private ProcessedIngredient processedIngredient;
     //Constructors
     public IngredientProcessor(String name, int capacity, Consumable consumable, ProcessorDevice device) {
         super(name, capacity, consumable, device);
         this.loaded = false;
         this.processed = false;
         this.plugged = false;
+        processedIngredient = new ProcessedIngredient(getDevice().getProcessingLabel());
     }
 
     public IngredientProcessor(ProcessorDevice device) {
         super(device);
+        processedIngredient = new ProcessedIngredient(getDevice().getProcessingLabel());
     }
 
     //Other Methods
@@ -50,13 +54,15 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
                 if (consumable.getQuantity() <= getCapacity()) {
                     setConsumable(consumable);
                     loaded = true;
+                    processedIngredient.addIngredients((Ingredient)consumable);
                 }
             } else {
-                if (!getConsumable().getName().equals(consumable.getName())) {
-                    loaded = false;
-                } else if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
+                if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
                     loaded = true;
                     getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
+                    processedIngredient.addIngredients((Ingredient)consumable);
+                }else if (!getConsumable().getName().equals(consumable.getName())) {
+                    loaded = false;
                 }
             }
         }

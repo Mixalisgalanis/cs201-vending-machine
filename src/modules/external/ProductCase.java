@@ -20,12 +20,15 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     public ProductCase(String productName, int procuctCost, ProductCaseDevice device) {
         super(device);
         setName(getClass().getSimpleName());
+        product = new Product(productName,procuctCost);
         pluggable = false;
         builder = new ProductBuilder(productName, procuctCost);
     }
 
     public ProductCase(ProductCaseDevice device) {
         super("ProductCase", device);
+        product = new Product();
+        pluggable = false;
     }
 
 

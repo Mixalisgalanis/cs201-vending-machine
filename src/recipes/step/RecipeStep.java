@@ -14,7 +14,7 @@ abstract public class RecipeStep {
 
     public String NameDecoder(String name){
         switch (name){
-            case "MIXER": return "Buffer";
+            case "MIXER": return "Blender";
             case "BOILER": return "Boiler";
             case "CUP_CASE": return "ProductCase";
             case "BIG_CUP": return "BigCup";

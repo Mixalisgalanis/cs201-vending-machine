@@ -80,15 +80,17 @@ public class TransferStep extends RecipeStep {
             Consumer consumer = sm.findProcessor(NameDecoder(destination));
             if (destination.equalsIgnoreCase("cup_case")) consumer = sm.getProductCase();
 
+            String containerName = sm.findContainer(NameDecoder(content)).getName();
             dispenser.plug(consumer);
-            dispenser.prepareContainer(sm.findContainer(NameDecoder(content)).getName(), consumer);
+            dispenser.prepareContainer(containerName, consumer);
+            ((ConsumableDispenser) dispenser).getContainer(containerName).provide(consumer,quantity);
             dispenser.unPlug(consumer);
         } else {
             Provider provider = (Provider) sm.findProcessor(NameDecoder(source));
             Consumer consumer = sm.findProcessor(NameDecoder(destination));
 
             provider.plug(consumer);
-            provider.provide(consumer, quantity);
+            provider.provide(consumer);
             provider.unPlug(consumer);
         }
     }

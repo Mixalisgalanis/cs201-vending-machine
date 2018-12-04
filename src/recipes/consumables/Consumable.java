@@ -19,6 +19,11 @@ abstract public class Consumable {
         this.consumableType = consumableType;
     }
 
+    public Consumable(String name,int quantity) {
+        this.quantity = quantity;
+        this.name = name;
+    }
+
     //Getters & Setters
     public String getName() {
         return name;
@@ -50,6 +55,5 @@ abstract public class Consumable {
     public void refill(int containerCapacity) {
         this.quantity = containerCapacity;
     }
-
 
 }
