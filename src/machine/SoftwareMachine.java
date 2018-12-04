@@ -13,7 +13,6 @@ import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
-import java.security.Provider;
 import java.util.HashMap;
 
 public class SoftwareMachine {
@@ -36,17 +35,17 @@ public class SoftwareMachine {
         probeHardware(machine);
     }
 
-    //Other Methods
-    public Module getModule(String moduleName) {
-        return modules.get(moduleName);
-    }
-
     public static SoftwareMachine getInstance() {
         return (instance != null) ? instance : new SoftwareMachine();
     }
 
     public static SoftwareMachine getInstance(HardwareMachine machine) {
         return (instance != null) ? instance : new SoftwareMachine(machine);
+    }
+
+    //Other Methods
+    public Module getModule(String moduleName) {
+        return modules.get(moduleName);
     }
 
     private void probeHardware(HardwareMachine machine) {
@@ -71,7 +70,7 @@ public class SoftwareMachine {
 
     public void refillContainers() {
         for (Container container : getContainers().values()) {
-                container.getConsumable().refill(container.getCapacity());
+            container.getConsumable().refill(container.getCapacity());
         }
     }
 
@@ -121,10 +120,10 @@ public class SoftwareMachine {
         return consumables;
     }
 
-    public Consumer getProductCase(){
+    public Consumer getProductCase() {
         for (Module module : this.modules.values()) {
             if (module.getType().equals(DeviceType.ProductCase)) {
-                return (Consumer)module;
+                return (Consumer) module;
             }
         }
         return null;
@@ -143,7 +142,7 @@ public class SoftwareMachine {
 
     public Processor findProcessor(String name) {
         for (IngredientProcessor processor : getProcessors().values()) {
-            if (processor.getDevice().getName().equalsIgnoreCase(name+"Device")) {
+            if (processor.getDevice().getName().equalsIgnoreCase(name + "Device")) {
                 return processor;
             }
         }

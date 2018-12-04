@@ -11,18 +11,16 @@ public class Recipe {
 
     //Class variables
 
+    private final String code;
+    //Ingredients
+    private final ArrayList<Ingredient> ingredients;
+    //Steps
+    private final ArrayList<RecipeStep> recipeSteps;
     //Basic variable types
     private String name;
-    private final String code;
     private int price;
     private String type;
     private boolean available;
-
-    //Ingredients
-    private final ArrayList<Ingredient> ingredients;
-
-    //Steps
-    private final ArrayList<RecipeStep> recipeSteps;
     private int currentRecipeStepNumber;
 
     //Constructors

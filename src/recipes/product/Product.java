@@ -16,7 +16,8 @@ public class Product {
         this.productCost = productCost;
     }
 
-    public Product(){}
+    public Product() {
+    }
 
     //Getters & Setters
 

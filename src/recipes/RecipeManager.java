@@ -20,10 +20,10 @@ public class RecipeManager {
     //Class Variables
     private final HashMap<String, Recipe> recipes;
     private final HashMap<String, Recipe> availableRecipes;
+    private final SoftwareMachine sm;
     private DAOFactory factory;
     private RecipeDAO recipeDAO;
     private Reader reader;
-    private final SoftwareMachine sm;
 
 
     //Constructor
@@ -158,7 +158,7 @@ public class RecipeManager {
                 Constructor<?> ctor = clazz.getConstructors()[0];
                 Object object = ctor.newInstance(new Object[]{ingredientsData[2 * j], Integer.parseInt(ingredientsData[2 * j + 1])});
                 ingredients.add((Ingredient) object);
-            } catch (  IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
@@ -169,7 +169,7 @@ public class RecipeManager {
         for (int j = 0; j < stepsData.length; j++) {
             try {
                 String currentStep = stepsData[j];
-                Class<?> clazz = Class.forName("recipes.step." + currentStep.substring(0,currentStep.indexOf(" ")) + "Step");
+                Class<?> clazz = Class.forName("recipes.step." + currentStep.substring(0, currentStep.indexOf(" ")) + "Step");
                 Constructor<?> ctor = clazz.getConstructors()[1];
                 int a = Integer.parseInt(currentStep.substring(currentStep.lastIndexOf(" ") + 1));
                 String[] stepData = currentStep.substring(currentStep.indexOf(" ") + 1, currentStep.lastIndexOf(" ")).split(" ");

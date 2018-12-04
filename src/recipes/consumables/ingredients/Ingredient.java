@@ -9,7 +9,7 @@ abstract public class Ingredient extends Consumable {
         super(name, quantity, ingredientType);
     }
 
-    public Ingredient(String name, int quantity ) {
+    public Ingredient(String name, int quantity) {
         super(name, quantity);
     }
 

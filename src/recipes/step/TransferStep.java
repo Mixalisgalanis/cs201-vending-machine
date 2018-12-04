@@ -2,8 +2,12 @@ package recipes.step;
 
 import behaviour.Consumer;
 import behaviour.Provider;
+import modules.containers.processor.IngredientProcessor;
 import modules.dispensers.ConsumableDispenser;
 import modules.dispensers.Dispenser;
+import modules.external.ProductCase;
+import recipes.consumables.Consumable;
+import recipes.consumables.ingredients.Ingredient;
 
 public class TransferStep extends RecipeStep {
 
@@ -83,13 +87,20 @@ public class TransferStep extends RecipeStep {
             String containerName = sm.findContainer(NameDecoder(content)).getName();
             dispenser.plug(consumer);
             dispenser.prepareContainer(containerName, consumer);
-            ((ConsumableDispenser) dispenser).getContainer(containerName).provide(consumer,quantity);
+            ((ConsumableDispenser) dispenser).getContainer(containerName).provide(consumer, quantity);
+
+            Consumable consumable = ((ConsumableDispenser) dispenser).getContainer(containerName).getConsumable();
+            if (consumer instanceof IngredientProcessor && consumable instanceof Ingredient) {
+                ((IngredientProcessor)consumer).addProcessedIngredients((Ingredient) consumable);
+            }
             dispenser.unPlug(consumer);
         } else {
             Provider provider = (Provider) sm.findProcessor(NameDecoder(source));
             Consumer consumer = sm.findProcessor(NameDecoder(destination));
-
             provider.plug(consumer);
+            if (consumer instanceof IngredientProcessor && provider instanceof IngredientProcessor) {
+                ((IngredientProcessor)consumer).addProcessedIngredients(((IngredientProcessor)provider).getProcessedIngredient());
+            }
             provider.provide(consumer);
             provider.unPlug(consumer);
         }

@@ -27,6 +27,6 @@ public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implement
 
     @Override
     public String getProcessingLabel() {
-        return getName().substring(0, getName().length() - 1) + "d";
+        return getName().substring(0, getName().length()-7) + "d";
     }
 }

@@ -31,16 +31,16 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
         return capacity;
     }
 
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public Consumable getConsumable() {
         return consumable;
     }
 
     public void setConsumable(Consumable consumable) {
         this.consumable = consumable;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
     }
 
     //Implemented Methods

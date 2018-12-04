@@ -4,9 +4,12 @@ import behaviour.Consumer;
 import modules.Module;
 import recipes.Recipe;
 import recipes.consumables.Consumable;
+import recipes.consumables.ingredients.ProcessedIngredient;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
 import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
+
+import java.util.PrimitiveIterator;
 
 public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
@@ -14,25 +17,31 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     private boolean pluggable;
     private ProductBuilder builder;
     private Product product;
+    private ProcessedIngredient processedIngredient;
+
 
 
     //Constructor
     public ProductCase(String productName, int procuctCost, ProductCaseDevice device) {
         super(device);
         setName(getClass().getSimpleName());
-        product = new Product(productName,procuctCost);
+        product = new Product(productName, procuctCost);
         pluggable = false;
         builder = new ProductBuilder(productName, procuctCost);
+        processedIngredient = new ProcessedIngredient("Cup");
     }
 
     public ProductCase(ProductCaseDevice device) {
         super("ProductCase", device);
         product = new Product();
         pluggable = false;
+        processedIngredient = new ProcessedIngredient("Cup");
     }
 
 
     //Other Methods
+    public void addProcessedIngredients(ProcessedIngredient p){this.processedIngredient.addIngredients(p);}
+
     @Override
     public void acceptAndLoad(Consumable consumable) {
         if (pluggable) {

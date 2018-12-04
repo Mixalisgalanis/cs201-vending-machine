@@ -30,15 +30,16 @@ public class ProcessedIngredient extends Ingredient {
 
     public void addIngredients(Ingredient ingredient) {
         ingredients.put(ingredient.getName(), ingredient);
-        this.setQuantity(this.getQuantity()+ingredient.getQuantity());
+        this.setQuantity(this.getQuantity() + ingredient.getQuantity());
     }
 
     public String generateName() {
-        String name = "";
-        for (Ingredient ingredient : ingredients.values()) {
-            name = name.concat(ingredient.getName() + "\t");
-        }
+        String name= super.getName()+"<";
+        for (Ingredient ingredient : ingredients.values())
+            name += ingredient.getName()+",";
+
+        name = name.substring(0,name.length()-1);
+        name +=">";
         return name;
     }
-
 }

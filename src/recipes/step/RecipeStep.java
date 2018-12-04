@@ -12,13 +12,18 @@ abstract public class RecipeStep {
 
     abstract public void executeStep();
 
-    public String NameDecoder(String name){
-        switch (name){
-            case "MIXER": return "Blender";
-            case "BOILER": return "Boiler";
-            case "CUP_CASE": return "ProductCase";
-            case "BIG_CUP": return "BigCup";
-            case "SMALL_CUP": return "SmallCup";
+    public String NameDecoder(String name) {
+        switch (name) {
+            case "MIXER":
+                return "Blender";
+            case "BOILER":
+                return "Boiler";
+            case "CUP_CASE":
+                return "ProductCase";
+            case "BIG_CUP":
+                return "BigCup";
+            case "SMALL_CUP":
+                return "SmallCup";
         }
         return name;
     }

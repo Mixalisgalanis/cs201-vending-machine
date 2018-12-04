@@ -11,9 +11,9 @@ import java.util.HashMap;
 
 public class ConsumableDispenser extends Module<DispenserDevice> implements Dispenser {
 
+    private final HashMap<String, Container> containers;
     //Class variables
     private boolean plugged;
-    private final HashMap<String, Container> containers;
     private String consumableType;
 
     //Constructors
@@ -68,7 +68,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
         }
     }
 
-    public Container getContainer(String name){
+    public Container getContainer(String name) {
         for (Container container : containers.values()) {
             if (container.getName().equalsIgnoreCase(name)) return container;
         }

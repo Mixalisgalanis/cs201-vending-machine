@@ -19,7 +19,7 @@ abstract public class Consumable {
         this.consumableType = consumableType;
     }
 
-    public Consumable(String name,int quantity) {
+    public Consumable(String name, int quantity) {
         this.quantity = quantity;
         this.name = name;
     }

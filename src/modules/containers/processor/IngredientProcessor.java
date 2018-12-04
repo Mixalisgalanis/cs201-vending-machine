@@ -16,6 +16,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     private boolean processed;
     private boolean plugged;
     private ProcessedIngredient processedIngredient;
+
     //Constructors
     public IngredientProcessor(String name, int capacity, Consumable consumable, ProcessorDevice device) {
         super(name, capacity, consumable, device);
@@ -31,6 +32,12 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     }
 
     //Other Methods
+    public ProcessedIngredient getProcessedIngredient(){return this.processedIngredient;}
+
+    public void addProcessedIngredients(Ingredient p){
+        this.processedIngredient.addIngredients(p);
+    }
+
     @Override
     public void process(int duration) {
         if (loaded) {
@@ -53,15 +60,15 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
             if (getConsumable() == null) {
                 if (consumable.getQuantity() <= getCapacity()) {
                     setConsumable(consumable);
+                    getDevice().streamIn();
                     loaded = true;
-                    processedIngredient.addIngredients((Ingredient)consumable);
-                }
+                  }
             } else {
                 if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
                     loaded = true;
+                    getDevice().streamIn();
                     getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
-                    processedIngredient.addIngredients((Ingredient)consumable);
-                }else if (!getConsumable().getName().equals(consumable.getName())) {
+                   } else if (!getConsumable().getName().equals(consumable.getName())) {
                     loaded = false;
                 }
             }
@@ -72,6 +79,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     public void provide(Consumer consumer, int quantity) {
         if (processed && plugged) {
             if (quantity <= getConsumable().getQuantity()) {
+                getDevice().streamOut(getDevice());
                 consumer.acceptAndLoad(getConsumable().getPart(quantity));
             }
         }
@@ -80,6 +88,8 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     @Override
     public void provide(Consumer consumer) {
         if (processed && plugged) {
+            if (consumer instanceof IngredientProcessor) ((IngredientProcessor)consumer).addProcessedIngredients(this.processedIngredient);
+            getDevice().streamOut(getDevice());
             consumer.acceptAndLoad(getConsumable());
             setConsumable(null);
         }
