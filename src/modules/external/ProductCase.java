@@ -9,16 +9,13 @@ import recipes.product.Product;
 import recipes.product.ProductBuilder;
 import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
 
-import java.util.PrimitiveIterator;
-
 public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     //Class variables
     private boolean pluggable;
     private ProductBuilder builder;
     private Product product;
-    private ProcessedIngredient processedIngredient;
-
+    private final ProcessedIngredient processedIngredient;
 
 
     //Constructor
@@ -32,7 +29,8 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     }
 
     public ProductCase(ProductCaseDevice device) {
-        super("ProductCase", device);
+        super(device);
+        setName(getClass().getSimpleName());
         product = new Product();
         pluggable = false;
         processedIngredient = new ProcessedIngredient("Cup");
@@ -40,24 +38,26 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
 
     //Other Methods
-    public void addProcessedIngredients(ProcessedIngredient p){this.processedIngredient.addIngredients(p);}
+    public void addProcessedIngredients(ProcessedIngredient p) {
+        processedIngredient.addIngredients(p);
+    }
 
     @Override
     public void acceptAndLoad(Consumable consumable) {
-        if (pluggable) {
-            if (product == null) {
-                product.setConsumables(consumable);
-                getDevice().loadIngredient(consumable.toString());
-                //TODO check what "toString" returns
-            }
+        assert pluggable;
+        if (product == null) {
+            product.setConsumables(consumable);
+            getDevice().loadIngredient(consumable.toString());
+            //TODO check what "toString" returns
         }
+
         //TODO check if we need more if cases
     }
 
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
-            getDevice().connect(((Module)consumer).getDevice());
+            getDevice().connect(((Module) consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);
         }
@@ -67,7 +67,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
             setPlugged(false);
-            getDevice().disconnect(((Module)consumer).getDevice());
+            getDevice().disconnect(((Module) consumer).getDevice());
             consumer.setPlugged(false);
         }
     }

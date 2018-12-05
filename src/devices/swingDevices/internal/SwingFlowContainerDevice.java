@@ -7,7 +7,7 @@ public class SwingFlowContainerDevice extends SwingContainerDevice implements Fl
 
     @Override
     public void streamOut(Device device) {
-        
+
     }
 
     @Override

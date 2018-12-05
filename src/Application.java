@@ -3,6 +3,8 @@ import devices.consoleDevices.internal.*;
 import machine.ConsoleMachine;
 import machine.SoftwareMachine;
 import machine.SwingMachine;
+import modules.containers.Container;
+import modules.dispensers.ConsumableDispenser;
 import modules.external.*;
 import recipes.Recipe;
 import recipes.RecipeManager;
@@ -105,6 +107,7 @@ public class Application {
         //Powders
         sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
         sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
+        //Renames HashMap Key
 
         //Liquids
         sm.addConsumable(new Liquid("Water", console.LIQUID_CONTAINER_REGULAR_SIZE));
@@ -113,6 +116,7 @@ public class Application {
         //Materials
         sm.addConsumable(new Cup("SmallCup", console.SMALL_CUP_CONTAINER, "Small"));
         sm.addConsumable(new Cup("BigCup", console.BIG_CUP_CONTAINER, "Big"));
+
     }
 
     private static void startCycleOf(SoftwareMachine machine) {
@@ -131,6 +135,9 @@ public class Application {
         //Loading Recipes
         rm.loadRecipes();
         rm.validateRecipes();
+
+        //Should pass generalCheck
+        generalCheck();
 
         //Displaying Menus and taking actions
         new Menu();
@@ -217,7 +224,6 @@ public class Application {
         }
     }
 
-
     private static class Menu {
 
         //Class variables
@@ -257,5 +263,24 @@ public class Application {
             currentActionCode = prefix + selection + currentActionCode.substring(currentActionCode.indexOf('0') + 1);
             return currentActionCode;
         }
+    }
+
+
+    /**
+     * Makes sure dispensers have containers and containers have consumables.
+     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options
+     */
+    private static void generalCheck() {
+        assert (sm.getContainers() != null);
+        assert (sm.getProcessors() != null);
+        assert (sm.getConsumables() != null);
+        assert (sm.getDispensers() != null);
+        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
+            assert (dispenser.getContainers() != null);
+            for (Container container : dispenser.getContainers().values()) {
+                assert (container.getConsumable() != null);
+            }
+        }
+
     }
 }

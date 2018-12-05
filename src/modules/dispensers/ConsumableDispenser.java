@@ -70,7 +70,9 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
 
     public Container getContainer(String name) {
         for (Container container : containers.values()) {
-            if (container.getName().equalsIgnoreCase(name)) return container;
+            if (container.getName().equalsIgnoreCase(name)) {
+                return container;
+            }
         }
         return null;
     }
@@ -98,7 +100,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
-            getDevice().connect(((Module)consumer).getDevice());
+            getDevice().connect(((Module) consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);
         }
@@ -107,7 +109,7 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     @Override
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
-            getDevice().disconnect(((Module)consumer).getDevice());
+            getDevice().disconnect(((Module) consumer).getDevice());
             setPlugged(false);
             consumer.setPlugged(false);
         }

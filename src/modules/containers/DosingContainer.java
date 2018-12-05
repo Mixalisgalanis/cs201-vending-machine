@@ -23,6 +23,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
     @Override
     public void provide(Consumer consumer, int quantity) {
         assert isPlugged();
+        assert consumer != null;
         int remainingQuantity = quantity;
         if (remainingQuantity <= getConsumable().getQuantity()) {
             int dose = getDevice().doseSize();

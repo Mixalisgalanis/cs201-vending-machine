@@ -4,8 +4,6 @@ import behaviour.Consumer;
 import behaviour.Provider;
 import modules.containers.processor.IngredientProcessor;
 import modules.dispensers.ConsumableDispenser;
-import modules.dispensers.Dispenser;
-import modules.external.ProductCase;
 import recipes.consumables.Consumable;
 import recipes.consumables.ingredients.Ingredient;
 
@@ -80,26 +78,28 @@ public class TransferStep extends RecipeStep {
     @Override
     public void executeStep() {
         if (sm.getDispensers().get(source) != null) {
-            Dispenser dispenser = sm.getDispensers().get(source);
-            Consumer consumer = sm.findProcessor(NameDecoder(destination));
-            if (destination.equalsIgnoreCase("cup_case")) consumer = sm.getProductCase();
+            ConsumableDispenser dispenser = sm.getDispensers().get(source);
+            Consumer consumer = sm.findProcessor(nameDecoder(destination));
+            if (destination.equalsIgnoreCase("cup_case")) {
+                consumer = sm.getProductCase();
+            }
 
-            String containerName = sm.findContainer(NameDecoder(content)).getName();
+            String containerName = sm.findContainer(nameDecoder(content)).getName();
             dispenser.plug(consumer);
             dispenser.prepareContainer(containerName, consumer);
-            ((ConsumableDispenser) dispenser).getContainer(containerName).provide(consumer, quantity);
+            dispenser.getContainer(containerName).provide(consumer, quantity);
 
-            Consumable consumable = ((ConsumableDispenser) dispenser).getContainer(containerName).getConsumable();
+            Consumable consumable = dispenser.getContainer(containerName).getConsumable();
             if (consumer instanceof IngredientProcessor && consumable instanceof Ingredient) {
-                ((IngredientProcessor)consumer).addProcessedIngredients((Ingredient) consumable);
+                ((IngredientProcessor) consumer).addProcessedIngredients((Ingredient) consumable);
             }
             dispenser.unPlug(consumer);
         } else {
-            Provider provider = (Provider) sm.findProcessor(NameDecoder(source));
-            Consumer consumer = sm.findProcessor(NameDecoder(destination));
+            Provider provider = (Provider) sm.findProcessor(nameDecoder(source));
+            Consumer consumer = sm.findProcessor(nameDecoder(destination));
             provider.plug(consumer);
             if (consumer instanceof IngredientProcessor && provider instanceof IngredientProcessor) {
-                ((IngredientProcessor)consumer).addProcessedIngredients(((IngredientProcessor)provider).getProcessedIngredient());
+                ((IngredientProcessor) consumer).addProcessedIngredients(((IngredientProcessor) provider).getProcessedIngredient());
             }
             provider.provide(consumer);
             provider.unPlug(consumer);

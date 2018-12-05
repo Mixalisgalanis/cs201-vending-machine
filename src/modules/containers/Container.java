@@ -67,6 +67,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
+            getDevice().connect(((Module) consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);
         }
@@ -75,6 +76,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
     @Override
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
+            getDevice().disconnect(((Module) consumer).getDevice());
             setPlugged(false);
             consumer.setPlugged(false);
         }

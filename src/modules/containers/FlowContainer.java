@@ -24,6 +24,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
     @Override
     public void provide(Consumer consumer, int quantity) {
         assert isPlugged();
+        assert consumer != null;
         int remainingQuantity = quantity;
         if (remainingQuantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
             int streamRate = getDevice().streamRate();
@@ -45,19 +46,20 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     @Override
     public void provide(Consumer consumer) {
-        if (isPlugged()) {
-            if (getType().equals(DeviceType.FlowContainer)) {
-                int streamRate = getDevice().streamRate();
-                try {
-                    TimeUnit.SECONDS.sleep(getConsumable().getQuantity() / streamRate);
-                    consumer.acceptAndLoad(getConsumable());
-                    getDevice().streamOut(getDevice());
-                    setConsumable(null);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        assert isPlugged();
+        assert consumer != null;
+        if (getType().equals(DeviceType.FlowContainer)) {
+            int streamRate = getDevice().streamRate();
+            try {
+                TimeUnit.SECONDS.sleep(getConsumable().getQuantity() / streamRate);
+                consumer.acceptAndLoad(getConsumable());
+                getDevice().streamOut(getDevice());
+                setConsumable(null);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
     }
 
     @Override

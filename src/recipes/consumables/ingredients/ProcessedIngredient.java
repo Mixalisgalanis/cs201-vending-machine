@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class ProcessedIngredient extends Ingredient {
 
     //Class variables
-    private HashMap<String, Ingredient> ingredients;
+    private final HashMap<String, Ingredient> ingredients;
 
     //Constructor
     public ProcessedIngredient(String name) {
@@ -30,16 +30,17 @@ public class ProcessedIngredient extends Ingredient {
 
     public void addIngredients(Ingredient ingredient) {
         ingredients.put(ingredient.getName(), ingredient);
-        this.setQuantity(this.getQuantity() + ingredient.getQuantity());
+        setQuantity(getQuantity() + ingredient.getQuantity());
     }
 
     public String generateName() {
-        String name= super.getName()+"<";
-        for (Ingredient ingredient : ingredients.values())
-            name += ingredient.getName()+",";
+        String name = super.getName() + "<";
+        for (Ingredient ingredient : ingredients.values()) {
+            name += ingredient.getName() + ",";
+        }
 
-        name = name.substring(0,name.length()-1);
-        name +=">";
+        name = name.substring(0, name.length() - 1);
+        name += ">";
         return name;
     }
 }

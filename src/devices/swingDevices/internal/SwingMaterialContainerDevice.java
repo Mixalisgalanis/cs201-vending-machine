@@ -7,6 +7,6 @@ public class SwingMaterialContainerDevice extends SwingContainerDevice implement
 
     @Override
     public void releaseMaterial(Device device) {
-        
+
     }
 }

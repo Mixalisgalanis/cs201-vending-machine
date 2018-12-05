@@ -173,7 +173,7 @@ public class Recipe {
                 //Needed to collect all strings in an array in order to achieve equal constructor structure between the two Step Types
                 String[] stepData = tempLine.substring(tempLine.indexOf(" ") + 1, tempLine.lastIndexOf(" ")).split(" ");
                 int a = Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ") + 1));
-                Object object = ctor.newInstance(new Object[]{stepData, a}); //Creates object from that constructor
+                Object object = ctor.newInstance(stepData, a); //Creates object from that constructor
 
                 recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
                 tempLine = (!(data).equals("")) ? data.substring(0, data.indexOf("\r\n")) : ""; //Proceeds to next line

@@ -3,6 +3,7 @@ package recipes;
 import org.junit.Before;
 import org.junit.Test;
 
+@Deprecated
 public class RecipeManagerTest {
 
     private RecipeManager rm;

@@ -10,7 +10,7 @@ import tuc.ece.cs201.vm.hw.device.ProcessorDevice;
 
 import java.util.concurrent.TimeUnit;
 
-public class IngredientProcessor<T extends ProcessorDevice> extends FlowContainer<ProcessorDevice> implements Processor {
+public class IngredientProcessor extends FlowContainer<ProcessorDevice> implements Processor {
 
     //class variables
     private boolean loaded;
@@ -29,6 +29,9 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
 
     public IngredientProcessor(ProcessorDevice device) {
         super(device);
+        loaded = false;
+        processed = false;
+        plugged = false;
         processedIngredient = new ProcessedIngredient(getDevice().getProcessingLabel());
     }
 
@@ -58,6 +61,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     @Override
     public void acceptAndLoad(Consumable consumable) {
         assert plugged;
+        assert consumable != null;
         if (getConsumable() == null) {
             if (consumable.getQuantity() <= getCapacity()) {
                 setConsumable(consumable);
@@ -79,6 +83,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     public void provide(Consumer consumer, int quantity) {
         assert processed;
         assert plugged;
+        assert consumer != null;
         if (quantity <= getConsumable().getQuantity()) {
             getDevice().streamOut(getDevice());
             consumer.acceptAndLoad(getConsumable().getPart(quantity));
@@ -89,6 +94,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     public void provide(Consumer consumer) {
         assert processed;
         assert plugged;
+        assert consumer != null;
         if (consumer instanceof IngredientProcessor) {
             ((IngredientProcessor) consumer).addProcessedIngredients(processedIngredient);
         }
@@ -99,6 +105,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
 
     @Override
     public void plug(Consumer consumer) {
+        assert consumer != null;
         if (!isPlugged()) {
             getDevice().connect(((Module) consumer).getDevice());
             plugged = true;
@@ -108,6 +115,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
 
     @Override
     public void unPlug(Consumer consumer) {
+        assert consumer != null;
         if (isPlugged()) {
             getDevice().disconnect(((Module) consumer).getDevice());
             plugged = false;
