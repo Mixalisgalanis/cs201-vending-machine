@@ -1,5 +1,5 @@
-import consoleDevices.external.*;
-import consoleDevices.internal.*;
+import devices.consoleDevices.external.*;
+import devices.consoleDevices.internal.*;
 import machine.ConsoleMachine;
 import machine.SoftwareMachine;
 import machine.SwingMachine;
@@ -92,8 +92,14 @@ public class Application {
         console.addDevice(productCaseDevice);
     }
 
+    private static void insertGuiDevices() {
+        SwingMachine swing = (SwingMachine) machine;
+        //TODO Insert GUI Devices
+
+    }
+
     private static void insertConsumables() {
-        ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
+        ConsoleMachine console = (ConsoleMachine) machine; //Machine is console //TODO Remove Console Dependency
 
         //Powders
         sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
@@ -108,10 +114,6 @@ public class Application {
         sm.addConsumable(new Cup("BigCup", console.BIG_CUP_CONTAINER, "Big"));
     }
 
-    private static void insertGuiDevices() {
-        //Same as insertConsoleDevices()
-    }
-
     private static void startCycleOf(SoftwareMachine machine) {
         //Loading external modules
         DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName());
@@ -124,7 +126,7 @@ public class Application {
         rm.loadRecipes();
         rm.validateRecipes();
 
-        //New Menu Implementation
+        //Displaying Menus and taking actions
         new Menu();
         int EXIT_SELECTION = -1;
         int selection = 0;

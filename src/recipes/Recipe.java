@@ -106,21 +106,21 @@ public class Recipe {
      *
      * @return true if there are more steps, false if there aren't.
      */
-    public boolean hasMoreSteps() {
+    boolean hasMoreSteps() {
         return (currentRecipeStepNumber < recipeSteps.size() - 1);
     }
 
     /**
      * Makes this particular recipe available
      */
-    public void enable() {
+    void enable() {
         available = true;
     }
 
     /**
      * Makes this particular recipe not available.
      */
-    public void disable() {
+    void disable() {
         available = false;
     }
 
@@ -216,7 +216,7 @@ public class Recipe {
     /**
      * Executes Step Internally depending on the type of step. This is accomplished with method overloading.
      */
-    public void executeStep() {
+    void executeStep() {
         getNextStep().executeStep();
     }
 
@@ -228,7 +228,7 @@ public class Recipe {
      * @param data the extracted text from the file
      * @return the class name found
      */
-    String classNameFinder(String data) {
+    private String classNameFinder(String data) {
         switch (data) {
             case "POW":
                 return "Powder";
@@ -251,6 +251,6 @@ public class Recipe {
      */
     private String toCamelCase(String input) {
         String temp = input.toLowerCase();
-        return (temp.substring(0, 2).toUpperCase() + temp.substring(1));
+        return (temp.substring(0, 1).toUpperCase() + temp.substring(1));
     }
 }
