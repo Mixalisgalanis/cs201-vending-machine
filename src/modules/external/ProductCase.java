@@ -57,6 +57,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
+            getDevice().connect(((Module)consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);
         }
@@ -66,12 +67,14 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
             setPlugged(false);
+            getDevice().disconnect(((Module)consumer).getDevice());
             consumer.setPlugged(false);
         }
     }
 
     @Override
     public void unPlugAll() {
+        getDevice().disconnectAll();
         //TODO figure out what we're supposed to do here!
     }
 

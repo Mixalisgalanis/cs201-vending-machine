@@ -1,6 +1,7 @@
 package modules.containers.processor;
 
 import behaviour.Consumer;
+import modules.Module;
 import modules.containers.FlowContainer;
 import recipes.consumables.Consumable;
 import recipes.consumables.ingredients.Ingredient;
@@ -98,6 +99,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
+            getDevice().connect(((Module)consumer).getDevice());
             this.plugged = true;
             consumer.plug(this);
         }
@@ -106,6 +108,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     @Override
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
+            getDevice().disconnect(((Module)consumer).getDevice());
             this.plugged = false;
             consumer.unPlug(this);
         }
@@ -113,7 +116,7 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
 
     @Override
     public void unPlugAll() {
-
+        getDevice().disconnectAll();
     }
 
     @Override

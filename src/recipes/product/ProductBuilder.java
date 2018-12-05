@@ -35,5 +35,4 @@ public class ProductBuilder {
     public void addConsumables() {
 
     }
-
 }

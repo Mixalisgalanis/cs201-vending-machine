@@ -251,6 +251,6 @@ public class Recipe {
      */
     private String toCamelCase(String input) {
         String temp = input.toLowerCase();
-        return (temp.substring(0, 1).toUpperCase() + temp.substring(1));
+        return (temp.substring(0, 2).toUpperCase() + temp.substring(1));
     }
 }
