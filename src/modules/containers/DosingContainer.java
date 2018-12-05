@@ -4,6 +4,8 @@ import behaviour.Consumer;
 import recipes.consumables.Consumable;
 import tuc.ece.cs201.vm.hw.device.DosingContainerDevice;
 
+import java.util.concurrent.TimeUnit;
+
 public class DosingContainer extends Container<DosingContainerDevice> {
 
     private static int instance = 1;
@@ -20,17 +22,22 @@ public class DosingContainer extends Container<DosingContainerDevice> {
 
     @Override
     public void provide(Consumer consumer, int quantity) {
+        assert isPlugged();
         int remainingQuantity = quantity;
-        if (isPlugged()) {
-            if (remainingQuantity <= getConsumable().getQuantity()) {
-                int dose = getDevice().doseSize();
-                while (remainingQuantity > 0) {
-                    consumer.acceptAndLoad(getConsumable().getPart(dose));
-                    getDevice().releaseDose(getDevice());
-                    remainingQuantity -= dose;
+        if (remainingQuantity <= getConsumable().getQuantity()) {
+            int dose = getDevice().doseSize();
+            while (remainingQuantity > 0) {
+                getDevice().releaseDose(getDevice());
+                remainingQuantity -= dose;
+                consumer.acceptAndLoad(getConsumable().getPart(dose));
+                try {
+                    TimeUnit.MILLISECONDS.sleep(300);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
             }
         }
     }
-
 }

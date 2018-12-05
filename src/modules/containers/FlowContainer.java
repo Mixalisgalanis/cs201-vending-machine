@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class FlowContainer<T extends FlowContainerDevice> extends Container<FlowContainerDevice> {
 
     private static int instance = 1;
-    private final int MULTIPLIER = 10;
 
     //Constructors
     public FlowContainer(String name, int capacity, Consumable consumable, FlowContainerDevice device) {
@@ -24,18 +23,24 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     @Override
     public void provide(Consumer consumer, int quantity) {
-        if (isPlugged()) {
-            if (quantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
-                int streamRate = getDevice().streamRate();
+        assert isPlugged();
+        int remainingQuantity = quantity;
+        if (remainingQuantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
+            int streamRate = getDevice().streamRate();
+            while (remainingQuantity > 0) {
+                getDevice().streamOut(getDevice());
+                remainingQuantity -= streamRate;
+                consumer.acceptAndLoad(getConsumable().getPart(quantity));
                 try {
-                    TimeUnit.SECONDS.sleep(quantity / (MULTIPLIER * streamRate));
-                    consumer.acceptAndLoad(getConsumable().getPart(quantity));
-                    getDevice().streamOut(getDevice());
+                    TimeUnit.MILLISECONDS.sleep(300);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
             }
         }
+
     }
 
     @Override
@@ -57,7 +62,6 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     @Override
     public T getDevice() {
-        T device = (T) super.getDevice();
-        return device;
+        return (T) super.getDevice();
     }
 }

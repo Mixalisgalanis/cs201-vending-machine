@@ -20,11 +20,11 @@ public class MaterialContainer extends Container<MaterialContainerDevice> {
 
     @Override
     public void provide(Consumer consumer, int quantity) {
-        if (isPlugged()) {
-            if (quantity <= getConsumable().getQuantity()) {
-                consumer.acceptAndLoad(getConsumable().getPart(quantity));
-                getDevice().releaseMaterial(getDevice());
-            }
+        assert isPlugged();
+        if (quantity <= getConsumable().getQuantity()) {
+            consumer.acceptAndLoad(getConsumable().getPart(quantity));
+            getDevice().releaseMaterial(getDevice());
         }
+
     }
 }

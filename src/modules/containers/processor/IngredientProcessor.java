@@ -16,14 +16,14 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     private boolean loaded;
     private boolean processed;
     private boolean plugged;
-    private ProcessedIngredient processedIngredient;
+    private final ProcessedIngredient processedIngredient;
 
     //Constructors
     public IngredientProcessor(String name, int capacity, Consumable consumable, ProcessorDevice device) {
         super(name, capacity, consumable, device);
-        this.loaded = false;
-        this.processed = false;
-        this.plugged = false;
+        loaded = false;
+        processed = false;
+        plugged = false;
         processedIngredient = new ProcessedIngredient(getDevice().getProcessingLabel());
     }
 
@@ -33,74 +33,75 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     }
 
     //Other Methods
-    public ProcessedIngredient getProcessedIngredient(){return this.processedIngredient;}
+    public ProcessedIngredient getProcessedIngredient() {
+        return processedIngredient;
+    }
 
-    public void addProcessedIngredients(Ingredient p){
-        this.processedIngredient.addIngredients(p);
+    public void addProcessedIngredients(Ingredient p) {
+        processedIngredient.addIngredients(p);
     }
 
     @Override
     public void process(int duration) {
-        if (loaded) {
-            getDevice().operateStart();
-            try {
-                TimeUnit.SECONDS.sleep(duration);
+        assert loaded;
+        getDevice().operateStart();
+        try {
+            TimeUnit.SECONDS.sleep(duration);
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            processed = true;
-            getDevice().operateStop();
-        } else
-            processed = false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        getDevice().operateStop();
+        processed = true;
     }
 
     @Override
     public void acceptAndLoad(Consumable consumable) {
-        if (plugged) {
-            if (getConsumable() == null) {
-                if (consumable.getQuantity() <= getCapacity()) {
-                    setConsumable(consumable);
-                    getDevice().streamIn();
-                    loaded = true;
-                  }
-            } else {
-                if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
-                    loaded = true;
-                    getDevice().streamIn();
-                    getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
-                   } else if (!getConsumable().getName().equals(consumable.getName())) {
-                    loaded = false;
-                }
+        assert plugged;
+        if (getConsumable() == null) {
+            if (consumable.getQuantity() <= getCapacity()) {
+                setConsumable(consumable);
+                getDevice().streamIn();
+                loaded = true;
+            }
+        } else {
+            if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
+                getDevice().streamIn();
+                getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
+                loaded = true;
+            } else if (!getConsumable().getName().equals(consumable.getName())) {
+                loaded = false;
             }
         }
     }
 
     @Override
     public void provide(Consumer consumer, int quantity) {
-        if (processed && plugged) {
-            if (quantity <= getConsumable().getQuantity()) {
-                getDevice().streamOut(getDevice());
-                consumer.acceptAndLoad(getConsumable().getPart(quantity));
-            }
+        assert processed;
+        assert plugged;
+        if (quantity <= getConsumable().getQuantity()) {
+            getDevice().streamOut(getDevice());
+            consumer.acceptAndLoad(getConsumable().getPart(quantity));
         }
     }
 
     @Override
     public void provide(Consumer consumer) {
-        if (processed && plugged) {
-            if (consumer instanceof IngredientProcessor) ((IngredientProcessor)consumer).addProcessedIngredients(this.processedIngredient);
-            getDevice().streamOut(getDevice());
-            consumer.acceptAndLoad(getConsumable());
-            setConsumable(null);
+        assert processed;
+        assert plugged;
+        if (consumer instanceof IngredientProcessor) {
+            ((IngredientProcessor) consumer).addProcessedIngredients(processedIngredient);
         }
+        getDevice().streamOut(getDevice());
+        consumer.acceptAndLoad(getConsumable());
+        setConsumable(null);
     }
 
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
-            getDevice().connect(((Module)consumer).getDevice());
-            this.plugged = true;
+            getDevice().connect(((Module) consumer).getDevice());
+            plugged = true;
             consumer.plug(this);
         }
     }
@@ -108,8 +109,8 @@ public class IngredientProcessor<T extends ProcessorDevice> extends FlowContaine
     @Override
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
-            getDevice().disconnect(((Module)consumer).getDevice());
-            this.plugged = false;
+            getDevice().disconnect(((Module) consumer).getDevice());
+            plugged = false;
             consumer.unPlug(this);
         }
     }

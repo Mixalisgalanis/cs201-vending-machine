@@ -27,6 +27,11 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
     }
 
     //Getters & Setters
+    @Override
+    public T getDevice() {
+        return (T) super.getDevice();
+    }
+
     public int getCapacity() {
         return capacity;
     }
@@ -42,29 +47,21 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
     public void setConsumable(Consumable consumable) {
         this.consumable = consumable;
     }
-
     //Implemented Methods
+
     @Override
     public void provide(Consumer consumer, int quantity) {
-        if (plugged) {
-            if (quantity <= getConsumable().getQuantity()) {
-                consumer.acceptAndLoad(getConsumable().getPart(quantity));
-            }
+        assert plugged;
+        if (quantity <= getConsumable().getQuantity()) {
+            consumer.acceptAndLoad(getConsumable().getPart(quantity));
         }
-    }
-
-    @Override
-    public T getDevice() {
-        T device = (T) super.getDevice();
-        return device;
     }
 
     @Override
     public void provide(Consumer consumer) {
-        if (plugged) {
-            consumer.acceptAndLoad(getConsumable());
-            setConsumable(null);
-        }
+        assert plugged;
+        consumer.acceptAndLoad(getConsumable());
+        setConsumable(null);
     }
 
     @Override

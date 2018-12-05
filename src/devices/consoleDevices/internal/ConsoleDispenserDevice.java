@@ -31,7 +31,7 @@ public class ConsoleDispenserDevice extends ConsoleDevice implements DispenserDe
     @Override
     public void addContainer(ContainerDevice containerDevice) {
         containerDevices.add(containerDevice);
-        System.out.println("Added " + containerDevice.getName());
+//        System.out.println("Added " + containerDevice.getName());
     }
 
     @Override

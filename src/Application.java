@@ -32,6 +32,7 @@ public class Application {
         insertConsumables();
 
         //Start Cycle
+        assert machine != null;
         startCycleOf(sm);
     }
 
@@ -121,6 +122,11 @@ public class Application {
         CoinReader coinReader = (CoinReader) machine.getModule(CoinReader.class.getSimpleName());
         ChangeCase changeCase = (ChangeCase) machine.getModule(ChangeCase.class.getSimpleName());
         ProductCase productCase = (ProductCase) machine.getModule(ProductCase.class.getSimpleName());
+        assert display != null;
+        assert numPad != null;
+        assert coinReader != null;
+        assert changeCase != null;
+        assert productCase != null;
 
         //Loading Recipes
         rm.loadRecipes();
@@ -199,6 +205,8 @@ public class Application {
                             "amount!" + ((change == 0) ? "" : ("\nYou may now take your change (" + change + "c)" + ":")));
                     changeCase.setChange(change);
                     //Execute Recipe
+                    display.displayMessage("--------------------------------------------\nExecuting " +
+                            "Recipe! This may take a while. . .\n--------------------------------------------");
                     rm.executeRecipe(recipe);
                     productCase.prepareProduct(recipe);
                     selection = EXIT_SELECTION;

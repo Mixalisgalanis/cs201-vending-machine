@@ -13,14 +13,12 @@ public class ConsoleDosingContainerDevice extends ConsoleContainerDevice impleme
     }
 
     @Override
-    public void releaseDose(Device device) {
-        System.out.println("Released " + DOSE_SIZE + "g of " + device.getName() + ".");
-        //TODO Insert Timer
-    }
-
-    @Override
     public int doseSize() {
         return DOSE_SIZE;
     }
 
+    @Override
+    public void releaseDose(Device device) {
+        System.out.println("[" + getName() + "] - " + "Released " + DOSE_SIZE + "g of powder to " + device.getName());
+    }
 }

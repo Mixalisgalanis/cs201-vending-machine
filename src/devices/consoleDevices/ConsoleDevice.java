@@ -30,8 +30,8 @@ public class ConsoleDevice implements Device {
     public void connect(Device device) {
         if (!connected) {
             connected = true;
+            System.out.println(name + " connected to " + device.getName() + ".");
             device.connect(this);
-            System.out.println(name + " connected");
             connectedDevices.add(this);
         }
     }
@@ -40,7 +40,7 @@ public class ConsoleDevice implements Device {
     public void disconnect(Device device) {
         if (connected) {
             connected = false;
-            System.out.println(name + " disconnected");
+            System.out.println(name + " disconnected from " + device.getName() + ".");
             connectedDevices.remove(this);
             device.disconnect(this);
         }

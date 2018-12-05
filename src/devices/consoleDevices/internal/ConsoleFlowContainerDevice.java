@@ -24,6 +24,7 @@ public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implement
 
     @Override
     public void streamOut(Device device) {
-        System.out.println("Streamed out " + "ml of " + device.getName() + ".");
+        System.out.println("[" + getName() + "] - Streamed out " + STREAM_RATE_SIZE + "ml of liquid to " + device.getName() +
+                ".");
     }
 }
