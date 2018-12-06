@@ -18,6 +18,7 @@ public class CoinReader extends Module<CoinAcceptorDevice> {
 
     //Other Methods
     public int receiveMoney(int min) {
+        assert min > 0;
         while (money < min) {
             money += getDevice().acceptCoin(min - money);
         }

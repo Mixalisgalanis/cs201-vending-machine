@@ -2,42 +2,21 @@ package recipes.product;
 
 import recipes.consumables.Consumable;
 
+import java.util.HashMap;
+
 public class Product {
 
     //Class variables
-    private String productName;
-    private int productCost;
+    private final String productName;
 
-    private Consumable consumables;
+    private HashMap<String, Consumable> consumables;
 
     //Constructor
-    public Product(String productName, int productCost) {
-        this.productName = productName;
-        this.productCost = productCost;
-    }
-
-    public Product() {
-    }
-
-    //Getters & Setters
-
-    public void setConsumables(Consumable consumables) {
-        this.consumables = consumables;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
+    public Product(String productName) {
         this.productName = productName;
     }
 
-    public int getProductCost() {
-        return productCost;
-    }
-
-    public void setProductCost(int productCost) {
-        this.productCost = productCost;
+    public HashMap<String, Consumable> getConsumables() {
+        return consumables;
     }
 }

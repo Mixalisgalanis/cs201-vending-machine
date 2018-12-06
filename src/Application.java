@@ -212,10 +212,12 @@ public class Application {
                             "amount!" + ((change == 0) ? "" : ("\nYou may now take your change (" + change + "c)" + ":")));
                     changeCase.setChange(change);
                     //Execute Recipe
+                    display.clearScreen();
                     display.displayMessage("--------------------------------------------\nExecuting " +
                             "Recipe! This may take a while. . .\n--------------------------------------------");
                     rm.executeRecipe(recipe);
-                    productCase.prepareProduct(recipe);
+                    productCase.prepareProduct(recipe.getName(), recipe.getCupSize());
+                    productCase.getProduct();
                     selection = EXIT_SELECTION;
                     break;
                 default: //Action Code not recognised

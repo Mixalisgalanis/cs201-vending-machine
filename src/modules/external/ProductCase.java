@@ -2,9 +2,7 @@ package modules.external;
 
 import behaviour.Consumer;
 import modules.Module;
-import recipes.Recipe;
 import recipes.consumables.Consumable;
-import recipes.consumables.ingredients.ProcessedIngredient;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
 import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
@@ -12,46 +10,30 @@ import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
 public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     //Class variables
-    private boolean pluggable;
-    private ProductBuilder builder;
-    private Product product;
-    private final ProcessedIngredient processedIngredient;
+    private boolean plugged;
+    private boolean prepared;
+    private final ProductBuilder builder;
+    private Consumable consumable;
 
 
     //Constructor
-    public ProductCase(String productName, int procuctCost, ProductCaseDevice device) {
-        super(device);
-        setName(getClass().getSimpleName());
-        product = new Product(productName, procuctCost);
-        pluggable = false;
-        builder = new ProductBuilder(productName, procuctCost);
-        processedIngredient = new ProcessedIngredient("Cup");
-    }
-
     public ProductCase(ProductCaseDevice device) {
         super(device);
         setName(getClass().getSimpleName());
-        product = new Product();
-        pluggable = false;
-        processedIngredient = new ProcessedIngredient("Cup");
+        plugged = false;
+        prepared = false;
+        builder = new ProductBuilder();
     }
 
 
     //Other Methods
-    public void addProcessedIngredients(ProcessedIngredient p) {
-        processedIngredient.addIngredients(p);
-    }
-
     @Override
     public void acceptAndLoad(Consumable consumable) {
-        assert pluggable;
-        if (product == null) {
-            product.setConsumables(consumable);
-            getDevice().loadIngredient(consumable.toString());
-            //TODO check what "toString" returns
-        }
+        assert plugged;
+        assert consumable != null;
 
-        //TODO check if we need more if cases
+        this.consumable = consumable;
+        getDevice().loadIngredient(consumable.toString());
     }
 
     @Override
@@ -80,21 +62,26 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     @Override
     public boolean isPlugged() {
-        return pluggable;
+        return plugged;
     }
 
     @Override
     public void setPlugged(boolean plugged) {
-        pluggable = plugged;
+        this.plugged = plugged;
     }
 
+    //Product Methods
     public Product getProduct() {
-        //no need to construct product in here because we will prepare the container then fill it(acceptAndLoad)and then we just need to return the product
-        return product;
+        assert prepared;
+        //getDevice().getProcuct() Missing method in ProductCaseDevice - Displays info about ready product
+        return builder.getProduct();
     }
 
-    public void prepareProduct(Recipe recipe) {
-        product = new Product(recipe.getName(), recipe.getPrice());
-        builder.addConsumables();
+    public void prepareProduct(String productName, String material) {
+        builder.createProduct(productName);
+        getDevice().putMaterial(material);
+        builder.addConsumable(consumable);
+        getDevice().loadIngredient(consumable.getName());
+        prepared = true;
     }
 }

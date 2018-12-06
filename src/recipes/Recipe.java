@@ -2,6 +2,7 @@ package recipes;
 
 import recipes.consumables.ingredients.Ingredient;
 import recipes.step.RecipeStep;
+import recipes.step.TransferStep;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -91,6 +92,9 @@ public class Recipe {
     }
 
     //Other Methods
+    public String getCupSize() {
+        return ((TransferStep) recipeSteps.get(recipeSteps.size() - 2)).getContent();
+    }
 
     /**
      * Gets the next step from the recipe steps list.

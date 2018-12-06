@@ -5,7 +5,6 @@ import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DisplayDevice;
 
 public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice {
-
     //Constructor
     public ConsoleDisplayDevice() {
         super("DisplayDevice", DeviceType.Display);
@@ -19,14 +18,11 @@ public class ConsoleDisplayDevice extends ConsoleDevice implements DisplayDevice
 
     @Override
     public void clear() {
-        for (int i = 0; i < 100; i++) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        /*for (int i = 0; i < 100; i++) {
             System.out.println(" ");
-        }
+        }*/
     }
-
-
-    public void displayRecipesFooter() {
-        System.out.println();
-    }
-
 }

@@ -28,6 +28,10 @@ public class ProcessedIngredient extends Ingredient {
         return null;
     }
 
+    public HashMap<String, Ingredient> getIngredients() {
+        return ingredients;
+    }
+
     public void addIngredients(Ingredient ingredient) {
         ingredients.put(ingredient.getName(), ingredient);
         setQuantity(getQuantity() + ingredient.getQuantity());

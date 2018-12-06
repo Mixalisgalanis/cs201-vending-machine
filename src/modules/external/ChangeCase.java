@@ -17,6 +17,7 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
 
     //OtherMethods
     public void setChange(int change) {
+        assert change >= 0;
         this.change = change;
         for (int i = 0; i < coins.length; ) {
             if (this.change >= coins[i]) {

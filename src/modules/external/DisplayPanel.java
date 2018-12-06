@@ -16,4 +16,8 @@ public class DisplayPanel extends Module<DisplayDevice> {
     public void displayMessage(String message) {
         getDevice().displayMsg(message);
     }
+
+    public void clearScreen() {
+        getDevice().clear();
+    }
 }
