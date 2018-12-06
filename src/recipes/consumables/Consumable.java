@@ -33,6 +33,10 @@ abstract public class Consumable {
         this.name = name;
     }
 
+    public void setConsumableType(String consumableType) {
+        this.consumableType = consumableType;
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -53,7 +57,7 @@ abstract public class Consumable {
     }
 
     public void refill(int containerCapacity) {
-        this.quantity = containerCapacity;
+        quantity = containerCapacity;
     }
 
 }

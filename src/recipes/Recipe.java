@@ -111,7 +111,7 @@ public class Recipe {
      * @return true if there are more steps, false if there aren't.
      */
     boolean hasMoreSteps() {
-        return (currentRecipeStepNumber < recipeSteps.size() - 1);
+        return (currentRecipeStepNumber <= recipeSteps.size() - 1);
     }
 
     /**

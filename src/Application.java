@@ -11,6 +11,7 @@ import recipes.RecipeManager;
 import recipes.consumables.Cup;
 import recipes.consumables.ingredients.Liquid;
 import recipes.consumables.ingredients.Powder;
+import recipes.product.Product;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.*;
 
@@ -217,7 +218,7 @@ public class Application {
                             "Recipe! This may take a while. . .\n--------------------------------------------");
                     rm.executeRecipe(recipe);
                     productCase.prepareProduct(recipe.getName(), recipe.getCupSize());
-                    productCase.getProduct();
+                    Product product = productCase.getProduct();
                     selection = EXIT_SELECTION;
                     break;
                 default: //Action Code not recognised

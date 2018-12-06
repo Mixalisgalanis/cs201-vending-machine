@@ -3,6 +3,8 @@ package modules.external;
 import behaviour.Consumer;
 import modules.Module;
 import recipes.consumables.Consumable;
+import recipes.consumables.Cup;
+import recipes.consumables.ingredients.ProcessedIngredient;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
 import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
@@ -12,8 +14,10 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     //Class variables
     private boolean plugged;
     private boolean prepared;
+    private boolean loaded;
     private final ProductBuilder builder;
     private Consumable consumable;
+    private Cup cup;
 
 
     //Constructor
@@ -22,6 +26,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
         setName(getClass().getSimpleName());
         plugged = false;
         prepared = false;
+        loaded = false;
         builder = new ProductBuilder();
     }
 
@@ -31,9 +36,14 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     public void acceptAndLoad(Consumable consumable) {
         assert plugged;
         assert consumable != null;
-
-        this.consumable = consumable;
-        getDevice().loadIngredient(consumable.toString());
+        if (consumable instanceof Cup) {
+            cup = (Cup) consumable;
+        } else {
+            assert consumable instanceof ProcessedIngredient;
+            this.consumable = consumable;
+        }
+        getDevice().loadIngredient(consumable.getConsumableType());
+        loaded = true;
     }
 
     @Override
@@ -79,6 +89,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     }
 
     public void prepareProduct(String productName, String material) {
+        assert loaded;
         builder.createProduct(productName);
         getDevice().putMaterial(material);
         builder.addConsumable(consumable);

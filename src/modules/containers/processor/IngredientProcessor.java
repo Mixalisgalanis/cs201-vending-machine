@@ -63,6 +63,7 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
                 } else {
                     ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
                 }
+                getConsumable().setConsumableType("Liquid");
                 getDevice().streamIn();
                 loaded = true;
             }
@@ -77,6 +78,7 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
                 } else {
                     ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
                 }
+                getConsumable().setConsumableType("Liquid");
                 getDevice().streamIn();
                 loaded = true;
             } else if (!getConsumable().getName().equals(consumable.getName())) {

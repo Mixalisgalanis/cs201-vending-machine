@@ -89,8 +89,15 @@ public class TransferStep extends RecipeStep {
         } else {
             Provider provider = (Provider) sm.findProcessor(nameDecoder(source));
             Consumer consumer = sm.findProcessor(nameDecoder(destination));
+            if (destination.equalsIgnoreCase("Product_Case")) {
+                consumer = sm.getProductCase();
+            }
             provider.plug(consumer);
-            provider.provide(consumer);
+            if (content.equalsIgnoreCase("ALL") && quantity == 0) {
+                provider.provide(consumer);
+            } else {
+                provider.provide(consumer, quantity);
+            }
             provider.unPlug(consumer);
         }
     }
