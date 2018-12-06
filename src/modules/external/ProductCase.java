@@ -39,6 +39,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
+
             getDevice().connect(((Module) consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);

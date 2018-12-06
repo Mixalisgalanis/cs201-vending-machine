@@ -77,7 +77,7 @@ public class TransferStep extends RecipeStep {
         if (sm.getDispensers().get(source) != null) {
             ConsumableDispenser dispenser = sm.getDispensers().get(source);
             Consumer consumer = sm.findProcessor(nameDecoder(destination));
-            if (destination.equalsIgnoreCase("cup_case")) {
+            if (destination.equalsIgnoreCase("Product_Case")) {
                 consumer = sm.getProductCase();
             }
 

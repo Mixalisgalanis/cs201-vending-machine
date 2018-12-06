@@ -54,7 +54,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
         int remainingQuantity = currentQuantity - streamRate;
         consumer.acceptAndLoad(getConsumable().getPart(streamRate));
         try {
-            TimeUnit.MILLISECONDS.sleep(300);
+            TimeUnit.MILLISECONDS.sleep(150);
 
         } catch (InterruptedException e) {
             e.printStackTrace();

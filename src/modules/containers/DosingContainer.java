@@ -33,7 +33,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
                 remainingQuantity -= dose;
                 consumer.acceptAndLoad(getConsumable().getPart(dose));
                 try {
-                    TimeUnit.MILLISECONDS.sleep(300);
+                    TimeUnit.MILLISECONDS.sleep(150);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

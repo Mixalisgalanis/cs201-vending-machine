@@ -1,6 +1,7 @@
 package recipes.product;
 
 import recipes.consumables.Consumable;
+import recipes.consumables.Cup;
 import recipes.consumables.ingredients.Ingredient;
 import recipes.consumables.ingredients.ProcessedIngredient;
 
@@ -17,9 +18,12 @@ public class ProductBuilder {
 
     public void addConsumable(Consumable consumable) {
         assert product != null;
-        assert consumable instanceof ProcessedIngredient;
-        for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
-            product.getConsumables().put(ingredient.getName(), ingredient);
+        if (consumable instanceof ProcessedIngredient) {
+            for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
+                product.getConsumables().put(ingredient.getName(), ingredient);
+            }
+        } else if (consumable instanceof Cup) {
+            product.setCup((Cup) consumable);
         }
     }
 
