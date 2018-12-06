@@ -16,7 +16,6 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     private boolean loaded;
     private boolean processed;
     private boolean plugged;
-    private final ProcessedIngredient processedIngredient;
 
     //Constructors
     public IngredientProcessor(String name, int capacity, Consumable consumable, ProcessorDevice device) {
@@ -24,7 +23,6 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         loaded = false;
         processed = false;
         plugged = false;
-        processedIngredient = new ProcessedIngredient(getDevice().getProcessingLabel());
     }
 
     public IngredientProcessor(ProcessorDevice device) {
@@ -32,18 +30,9 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         loaded = false;
         processed = false;
         plugged = false;
-        processedIngredient = new ProcessedIngredient(getDevice().getProcessingLabel());
     }
 
     //Other Methods
-    public ProcessedIngredient getProcessedIngredient() {
-        return processedIngredient;
-    }
-
-    public void addProcessedIngredients(Ingredient p) {
-        processedIngredient.addIngredients(p);
-    }
-
     @Override
     public void process(int duration) {
         assert loaded;
@@ -62,16 +51,34 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     public void acceptAndLoad(Consumable consumable) {
         assert plugged;
         assert consumable != null;
+
+
         if (getConsumable() == null) {
             if (consumable.getQuantity() <= getCapacity()) {
-                setConsumable(consumable);
+                setConsumable(new ProcessedIngredient(generateEffect(consumable.getName()), consumable.getQuantity(),
+                        consumable.getConsumableType()));
+                if (consumable instanceof ProcessedIngredient) {
+                    for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
+                        ((ProcessedIngredient) getConsumable()).addIngredient(ingredient);
+                    }
+                } else {
+                    ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
+                }
                 getDevice().streamIn();
                 loaded = true;
             }
         } else {
             if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
-                getDevice().streamIn();
                 getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
+                getConsumable().setName(generateEffect(consumable.getName()));
+                if (consumable instanceof ProcessedIngredient) {
+                    for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
+                        ((ProcessedIngredient) getConsumable()).addIngredient(ingredient);
+                    }
+                } else {
+                    ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
+                }
+                getDevice().streamIn();
                 loaded = true;
             } else if (!getConsumable().getName().equals(consumable.getName())) {
                 loaded = false;
@@ -95,9 +102,7 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         assert processed;
         assert plugged;
         assert consumer != null;
-        if (consumer instanceof IngredientProcessor) {
-            ((IngredientProcessor) consumer).addProcessedIngredients(processedIngredient);
-        }
+
         getDevice().streamOut(getDevice());
         consumer.acceptAndLoad(getConsumable());
         setConsumable(null);
@@ -138,7 +143,7 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         this.plugged = plugged;
     }
 
-    public String generateEffect() {
-        return getName().toLowerCase().substring(0, getName().length() - 2) + "d " + getConsumable().getName();
+    public String generateEffect(String newConsumableName) {
+        return getName().toLowerCase().substring(0, getName().length() - 2) + "d (" + newConsumableName + ")";
     }
 }

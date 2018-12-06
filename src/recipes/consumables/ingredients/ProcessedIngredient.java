@@ -32,7 +32,7 @@ public class ProcessedIngredient extends Ingredient {
         return ingredients;
     }
 
-    public void addIngredients(Ingredient ingredient) {
+    public void addIngredient(Ingredient ingredient) {
         ingredients.put(ingredient.getName(), ingredient);
         setQuantity(getQuantity() + ingredient.getQuantity());
     }
