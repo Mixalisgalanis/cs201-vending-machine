@@ -29,16 +29,7 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
         if (remainingQuantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
             int streamRate = getDevice().streamRate();
             while (remainingQuantity > 0) {
-                getDevice().streamOut(getDevice());
-                remainingQuantity -= streamRate;
-                consumer.acceptAndLoad(getConsumable().getPart(quantity));
-                try {
-                    TimeUnit.MILLISECONDS.sleep(300);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+                remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
             }
         }
 
@@ -48,18 +39,27 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
     public void provide(Consumer consumer) {
         assert isPlugged();
         assert consumer != null;
+        int remainingQuantity = getConsumable().getQuantity();
         if (getType().equals(DeviceType.FlowContainer)) {
             int streamRate = getDevice().streamRate();
-            try {
-                TimeUnit.SECONDS.sleep(getConsumable().getQuantity() / streamRate);
-                consumer.acceptAndLoad(getConsumable());
-                getDevice().streamOut(getDevice());
-                setConsumable(null);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (remainingQuantity > 0) {
+                remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
             }
         }
 
+    }
+
+    protected int streamOut(Consumer consumer, int currentQuantity, int streamRate) {
+        getDevice().streamOut(getDevice());
+        int remainingQuantity = currentQuantity - streamRate;
+        consumer.acceptAndLoad(getConsumable().getPart(streamRate));
+        try {
+            TimeUnit.MILLISECONDS.sleep(300);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return remainingQuantity;
     }
 
     @Override

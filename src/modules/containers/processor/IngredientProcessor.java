@@ -52,7 +52,6 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         assert plugged;
         assert consumable != null;
 
-
         if (getConsumable() == null) {
             if (consumable.getQuantity() <= getCapacity()) {
                 setConsumable(new ProcessedIngredient(generateEffect(consumable.getName()), consumable.getQuantity(),
@@ -91,9 +90,14 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         assert processed;
         assert plugged;
         assert consumer != null;
-        if (quantity <= getConsumable().getQuantity()) {
-            getDevice().streamOut(getDevice());
-            consumer.acceptAndLoad(getConsumable().getPart(quantity));
+        assert quantity > 0;
+
+        int remainingQuantity = quantity;
+        if (remainingQuantity <= getConsumable().getQuantity()) {
+            int streamRate = getDevice().streamRate();
+            while (remainingQuantity > 0) {
+                remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
+            }
         }
     }
 
@@ -103,9 +107,11 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         assert plugged;
         assert consumer != null;
 
-        getDevice().streamOut(getDevice());
-        consumer.acceptAndLoad(getConsumable());
-        setConsumable(null);
+        int remainingQuantity = getConsumable().getQuantity();
+        int streamRate = getDevice().streamRate();
+        while (remainingQuantity > 0) {
+            remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
+        }
     }
 
     @Override
