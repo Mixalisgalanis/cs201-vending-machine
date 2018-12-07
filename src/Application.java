@@ -18,9 +18,17 @@ import tuc.ece.cs201.vm.hw.device.*;
 import java.util.HashMap;
 
 public class Application {
-
-    private static final boolean GUI_ENABLED = false; //Change this to switch between Graphical & Console Implementation
+    //Menu Action Codes
+    private static final String AC_WELCOME_MESSAGE = "000";
+    private static final String AC_MAIN_MENU = "100";
+    private static final String AC_ADMIN_SUBMENU = "110";
+    private static final String AC_USER_SUBMENU = "120";
+    private static final String AC_ADMIN_CREATE_RECIPE = "111";
+    private static final String AC_ADMIN_DELETE_RECIPE = "112";
+    private static final String AC_ADMIN_REFILL_CONTAINERS = "113";
+    private static final String AC_USER_BUY_DRINK = "121";
     //Class variables
+    private static final boolean GUI_ENABLED = false; //<----Change to switch between Graphical & Console Implementation
     private static HardwareMachine machine;
     private static SoftwareMachine sm;
     private static RecipeManager rm;
@@ -148,52 +156,52 @@ public class Application {
             String actionCode = Menu.calculateActionCode(selection);
             display.displayMessage(Menu.getMenu());
             switch (actionCode) {
-                case "000": //Welcome Message
+                case AC_WELCOME_MESSAGE:
                     selection = 1;
                     break;
-                case "100": //MAIN MENU
+                case AC_MAIN_MENU:
                     selection = numPad.readCode(1);
                     break;
 
-                case "110": //ADMIN MAIN MENU
+                case AC_ADMIN_SUBMENU:
                     selection = numPad.readCode(1);
                     break;
 
-                case "120": //USER MAIN MENU
+                case AC_USER_SUBMENU:
                     selection = numPad.readCode(1);
                     break;
 
-                case "111": //Create Recipes
+                case AC_ADMIN_CREATE_RECIPE:
                     rm.createRecipe();
                     selection = EXIT_SELECTION;
                     break;
 
-                case "112": //Delete Recipes
+                case AC_ADMIN_DELETE_RECIPE:
                     //Display Recipes Header
-                    display.displayMessage("----Available Recipes----\n");
+                    display.displayMessage(Menu.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getRecipes().values()) {
-                        display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
+                        display.displayMessage("[" + recipe.getCode() + "] - " + recipe.getName() + " (" + recipe.getPrice() + ")");
                     }
                     //Display Recipes Footer
-                    display.displayMessage("Enter recipe code to delete: ");
+                    display.displayMessage(Menu.generateDashLine("", "-") + "\nEnter recipe code to delete: ");
                     int recipeCode = numPad.readCode(3);
                     rm.removeRecipe(String.valueOf(recipeCode));
                     display.displayMessage("Recipe removed successfully!");
                     selection = EXIT_SELECTION;
                     break;
 
-                case "113": //Refill Containers
+                case AC_ADMIN_REFILL_CONTAINERS:
                     machine.refillContainers();
                     selection = EXIT_SELECTION;
                     break;
 
-                case "121": //Buy a Drink
+                case AC_USER_BUY_DRINK:
                     //Display available recipes
-                    display.displayMessage("------Available Recipes------");
+                    display.displayMessage(Menu.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getAvailableRecipes().values()) {
                         display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + "c)");
                     }
-                    display.displayMessage("-----------------------------");
+                    display.displayMessage(Menu.generateDashLine("", "-"));
                     Recipe recipe;
 
                     //Select Recipe
@@ -214,8 +222,8 @@ public class Application {
                     changeCase.setChange(change);
                     //Execute Recipe
                     display.clearScreen();
-                    display.displayMessage("--------------------------------------------\nExecuting " +
-                            "Recipe! This may take a while. . .\n--------------------------------------------");
+                    display.displayMessage(Menu.generateDashLine("", "-") + "\nExecuting " +
+                            "Recipe! This may take a while. . .\n" + Menu.generateDashLine("", "-"));
                     rm.executeRecipe(recipe);
                     productCase.prepareProduct(recipe.getName(), recipe.getCupSize());
                     Product product = productCase.getProduct();
@@ -227,9 +235,27 @@ public class Application {
         }
     }
 
+    /**
+     * Makes sure dispensers have containers and containers have consumables.
+     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options
+     */
+    private static void generalCheck() {
+        assert (sm.getContainers() != null);
+        assert (sm.getProcessors() != null);
+        assert (sm.getConsumables() != null);
+        assert (sm.getDispensers() != null);
+        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
+            assert (dispenser.getContainers() != null);
+            for (Container container : dispenser.getContainers().values()) {
+                assert (container.getConsumable() != null);
+            }
+        }
+    }
+
     private static class Menu {
 
         //Class variables
+        static final int TOTAL_CHAR = 40;
         static final String INITIAL_CODE = "000";
         static HashMap<String, String> actionCodes = new HashMap<>();
         //Current state
@@ -247,18 +273,19 @@ public class Application {
 
         //Other Methods
         static void insertActionCodes() {
-            actionCodes.put("000", "=======================================\nWelcome to Vending Machine v1.0 (alpha)" +
-                    "\n=======================================\n"); //WELCOME MESSAGE
-            actionCodes.put("100", "==========MAIN MENU==========\n1. Administrator\n2. " +
-                    "User\n=============================\nPlease select user type: "); //MAIN MENU
-            actionCodes.put("110", "\n--------Administrator Submenu--------\n1. Create Recipes\n2. Delete " +
-                    "Recipes\n3. Refill Containers\n-------------------------------------\nPlease select action: ");//ADMIN MAIN MENU
-            actionCodes.put("120", "\n---------User Submenu--------\n" +
-                    "1. Buy a drink\n-----------------------------\nPlease select action: "); //USER MAIN MENU
-            actionCodes.put("111", "You have chosen to Create a Recipe!"); //Create Recipe (Admin)
-            actionCodes.put("112", "You have chosen to Delete a Recipe!"); //Delete Recipe (Admin)
-            actionCodes.put("113", "You have chosen to Refill Containers!"); //Refill Containers (Admin)
-            actionCodes.put("121", "You have chosen to Buy a Drink!"); //Buy a Drink (User)
+            actionCodes.put(AC_WELCOME_MESSAGE, generateDashLine("", "=") + "\nWelcome to Vending Machine v1.0 " +
+                    "(alpha)\n" + generateDashLine("", "="));
+            actionCodes.put(AC_MAIN_MENU, generateDashLine("MAIN MENU", "=") + "\n1. Administrator\n" +
+                    "2. User\n" + generateDashLine("", "=") + "\nPlease select user type: ");
+            actionCodes.put(AC_ADMIN_SUBMENU, generateDashLine("Administrator Submenu", "-") + "\n1. Create " +
+                    "Recipes\n2. Delete Recipes\n3. Refill Containers\n" + generateDashLine("", "-") + "\nPlease " +
+                    "select action: ");
+            actionCodes.put(AC_USER_SUBMENU, generateDashLine("User Submenu", "-") + "\n1. Buy a Drink\n" +
+                    generateDashLine("", "-") + "\nPlease select action:");
+            actionCodes.put(AC_ADMIN_CREATE_RECIPE, "You have chosen to Create a Recipe!");
+            actionCodes.put(AC_ADMIN_DELETE_RECIPE, "You have chosen to Delete a Recipe!");
+            actionCodes.put(AC_ADMIN_REFILL_CONTAINERS, "You have chosen to Refill Containers!");
+            actionCodes.put(AC_USER_BUY_DRINK, "You have chosen to Buy a Drink!");
         }
 
         static String calculateActionCode(int selection) {
@@ -266,24 +293,18 @@ public class Application {
             currentActionCode = prefix + selection + currentActionCode.substring(currentActionCode.indexOf('0') + 1);
             return currentActionCode;
         }
-    }
 
-
-    /**
-     * Makes sure dispensers have containers and containers have consumables.
-     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options
-     */
-    private static void generalCheck() {
-        assert (sm.getContainers() != null);
-        assert (sm.getProcessors() != null);
-        assert (sm.getConsumables() != null);
-        assert (sm.getDispensers() != null);
-        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
-            assert (dispenser.getContainers() != null);
-            for (Container container : dispenser.getContainers().values()) {
-                assert (container.getConsumable() != null);
+        static String generateDashLine(String message, String lineType) {
+            String result = "";
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < (TOTAL_CHAR - message.length() - i) / 2; j++) {
+                    result = result.concat(lineType);
+                }
+                if (i == 0) {
+                    result = result.concat(message);
+                }
             }
+            return result;
         }
-
     }
 }

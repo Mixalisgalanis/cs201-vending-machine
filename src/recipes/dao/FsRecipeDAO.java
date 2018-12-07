@@ -32,7 +32,7 @@ public class FsRecipeDAO implements RecipeDAO {
 
     @Override
     public void storeRecipe(Recipe recipe) {
-        File file = new File(RECIPES_FOLDER + recipe.getCode() + RECIPES_FILE_SUFFIX);
+        File file = new File(RECIPES_FOLDER + "/" + recipe.getCode() + RECIPES_FILE_SUFFIX);
         FileWriter fileWriter; //Required Writers to access and read from the file
         try {
             fileWriter = new FileWriter(file);
@@ -53,6 +53,12 @@ public class FsRecipeDAO implements RecipeDAO {
 
     @Override
     public boolean checkIfExists(String code) {
+        for (File file : folder.listFiles()) {
+            String recipeCode = file.getName().substring(0, file.getName().indexOf('.'));
+            if (recipeCode.equalsIgnoreCase(code + RECIPES_FILE_SUFFIX)) {
+                return true;
+            }
+        }
         return false;
     }
 }

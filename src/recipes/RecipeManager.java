@@ -145,12 +145,13 @@ public class RecipeManager {
         String type = reader.readString("Enter Recipe Type: ");
 
         //Ingredients
-        System.out.println("Available Consumables ----------");
-        int i = 0;
+        System.out.println("----------Available Consumables----------");
         for (Consumable consumable : sm.getConsumables().values()) {
-            System.out.println((++i) + consumable.getName() + "[" + consumable.getConsumableType() + "]");
+            System.out.println("[" + consumable.getConsumableType() + "] - " + consumable.getName());
         }
-        String[] ingredientsData = reader.readString("Please Enter Ingredients using the above options (ex: 'Coffee,40,Water,60')").split(",");
+        String[] ingredientsData =
+                reader.readString("Please Select Ingredients using the above options (ex: 'COFFEE,40,WATER,60')").split(
+                        ",");
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         for (int j = 0; j < ingredientsData.length / 2; j++) {
             try {
@@ -164,7 +165,8 @@ public class RecipeManager {
         }
 
         //Steps
-        String[] stepsData = reader.readString("Please Enter Steps (ex: Transfer Powders Mixer Coffee 40,)").split(",");
+        String[] stepsData = reader.readString("Please Enter Steps (ex: TRANSFER POWDERS MIXER COFFEE 40,): ").split(
+                ",");
         ArrayList<RecipeStep> steps = new ArrayList<>();
         for (String currentStep : stepsData) {
             try {
