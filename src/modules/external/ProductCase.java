@@ -84,7 +84,9 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     //Product Methods
     public Product getProduct() {
         assert prepared;
+        getDevice().unLock();
         //getDevice().getProcuct() Missing method in ProductCaseDevice - Displays info about ready product
+        getDevice().lock();
         return builder.getProduct();
     }
 

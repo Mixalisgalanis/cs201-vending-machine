@@ -28,13 +28,13 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
     @Override
     public void open() {
         opened = true;
-        System.out.println(getName() + " is opened.");
+        System.out.println("[" + getName() + " opened it's door.]");
     }
 
     @Override
     public void close() {
         opened = false;
-        System.out.println(getName() + " is closed.");
+        System.out.println("[" + getName() + " closed it's door.]");
     }
 
     @Override

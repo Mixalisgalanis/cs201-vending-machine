@@ -28,7 +28,7 @@ public class Application {
     private static final String AC_ADMIN_REFILL_CONTAINERS = "113";
     private static final String AC_USER_BUY_DRINK = "121";
     //Class variables
-    private static final boolean GUI_ENABLED = false; //<----Change to switch between Graphical & Console Implementation
+    private static final boolean GUI_ENABLED = false; //<----Change to switch between Graphical & Console User Interface
     private static HardwareMachine machine;
     private static SoftwareMachine sm;
     private static RecipeManager rm;

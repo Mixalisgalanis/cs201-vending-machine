@@ -19,6 +19,9 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
     public void setChange(int change) {
         assert change >= 0;
         this.change = change;
+        if (change > 0) {
+            getDevice().unLock();
+        }
         for (int i = 0; i < coins.length; ) {
             if (this.change >= coins[i]) {
                 getDevice().giveChange(coins[i]);
@@ -26,6 +29,9 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
             } else {
                 i += 1;
             }
+        }
+        if (change > 0) {
+            getDevice().lock();
         }
         removeChange();
     }

@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 public class FlowContainer<T extends FlowContainerDevice> extends Container<FlowContainerDevice> {
 
-    private static int instance = 1;
 
     //Constructors
     public FlowContainer(String name, int capacity, Consumable consumable, FlowContainerDevice device) {
@@ -18,7 +17,8 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
 
     public FlowContainer(FlowContainerDevice device) {
         super(device);
-        setName(getClass().getSimpleName() + (instance++));
+        setName((device.getName().contains("Device")) ? device.getName().substring(0, device.getName().indexOf("Device"))
+                : device.getName());
     }
 
     @Override
@@ -42,9 +42,11 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
         int remainingQuantity = getConsumable().getQuantity();
         if (getType().equals(DeviceType.FlowContainer)) {
             int streamRate = getDevice().streamRate();
+            getDevice().open();
             while (remainingQuantity > 0) {
                 remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
             }
+            getDevice().close();
         }
 
     }

@@ -15,9 +15,11 @@ public class NumPad extends Module<NumPadDevice> {
     public int readCode(int length) {
         assert length > 0;
         String code = "";
+        getDevice().unLock();
         for (int i = 0; i < length; i++) {
             code += getDevice().readDigit(code);
         }
+        getDevice().lock();
         return Integer.parseInt(code);
     }
 }

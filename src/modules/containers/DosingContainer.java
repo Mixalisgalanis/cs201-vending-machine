@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DosingContainer extends Container<DosingContainerDevice> {
 
-    private static int instance = 1;
+    private static final int instance = 1;
 
     //Constructors
     public DosingContainer(String name, int capacity, Consumable consumable, DosingContainerDevice device) {
@@ -17,7 +17,8 @@ public class DosingContainer extends Container<DosingContainerDevice> {
 
     public DosingContainer(DosingContainerDevice device) {
         super(device);
-        setName(getClass().getSimpleName() + (instance++));
+        setName((device.getName().contains("Device")) ? device.getName().substring(0, device.getName().indexOf("Device"))
+                : device.getName());
     }
 
     @Override
@@ -28,6 +29,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
         int remainingQuantity = quantity;
         if (remainingQuantity <= getConsumable().getQuantity()) {
             int dose = getDevice().doseSize();
+            getDevice().open();
             while (remainingQuantity > 0) {
                 getDevice().releaseDose(getDevice());
                 remainingQuantity -= dose;
@@ -40,6 +42,7 @@ public class DosingContainer extends Container<DosingContainerDevice> {
                 }
 
             }
+            getDevice().close();
         }
     }
 }

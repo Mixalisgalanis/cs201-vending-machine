@@ -18,13 +18,13 @@ public class ConsoleLockableExternalDevice extends ConsoleDevice implements Lock
     @Override
     public void lock() {
         locked = true;
-        System.out.println(getName() + " is locked.");
+        System.out.println("[" + getName() + " locked further access.]");
     }
 
     @Override
     public void unLock() {
         locked = false;
-        System.out.println(getName() + " is unlocked.");
+        System.out.println("[" + getName() + " unlocked access.]");
 
     }
 

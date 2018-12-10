@@ -6,8 +6,6 @@ import tuc.ece.cs201.vm.hw.device.MaterialContainerDevice;
 
 public class MaterialContainer extends Container<MaterialContainerDevice> {
 
-    private static int instance = 1;
-
     //Constructors
     public MaterialContainer(String name, int capacity, Consumable consumable, MaterialContainerDevice device) {
         super(name, capacity, consumable, device);
@@ -15,15 +13,18 @@ public class MaterialContainer extends Container<MaterialContainerDevice> {
 
     public MaterialContainer(MaterialContainerDevice device) {
         super(device);
-        setName(getClass().getSimpleName() + (instance++));
+        setName((device.getName().contains("Device")) ? device.getName().substring(0, device.getName().indexOf("Device"))
+                : device.getName());
     }
 
     @Override
     public void provide(Consumer consumer, int quantity) {
         assert isPlugged();
         if (quantity <= getConsumable().getQuantity()) {
+            getDevice().open();
             consumer.acceptAndLoad(getConsumable().getPart(quantity));
             getDevice().releaseMaterial(getDevice());
+            getDevice().close();
         }
 
     }

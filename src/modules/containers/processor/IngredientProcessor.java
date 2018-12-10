@@ -152,6 +152,6 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     }
 
     public String generateEffect(String newConsumableName) {
-        return getName().toLowerCase().substring(0, getName().length() - 2) + "d (" + newConsumableName + ")";
+        return getName().toLowerCase().substring(0, getName().length() - 1) + "d (" + newConsumableName + ")";
     }
 }
