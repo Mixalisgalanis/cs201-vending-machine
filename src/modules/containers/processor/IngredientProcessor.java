@@ -150,28 +150,15 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     }
 
     private String getIngredientName(Consumable consumable) {
-        String result = "";
-        if (consumable instanceof ProcessedIngredient) {
-            for (Ingredient ingredient : ((ProcessedIngredient) getConsumable()).getIngredients().values()) {
-                if (!consumable.getName().contains(ingredient.getName())) {
-                    result = result.concat(ingredient.getName() + ", ");
-                } else {
-                    result = result.concat(consumable.getName() + ", ");
-                }
-            }
-        } else {
-            for (Ingredient ingredient : ((ProcessedIngredient) getConsumable()).getIngredients().values()) {
-                result = result.concat(ingredient.getName() + ", ");
-            }
+        String SEPARATOR = ", ";
+        String result = (getConsumable().getName().equals("") ? "" : getConsumable().getName() + SEPARATOR);
+        if (!getConsumable().getName().contains(consumable.getName())) {
+            result = result.concat(consumable.getName() + SEPARATOR);
         }
-
-        result = result.substring(0, result.length() - 2);
-        return result;
+        return result.substring(0, result.length() - SEPARATOR.length());
     }
 
     private String getProcessingEffectName() {
         return getName().toLowerCase().substring(0, getName().length() - 1) + "d (" + getConsumable().getName() + ")";
     }
-
-
 }

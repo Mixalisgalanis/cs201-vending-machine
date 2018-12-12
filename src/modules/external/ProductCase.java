@@ -87,13 +87,12 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
         //getDevice().getProcuct() Missing method in ProductCaseDevice - Displays info about ready product
         System.out.println("Please take your " + builder.getProduct().getProductName() + "."); //Just because above
         // method is missing
-        getDevice().lock();
+        getDevice().unLock();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        getDevice().unLock();
         System.out.println("Assuming Product is taken...");
         getDevice().lock();
         return builder.getProduct();

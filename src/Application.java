@@ -198,7 +198,7 @@ public class Application {
                 case AC_USER_BUY_DRINK:
                     //Display available recipes
                     display.displayMessage(Menu.generateDashLine("Available Recipes", "-"));
-                    for (Recipe recipe : rm.getAvailableRecipes().values()) {
+                    for (Recipe recipe : rm.getAvailableRecipes()) {
                         display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + "c)");
                     }
                     display.displayMessage(Menu.generateDashLine("", "-"));

@@ -12,6 +12,7 @@ import utilities.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class RecipeManager {
@@ -19,7 +20,7 @@ public class RecipeManager {
     private static RecipeManager instance;
     //Class Variables
     private final HashMap<String, Recipe> recipes;
-    private final HashMap<String, Recipe> availableRecipes;
+    private final ArrayList<Recipe> availableRecipes;
     private final SoftwareMachine sm;
     private DAOFactory factory;
     private RecipeDAO recipeDAO;
@@ -30,7 +31,7 @@ public class RecipeManager {
     private RecipeManager() {
         sm = SoftwareMachine.getInstance();
         recipes = new HashMap<>();
-        availableRecipes = new HashMap<>();
+        availableRecipes = new ArrayList<>();
         try {
             factory = DAOFactory.getDAOFactory("FileSystem");
             recipeDAO = factory.getRecipeDAO();
@@ -51,7 +52,7 @@ public class RecipeManager {
         return recipes;
     }
 
-    public HashMap<String, Recipe> getAvailableRecipes() {
+    public ArrayList<Recipe> getAvailableRecipes() {
         return availableRecipes;
     }
 
@@ -82,9 +83,10 @@ public class RecipeManager {
         availableRecipes.clear();
         for (Recipe recipe : recipes.values()) {
             if (recipe.isAvailable()) {
-                availableRecipes.put(recipe.getCode(), recipe);
+                availableRecipes.add(recipe);
             }
         }
+        availableRecipes.sort(Comparator.comparing(Recipe::getCode));
     }
 
     /**

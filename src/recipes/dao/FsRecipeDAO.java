@@ -19,7 +19,7 @@ public class FsRecipeDAO implements RecipeDAO {
     public HashMap<String, Recipe> loadRecipes() {
         HashMap<String, Recipe> recipes = new HashMap<>();
         for (File file : folder.listFiles()) {
-            String recipeCode = file.getName().substring(0, file.getName().indexOf('.'));
+            String recipeCode = file.getName().substring(0, file.getName().indexOf(" - "));
             try {
                 String data = new Scanner(file).useDelimiter("\\A").next();
                 recipes.put(recipeCode, new Recipe(recipeCode, data));
