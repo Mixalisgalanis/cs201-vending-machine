@@ -12,6 +12,6 @@ public class ConsoleMaterialContainerDevice extends ConsoleContainerDevice imple
 
     @Override
     public void releaseMaterial(Device device) {
-        System.out.println("[" + getName() + "] - Transferred Consumable to " + device.getName());
+        System.out.println(getName().toUpperCase() + " transferred Cup to " + device.getName().toUpperCase());
     }
 }

@@ -60,7 +60,7 @@ public class SoftwareMachine {
     public void addConsumable(Consumable consumable) {
         for (ConsumableDispenser dispenser : getDispensers().values()) {
             if (dispenser.getConsumableType().equals(consumable.getConsumableType())) {
-                Container container = dispenser.getNextAvailableContainer();
+                Container container = dispenser.getContainer(consumable);
                 container.setName(consumable.getName() + Container.class.getSimpleName());
                 container.setConsumable(consumable);
                 return;
@@ -121,7 +121,7 @@ public class SoftwareMachine {
     }
 
     public Consumer getProductCase() {
-        for (Module module : this.modules.values()) {
+        for (Module module : modules.values()) {
             if (module.getType().equals(DeviceType.ProductCase)) {
                 return (Consumer) module;
             }

@@ -53,5 +53,6 @@ public class OperateStep extends RecipeStep {
     public void executeStep() {
         Processor tempProcessor = sm.findProcessor(nameDecoder(processor));
         tempProcessor.process(duration);
+        System.out.println("------------------------------------------------");
     }
 }

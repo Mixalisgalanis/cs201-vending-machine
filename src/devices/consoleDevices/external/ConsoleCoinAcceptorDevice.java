@@ -14,7 +14,7 @@ public class ConsoleCoinAcceptorDevice extends ConsoleLockableExternalDevice imp
     }));
 
     public ConsoleCoinAcceptorDevice() {
-        super("CoinAcceptor", DeviceType.CoinReader);
+        super("CoinAcceptorDevice", DeviceType.CoinReader);
         reader = new Reader();
     }
 

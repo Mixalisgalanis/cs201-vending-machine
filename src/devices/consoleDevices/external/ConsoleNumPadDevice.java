@@ -9,7 +9,7 @@ public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implement
     private final Reader reader;
 
     public ConsoleNumPadDevice() {
-        super("NumPad", DeviceType.NumPad);
+        super("NumPadDevice", DeviceType.NumPad);
         reader = new Reader();
     }
 

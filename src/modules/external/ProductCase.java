@@ -42,7 +42,7 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
             assert consumable instanceof ProcessedIngredient;
             this.consumable = consumable;
         }
-        getDevice().loadIngredient(consumable.getConsumableType());
+        getDevice().loadIngredient(consumable.getName());
         loaded = true;
     }
 
@@ -84,8 +84,17 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     //Product Methods
     public Product getProduct() {
         assert prepared;
-        getDevice().unLock();
         //getDevice().getProcuct() Missing method in ProductCaseDevice - Displays info about ready product
+        System.out.println("Please take your " + builder.getProduct().getProductName() + "."); //Just because above
+        // method is missing
+        getDevice().lock();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        getDevice().unLock();
+        System.out.println("Assuming Product is taken...");
         getDevice().lock();
         return builder.getProduct();
     }
@@ -95,7 +104,6 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
         builder.createProduct(productName);
         getDevice().putMaterial(material);
         builder.addConsumable(consumable);
-        getDevice().loadIngredient(consumable.getName());
         prepared = true;
     }
 }

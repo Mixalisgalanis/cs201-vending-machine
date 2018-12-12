@@ -98,4 +98,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
         this.plugged = plugged;
     }
 
+    public String consumableNameDecoder() {
+        return getName().substring(0, getName().indexOf("Container"));
+    }
 }

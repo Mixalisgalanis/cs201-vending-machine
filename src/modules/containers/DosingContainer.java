@@ -1,14 +1,13 @@
 package modules.containers;
 
 import behaviour.Consumer;
+import modules.Module;
 import recipes.consumables.Consumable;
 import tuc.ece.cs201.vm.hw.device.DosingContainerDevice;
 
 import java.util.concurrent.TimeUnit;
 
 public class DosingContainer extends Container<DosingContainerDevice> {
-
-    private static final int instance = 1;
 
     //Constructors
     public DosingContainer(String name, int capacity, Consumable consumable, DosingContainerDevice device) {
@@ -31,16 +30,15 @@ public class DosingContainer extends Container<DosingContainerDevice> {
             int dose = getDevice().doseSize();
             getDevice().open();
             while (remainingQuantity > 0) {
-                getDevice().releaseDose(getDevice());
+                getDevice().releaseDose(((Module) consumer).getDevice());
                 remainingQuantity -= dose;
                 consumer.acceptAndLoad(getConsumable().getPart(dose));
                 try {
-                    TimeUnit.MILLISECONDS.sleep(150);
+                    TimeUnit.MILLISECONDS.sleep(100);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
             getDevice().close();
         }

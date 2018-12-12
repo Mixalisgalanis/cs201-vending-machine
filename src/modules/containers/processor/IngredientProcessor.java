@@ -36,6 +36,7 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
     @Override
     public void process(int duration) {
         assert loaded;
+        getConsumable().setName(getProcessingEffectName());
         getDevice().operateStart();
         try {
             TimeUnit.SECONDS.sleep(duration);
@@ -52,39 +53,32 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         assert plugged;
         assert consumable != null;
 
+        //There isn't any consumable yet
         if (getConsumable() == null) {
-            if (consumable.getQuantity() <= getCapacity()) {
-                setConsumable(new ProcessedIngredient(generateEffect(consumable.getName()), consumable.getQuantity(),
-                        consumable.getConsumableType()));
-                if (consumable instanceof ProcessedIngredient) {
-                    for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
-                        ((ProcessedIngredient) getConsumable()).addIngredient(ingredient);
-                    }
-                } else {
-                    ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
-                }
-                getConsumable().setConsumableType("Liquid");
-                getDevice().streamIn();
-                loaded = true;
+            if (consumable.getQuantity() <= getCapacity()) { //There is enough space
+                setConsumable(new ProcessedIngredient(consumable.getQuantity(), consumable.getConsumableType()));
+                insertConsumable(consumable);
             }
-        } else {
-            if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) {
+        } else { //There is already a consumable
+            if (consumable.getQuantity() + getConsumable().getQuantity() <= getCapacity()) { //There isn't enough space
                 getConsumable().setQuantity(getConsumable().getQuantity() + consumable.getQuantity());
-                getConsumable().setName(generateEffect(consumable.getName()));
-                if (consumable instanceof ProcessedIngredient) {
-                    for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
-                        ((ProcessedIngredient) getConsumable()).addIngredient(ingredient);
-                    }
-                } else {
-                    ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
-                }
-                getConsumable().setConsumableType("Liquid");
-                getDevice().streamIn();
-                loaded = true;
-            } else if (!getConsumable().getName().equals(consumable.getName())) {
-                loaded = false;
+                insertConsumable(consumable);
             }
         }
+    }
+
+    private void insertConsumable(Consumable consumable) {
+        if (consumable instanceof ProcessedIngredient) {//Consumable input is a list of ingredients
+            for (Ingredient ingredient : ((ProcessedIngredient) consumable).getIngredients().values()) {
+                ((ProcessedIngredient) getConsumable()).addIngredient(ingredient);
+            }
+        } else { //Consumable input is a single consumable
+            ((ProcessedIngredient) getConsumable()).addIngredient((Ingredient) consumable);
+        }
+        getConsumable().setName(getIngredientName(consumable));
+        getConsumable().setConsumableType("Liquid");
+        getDevice().streamIn();
+        loaded = true;
     }
 
     @Override
@@ -97,9 +91,11 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         int remainingQuantity = quantity;
         if (remainingQuantity <= getConsumable().getQuantity()) {
             int streamRate = getDevice().streamRate();
+            getDevice().open();
             while (remainingQuantity > 0) {
                 remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
             }
+            getDevice().close();
         }
     }
 
@@ -111,9 +107,11 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
 
         int remainingQuantity = getConsumable().getQuantity();
         int streamRate = getDevice().streamRate();
+        getDevice().open();
         while (remainingQuantity > 0) {
             remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
         }
+        getDevice().close();
     }
 
     @Override
@@ -151,7 +149,29 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         this.plugged = plugged;
     }
 
-    public String generateEffect(String newConsumableName) {
-        return getName().toLowerCase().substring(0, getName().length() - 1) + "d (" + newConsumableName + ")";
+    private String getIngredientName(Consumable consumable) {
+        String result = "";
+        if (consumable instanceof ProcessedIngredient) {
+            for (Ingredient ingredient : ((ProcessedIngredient) getConsumable()).getIngredients().values()) {
+                if (!consumable.getName().contains(ingredient.getName())) {
+                    result = result.concat(ingredient.getName() + ", ");
+                } else {
+                    result = result.concat(consumable.getName() + ", ");
+                }
+            }
+        } else {
+            for (Ingredient ingredient : ((ProcessedIngredient) getConsumable()).getIngredients().values()) {
+                result = result.concat(ingredient.getName() + ", ");
+            }
+        }
+
+        result = result.substring(0, result.length() - 2);
+        return result;
     }
+
+    private String getProcessingEffectName() {
+        return getName().toLowerCase().substring(0, getName().length() - 1) + "d (" + getConsumable().getName() + ")";
+    }
+
+
 }

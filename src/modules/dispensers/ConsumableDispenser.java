@@ -4,6 +4,7 @@ import behaviour.Consumer;
 import behaviour.Provider;
 import modules.Module;
 import modules.containers.Container;
+import recipes.consumables.Consumable;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.DispenserDevice;
 
@@ -69,21 +70,16 @@ public class ConsumableDispenser extends Module<DispenserDevice> implements Disp
     }
 
     public Container getContainer(String name) {
+        return containers.get(name);
+    }
+
+    public Container getContainer(Consumable consumable) {
         for (Container container : containers.values()) {
-            if (container.getName().equalsIgnoreCase(name)) {
+            if (container.consumableNameDecoder().equalsIgnoreCase(consumable.getName())) {
                 return container;
             }
         }
         return null;
-    }
-
-    public Container getNextAvailableContainer() {
-        for (Container container : containers.values()) {
-            if (container.getConsumable() == null) {
-                return container; //There is an available Container
-            }
-        }
-        return null; //All Containers are full
     }
 
     @Override

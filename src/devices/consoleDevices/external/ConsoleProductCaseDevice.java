@@ -6,18 +6,17 @@ import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
 public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice implements ProductCaseDevice {
 
     public ConsoleProductCaseDevice() {
-        super("ProductCase", DeviceType.ProductCase);
+        super("ProductCaseDevice", DeviceType.ProductCase);
     }
 
 
     @Override
     public void putMaterial(String type) {
-        System.out.println("Inserted: " + type);
-        //TODO insert this function in product builder
+        System.out.println(type + " inserted.");
     }
 
     @Override
-    public void loadIngredient(String type) {
-        System.out.println("Loading: " + type);
+    public void loadIngredient(String consumableName) {
+        System.out.println(consumableName + " streamed in " + getName().toUpperCase());
     }
 }

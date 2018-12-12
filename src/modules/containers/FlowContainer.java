@@ -1,6 +1,7 @@
 package modules.containers;
 
 import behaviour.Consumer;
+import modules.Module;
 import recipes.consumables.Consumable;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.FlowContainerDevice;
@@ -28,17 +29,19 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
         int remainingQuantity = quantity;
         if (remainingQuantity <= getConsumable().getQuantity() && getType().equals(DeviceType.FlowContainer)) {
             int streamRate = getDevice().streamRate();
+            getDevice().open();
             while (remainingQuantity > 0) {
                 remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
             }
+            getDevice().close();
         }
-
     }
 
     @Override
     public void provide(Consumer consumer) {
         assert isPlugged();
         assert consumer != null;
+        assert getType().equals(DeviceType.FlowContainer);
         int remainingQuantity = getConsumable().getQuantity();
         if (getType().equals(DeviceType.FlowContainer)) {
             int streamRate = getDevice().streamRate();
@@ -52,11 +55,11 @@ public class FlowContainer<T extends FlowContainerDevice> extends Container<Flow
     }
 
     protected int streamOut(Consumer consumer, int currentQuantity, int streamRate) {
-        getDevice().streamOut(getDevice());
+        getDevice().streamOut(((Module) consumer).getDevice());
         int remainingQuantity = currentQuantity - streamRate;
         consumer.acceptAndLoad(getConsumable().getPart(streamRate));
         try {
-            TimeUnit.MILLISECONDS.sleep(150);
+            TimeUnit.MILLISECONDS.sleep(50);
 
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -7,7 +7,7 @@ import tuc.ece.cs201.vm.hw.device.DeviceType;
 public class ConsoleChangeCaseDevice extends ConsoleLockableExternalDevice implements ChangeCaseDevice {
 
     public ConsoleChangeCaseDevice() {
-        super("ChangeCase", DeviceType.ChangeCase);
+        super("ChangeCaseDevice", DeviceType.ChangeCase);
     }
 
     @Override

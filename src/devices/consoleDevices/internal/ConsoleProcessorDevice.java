@@ -12,21 +12,21 @@ public class ConsoleProcessorDevice extends ConsoleFlowContainerDevice implement
 
     @Override
     public void streamIn() {
-        System.out.println("[" + getName() + "] - " + "Consumable streamed in.");
+        System.out.println("Consumable streamed in " + getName().toUpperCase() + ".");
     }
 
     @Override
     public void operateStart() {
-        System.out.println("[" + getName() + "] - " + "Started operating.");
+        System.out.println(getName().toUpperCase() + " started " + getProcessingLabel() + ". Please wait...");
     }
 
     @Override
     public void operateStop() {
-        System.out.println("[" + getName() + "] - " + "Stopped operating.");
+        System.out.println(getName().toUpperCase() + " stopped " + getProcessingLabel() + ". Please wait...");
     }
 
     @Override
     public String getProcessingLabel() {
-        return getName().substring(0, getName().length() - 7) + "d";
+        return getName().toLowerCase().substring(0, getName().length() - 8) + "ing";
     }
 }

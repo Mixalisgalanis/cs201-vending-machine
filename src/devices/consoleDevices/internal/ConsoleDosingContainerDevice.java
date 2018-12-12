@@ -19,6 +19,6 @@ public class ConsoleDosingContainerDevice extends ConsoleContainerDevice impleme
 
     @Override
     public void releaseDose(Device device) {
-        System.out.println("[" + getName() + "] - " + "Released " + DOSE_SIZE + "g of powder to " + device.getName());
+        System.out.println(getName().toUpperCase() + " released " + DOSE_SIZE + "g of powder to " + device.getName().toUpperCase());
     }
 }
