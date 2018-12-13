@@ -20,6 +20,8 @@ public class FsRecipeDAO implements RecipeDAO {
         HashMap<String, Recipe> recipes = new HashMap<>();
         for (File file : folder.listFiles()) {
             if (file.getName().contains(RECIPES_FILE_SUFFIX)) {
+                assert file.setWritable(true);
+                assert file.setReadable(true);
                 String recipeCode = file.getName().substring(0, file.getName().indexOf(" - "));
                 try {
                     String data = new Scanner(file).useDelimiter("\\A").next();
@@ -51,6 +53,7 @@ public class FsRecipeDAO implements RecipeDAO {
         for (File file : folder.listFiles()) {
             String filePath = recipe.getCode() + " - " + recipe.getName() + RECIPES_FILE_SUFFIX;
             if (file.getName().equals(filePath)) {
+                assert file.canRead() && file.canWrite();
                 if (!file.delete()) {
                     System.out.println("Could not delete " + recipe.getName() + " because file is in use!");
                 } else {

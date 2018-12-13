@@ -19,17 +19,22 @@ import utilities.StringManager;
 import java.util.HashMap;
 
 /**
+ * ******Project Authors:******
+ * Mixalis Galanis (2016030036)
+ * Ioanna Marinou (2016030143)
+ * Nikos Piliouras (2016030148)
+ * ****************************
  * This Class contains the main run of the Project. A Software Machine is created based on a template hardware
  * Machine. Hardware Devices are added here and appropriate modules are created based on the physical existing devices.
  * Console and Graphics Implementation can be easily switched by modifying the GUI_ENABLED variable. This Class also
- * contains all the required Menus to navigate user to specific actions.
- * <p>
- * This Projects makes heavy use of assertions. To enable Assertion Check in case of debugging you need to edit run
- * configuration and add "-ea" argument to VM Options.
- * <p>
+ * contains all the required Menus to navigate user to specific actions. Note: This Projects makes heavy use of
+ * assertions. To enable Assertion Check in case of debugging you need to edit run configuration and add "-ea"
+ * argument to VM Options.
+ * **************************************
  * State of Project:
  * Console Implementation: 100% completed
  * Graphics Implementation: 5% completed
+ * **************************************
  */
 public class Application {
     //Switch between Graphical & Console User Interface
