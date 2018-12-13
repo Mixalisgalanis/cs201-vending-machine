@@ -11,12 +11,7 @@ import java.util.Locale;
 public class Reader {
 
     //Class variables
-    private BufferedReader in;
-
-    //Constructor
-    public Reader() {
-        this.in = new BufferedReader(new InputStreamReader(System.in));
-    }
+    private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
     /**
      * Prints a message on the screen and asks for a String input
@@ -24,7 +19,7 @@ public class Reader {
      * @param message to be displayed on screen
      * @return the String the user gave
      */
-    public String readString(String message) {
+    public static String readString(String message) {
         System.out.println(message);
         try {
             return (in.readLine());
@@ -39,7 +34,7 @@ public class Reader {
      * @param message to be displayed on screen
      * @return the Integer Number the user gave
      */
-    public int readInt(String message) {
+    public static int readInt(String message) {
         System.out.print(message);
         try {
             String str = in.readLine();
@@ -55,7 +50,7 @@ public class Reader {
      * @param message to be displayed on screen
      * @return the Float Number the user gave
      */
-    public float readFloat(String message) {
+    public static float readFloat(String message) {
         System.out.print(message);
         try {
             return Float.parseFloat(in.readLine());
@@ -70,7 +65,7 @@ public class Reader {
      * @param message to be displayed on screen
      * @return the Date the user gave (Date Format)
      */
-    public Date readDate(String message) {
+    public static Date readDate(String message) {
         System.out.print(message);
         try {
             Locale l = new Locale("el", "GR");
@@ -87,7 +82,7 @@ public class Reader {
      * @param message to be displayed on screen
      * @return the String the user gave (Time Format)
      */
-    public Date readTime(String message) {
+    public static Date readTime(String message) {
         System.out.print(message);
         try {
             DateFormat df = DateFormat.getTimeInstance(3);

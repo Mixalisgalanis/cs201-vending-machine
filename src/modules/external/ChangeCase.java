@@ -31,9 +31,9 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
             }
         }
         if (change > 0) {
+            removeChange();
             getDevice().lock();
         }
-        removeChange();
     }
 
     private void removeChange() {

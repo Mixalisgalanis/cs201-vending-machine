@@ -17,6 +17,6 @@ public class ConsoleProductCaseDevice extends ConsoleLockableExternalDevice impl
 
     @Override
     public void loadIngredient(String consumableName) {
-        System.out.println(consumableName + " streamed in " + getName().toUpperCase());
+        System.out.println("[" + consumableName + "] streamed in " + getName().toUpperCase());
     }
 }

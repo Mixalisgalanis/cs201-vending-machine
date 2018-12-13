@@ -95,7 +95,14 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
         }
         System.out.println("Assuming Product is taken...");
         getDevice().lock();
-        return builder.getProduct();
+        Product product = builder.getProduct();
+
+        //Clear Things up
+        setLoaded(false);
+        setConsumable(null);
+        setCup(null);
+
+        return product;
     }
 
     public void prepareProduct(String productName, String material) {
@@ -104,5 +111,21 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
         getDevice().putMaterial(material);
         builder.addConsumable(consumable);
         prepared = true;
+    }
+
+    public void setPrepared(boolean prepared) {
+        this.prepared = prepared;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public void setConsumable(Consumable consumable) {
+        this.consumable = consumable;
+    }
+
+    public void setCup(Cup cup) {
+        this.cup = cup;
     }
 }

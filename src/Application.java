@@ -14,6 +14,7 @@ import recipes.consumables.ingredients.Powder;
 import recipes.product.Product;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.*;
+import utilities.StringManager;
 
 import java.util.HashMap;
 
@@ -25,7 +26,8 @@ public class Application {
     private static final String AC_USER_SUBMENU = "120";
     private static final String AC_ADMIN_CREATE_RECIPE = "111";
     private static final String AC_ADMIN_DELETE_RECIPE = "112";
-    private static final String AC_ADMIN_REFILL_CONTAINERS = "113";
+    private static final String AC_ADMIN_CHECK_CONTAINER_LEVELS = "113";
+    private static final String AC_ADMIN_REFILL_CONTAINERS = "114";
     private static final String AC_USER_BUY_DRINK = "121";
     //Class variables
     private static final boolean GUI_ENABLED = false; //<----Change to switch between Graphical & Console User Interface
@@ -151,12 +153,14 @@ public class Application {
         //Displaying Menus and taking actions
         new Menu();
         int EXIT_SELECTION = -1;
+        int RESET_SELECTION = -2;
         int selection = 0;
         while (selection != EXIT_SELECTION) {
             String actionCode = Menu.calculateActionCode(selection);
             display.displayMessage(Menu.getMenu());
             switch (actionCode) {
                 case AC_WELCOME_MESSAGE:
+                    display.displayMessage("Press -1 any time to EXIT the Program.");
                     selection = 1;
                     break;
                 case AC_MAIN_MENU:
@@ -173,35 +177,46 @@ public class Application {
 
                 case AC_ADMIN_CREATE_RECIPE:
                     rm.createRecipe();
-                    selection = EXIT_SELECTION;
+                    selection = RESET_SELECTION;
                     break;
 
                 case AC_ADMIN_DELETE_RECIPE:
                     //Display Recipes Header
-                    display.displayMessage(Menu.generateDashLine("Available Recipes", "-"));
+                    display.displayMessage(StringManager.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getRecipes().values()) {
                         display.displayMessage("[" + recipe.getCode() + "] - " + recipe.getName() + " (" + recipe.getPrice() + ")");
                     }
                     //Display Recipes Footer
-                    display.displayMessage(Menu.generateDashLine("", "-") + "\nEnter recipe code to delete: ");
+                    display.displayMessage(StringManager.generateDashLine("", "-") + "\nEnter recipe code to delete: ");
                     int recipeCode = numPad.readCode(3);
                     rm.removeRecipe(String.valueOf(recipeCode));
                     display.displayMessage("Recipe removed successfully!");
-                    selection = EXIT_SELECTION;
+                    selection = RESET_SELECTION;
+                    break;
+
+                case AC_ADMIN_CHECK_CONTAINER_LEVELS:
+                    display.displayMessage(StringManager.generateDashLine("Available Containers", "-"));
+                    for (Container container : machine.getContainers().values()) {
+                        display.displayMessage("[" + container.getConsumable().getName() + "] " + container.getName() +
+                                " - " + container.getConsumable().getQuantity() + "/" + container.getCapacity());
+                    }
+                    display.displayMessage(StringManager.generateDashLine("", "-"));
+                    selection = RESET_SELECTION;
                     break;
 
                 case AC_ADMIN_REFILL_CONTAINERS:
                     machine.refillContainers();
-                    selection = EXIT_SELECTION;
+                    display.displayMessage("Containers Refilled Successfully!");
+                    selection = RESET_SELECTION;
                     break;
 
                 case AC_USER_BUY_DRINK:
                     //Display available recipes
-                    display.displayMessage(Menu.generateDashLine("Available Recipes", "-"));
+                    display.displayMessage(StringManager.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getAvailableRecipes()) {
                         display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + "c)");
                     }
-                    display.displayMessage(Menu.generateDashLine("", "-"));
+                    display.displayMessage(StringManager.generateDashLine("", "-"));
                     Recipe recipe;
 
                     //Select Recipe
@@ -222,15 +237,15 @@ public class Application {
                     changeCase.setChange(change);
                     //Execute Recipe
                     display.clearScreen();
-                    display.displayMessage(Menu.generateDashLine("", "-") + "\nExecuting " +
-                            "Recipe! This may take a while. . .\n" + Menu.generateDashLine("", "-"));
+                    display.displayMessage(StringManager.generateDashLine("", "-") + "\nExecuting " +
+                            "Recipe! This may take a while. . .\n" + StringManager.generateDashLine("", "-"));
                     rm.executeRecipe(recipe);
                     productCase.prepareProduct(recipe.getName(), recipe.getCupSize());
                     Product product = productCase.getProduct();
-                    selection = EXIT_SELECTION;
+                    selection = RESET_SELECTION;
                     break;
                 default: //Action Code not recognised
-                    display.displayMessage("Action not found!");
+                    selection = 0;
             }
         }
     }
@@ -255,11 +270,11 @@ public class Application {
     private static class Menu {
 
         //Class variables
-        static final int TOTAL_CHAR = 40;
-        static final String INITIAL_CODE = "000";
+        static String INITIAL_CODE = "000";
         static HashMap<String, String> actionCodes = new HashMap<>();
         //Current state
         static String currentActionCode = INITIAL_CODE;
+        static String previousActionCode = INITIAL_CODE;
 
         //Constructor
         Menu() {
@@ -268,43 +283,52 @@ public class Application {
 
         //Getters
         static String getMenu() {
-            return actionCodes.get(currentActionCode);
+            return (actionCodes.get(currentActionCode) == null) ? "Action not found. Please try again!\n" :
+                    actionCodes.get(currentActionCode);
         }
 
         //Other Methods
         static void insertActionCodes() {
-            actionCodes.put(AC_WELCOME_MESSAGE, generateDashLine("", "=") + "\nWelcome to Vending Machine v1.0 " +
-                    "(alpha)\n" + generateDashLine("", "="));
-            actionCodes.put(AC_MAIN_MENU, generateDashLine("MAIN MENU", "=") + "\n1. Administrator\n" +
-                    "2. User\n" + generateDashLine("", "=") + "\nPlease select user type: ");
-            actionCodes.put(AC_ADMIN_SUBMENU, generateDashLine("Administrator Submenu", "-") + "\n1. Create " +
-                    "Recipes\n2. Delete Recipes\n3. Refill Containers\n" + generateDashLine("", "-") + "\nPlease " +
-                    "select action: ");
-            actionCodes.put(AC_USER_SUBMENU, generateDashLine("User Submenu", "-") + "\n1. Buy a Drink\n" +
-                    generateDashLine("", "-") + "\nPlease select action:");
-            actionCodes.put(AC_ADMIN_CREATE_RECIPE, "You have chosen to Create a Recipe!");
-            actionCodes.put(AC_ADMIN_DELETE_RECIPE, "You have chosen to Delete a Recipe!");
-            actionCodes.put(AC_ADMIN_REFILL_CONTAINERS, "You have chosen to Refill Containers!");
-            actionCodes.put(AC_USER_BUY_DRINK, "You have chosen to Buy a Drink!");
+            actionCodes.put(AC_WELCOME_MESSAGE, StringManager.generateDashLine("", "=") + "\nWelcome to Vending Machine v1.0 " +
+                    "(Beta)\n" + StringManager.generateDashLine("", "="));
+            actionCodes.put(AC_MAIN_MENU, "\n" +
+                    StringManager.generateDashLine("MAIN MENU", "=") + "\n1. Administrator\n" +
+                    "2. User\n" + StringManager.generateDashLine("", "=") + "\nPlease select user type: ");
+            actionCodes.put(AC_ADMIN_SUBMENU,
+                    "\n" + StringManager.generateDashLine("Administrator Submenu", "-") + "\n0. " +
+                            "Back (<----)" + "\n1. Create " + "Recipes\n2. Delete Recipes\n3. Check Container Levels\n" +
+                            "4. Refill Containers\n"
+                            + StringManager.generateDashLine("", "-") + "\nPlease select action: ");
+            actionCodes.put(AC_USER_SUBMENU,
+                    "\n" + StringManager.generateDashLine("User Submenu", "-") + "\n0. Back (<----)" +
+                            "\n1. Buy a Drink\n" + StringManager.generateDashLine("", "-") + "\nPlease select action:");
+            actionCodes.put(AC_ADMIN_CREATE_RECIPE, "You have chosen to Create a Recipe!\n");
+            actionCodes.put(AC_ADMIN_DELETE_RECIPE, "You have chosen to Delete a Recipe!\n");
+            actionCodes.put(AC_ADMIN_CHECK_CONTAINER_LEVELS, "You have chosen to check remaining Container Levels!\n");
+            actionCodes.put(AC_ADMIN_REFILL_CONTAINERS, "You have chosen to Refill Containers!\n");
+            actionCodes.put(AC_USER_BUY_DRINK, "You have chosen to Buy a Drink!\n");
         }
 
         static String calculateActionCode(int selection) {
-            String prefix = currentActionCode.substring(0, currentActionCode.indexOf('0'));
-            currentActionCode = prefix + selection + currentActionCode.substring(currentActionCode.indexOf('0') + 1);
-            return currentActionCode;
-        }
-
-        static String generateDashLine(String message, String lineType) {
-            String result = "";
-            for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < (TOTAL_CHAR - message.length() - i) / 2; j++) {
-                    result = result.concat(lineType);
-                }
-                if (i == 0) {
-                    result = result.concat(message);
-                }
+            switch (selection) {
+                case 0:
+                    currentActionCode = previousActionCode;
+                    break;
+                case -2:
+                    currentActionCode = AC_MAIN_MENU;
+                    previousActionCode = INITIAL_CODE;
+                    break;
+                default:
+                    previousActionCode = currentActionCode;
+                    String prefix = currentActionCode.substring(0, currentActionCode.indexOf('0'));
+                    String selectionString = String.valueOf(selection);
+                    String suffix = "";
+                    for (int i = 0; i < INITIAL_CODE.length() - (prefix.length() + selectionString.length()); i++) {
+                        suffix = suffix.concat("0");
+                    }
+                    currentActionCode = prefix + selectionString + suffix;
             }
-            return result;
+            return currentActionCode;
         }
     }
 }

@@ -111,6 +111,9 @@ public class IngredientProcessor extends FlowContainer<ProcessorDevice> implemen
         while (remainingQuantity > 0) {
             remainingQuantity = streamOut(consumer, remainingQuantity, streamRate);
         }
+        setConsumable(null);
+        processed = false;
+        loaded = false;
         getDevice().close();
     }
 

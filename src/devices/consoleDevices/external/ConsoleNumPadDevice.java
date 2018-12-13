@@ -15,6 +15,6 @@ public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implement
 
     @Override
     public int readDigit(String s) {
-        return reader.readInt(s);
+        return Reader.readInt(s);
     }
 }

@@ -8,6 +8,7 @@ import recipes.dao.DAOFactory;
 import recipes.dao.RecipeDAO;
 import recipes.step.RecipeStep;
 import utilities.Reader;
+import utilities.StringManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +25,6 @@ public class RecipeManager {
     private final SoftwareMachine sm;
     private DAOFactory factory;
     private RecipeDAO recipeDAO;
-    private Reader reader;
 
 
     //Constructor
@@ -124,14 +124,12 @@ public class RecipeManager {
      * @implNote CONSOLE-ONLY!
      */
     public void createRecipe() {
-        reader = new Reader();
-
         //Basic recipe properties
-        String name = reader.readString("Enter Recipe Name: ");
-        String code = reader.readString("Enter Recipe Code (Enter '0') to pick code automatically: ");
+        String name = Reader.readString("Enter Recipe Name: ");
+        String code = Reader.readString("Enter Recipe Code (Enter '0') to pick code automatically: ");
         if (!code.equals("0")) {
             while (recipeDAO.checkIfExists(code)) {
-                code = reader.readString("Recipe with code " + code + " already exists! Pick another one: ");
+                code = Reader.readString("Recipe with code " + code + " already exists! Pick another one: ");
             }
         } else {
             int testCode = 100;
@@ -140,19 +138,19 @@ public class RecipeManager {
             }
             code = String.valueOf(testCode);
         }
-        int price = reader.readInt("Enter " + name + "'s cost: ");
+        int price = Reader.readInt("Enter " + name + "'s cost: ");
         while (price <= 0) {
-            price = reader.readInt("Invalid price amount, try again: ");
+            price = Reader.readInt("Invalid price amount, try again: ");
         }
-        String type = reader.readString("Enter Recipe Type: ");
+        String type = Reader.readString("Enter Recipe Type: ");
 
         //Ingredients
-        System.out.println("----------Available Consumables----------");
+        System.out.println(StringManager.generateDashLine("Available Consumables", "-"));
         for (Consumable consumable : sm.getConsumables().values()) {
             System.out.println("[" + consumable.getConsumableType() + "] - " + consumable.getName());
         }
         String[] ingredientsData =
-                reader.readString("Please Select Ingredients using the above options (ex: 'COFFEE,40,WATER,60')").split(
+                Reader.readString("Please Select Ingredients using the above options (ex: 'COFFEE,40,WATER,60')").split(
                         ",");
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         for (int j = 0; j < ingredientsData.length / 2; j++) {
@@ -167,7 +165,7 @@ public class RecipeManager {
         }
 
         //Steps
-        String[] stepsData = reader.readString("Please Enter Steps (ex: TRANSFER POWDERS MIXER COFFEE 40,): ").split(
+        String[] stepsData = Reader.readString("Please Enter Steps (ex: TRANSFER POWDERS MIXER COFFEE 40,): ").split(
                 ",");
         ArrayList<RecipeStep> steps = new ArrayList<>();
         for (String currentStep : stepsData) {
