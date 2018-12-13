@@ -9,6 +9,9 @@ import modules.containers.processor.Processor;
 import modules.dispensers.ConsumableDispenser;
 import modules.dispensers.Dispenser;
 import recipes.consumables.Consumable;
+import recipes.consumables.Cup;
+import recipes.consumables.ingredients.Liquid;
+import recipes.consumables.ingredients.Powder;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
@@ -16,6 +19,12 @@ import tuc.ece.cs201.vm.hw.device.DeviceType;
 import java.util.HashMap;
 
 public class SoftwareMachine {
+    //Container Sizes
+    private static final int POWDER_CONTAINER_REGULAR_SIZE = 500;
+    private static final int LIQUID_CONTAINER_REGULAR_SIZE = 1000;
+    private static final int SMALL_CUP_CONTAINER = 25;
+    private static final int BIG_CUP_CONTAINER = 15;
+    public static final int PROCESSOR_CONTAINER_SIZE = 500;
 
     //Class variables
     private static SoftwareMachine instance;
@@ -26,6 +35,7 @@ public class SoftwareMachine {
         modules = new HashMap<>();
         //Prevent further instantiation
         instance = this;
+        insertConsumables();
     }
 
     private SoftwareMachine(HardwareMachine machine) {
@@ -33,6 +43,7 @@ public class SoftwareMachine {
         //Prevents further instantiation
         instance = this;
         probeHardware(machine);
+        insertConsumables();
     }
 
     public static SoftwareMachine getInstance() {
@@ -41,6 +52,24 @@ public class SoftwareMachine {
 
     public static SoftwareMachine getInstance(HardwareMachine machine) {
         return (instance != null) ? instance : new SoftwareMachine(machine);
+    }
+
+    /**
+     * Inserts all consumables needed
+     */
+    private void insertConsumables() {
+        //Powders
+        addConsumable(new Powder("Coffee", POWDER_CONTAINER_REGULAR_SIZE));
+        addConsumable(new Powder("Sugar", POWDER_CONTAINER_REGULAR_SIZE));
+        //Renames HashMap Key
+
+        //Liquids
+        addConsumable(new Liquid("Water", LIQUID_CONTAINER_REGULAR_SIZE));
+        addConsumable(new Liquid("Milk", LIQUID_CONTAINER_REGULAR_SIZE));
+
+        //Materials
+        addConsumable(new Cup("SmallCup", SMALL_CUP_CONTAINER, "Small"));
+        addConsumable(new Cup("BigCup", BIG_CUP_CONTAINER, "Big"));
     }
 
     //Other Methods

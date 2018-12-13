@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SwingContainerDevice extends JPanel implements ContainerDevice {
 
+
     @Override
     public String getName() {
         return null;

@@ -2,6 +2,7 @@ package devices.swingDevices.external;
 
 import machine.swing.SwingMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.NumPadDevice;
 
 import javax.swing.*;
@@ -12,22 +13,30 @@ import java.util.List;
 
 public class SwingNumPadDevice extends JPanel implements NumPadDevice, ActionListener {
 
-    private final ButtonArray jnumpad;
-    private final JLabel jlabel;
+    private final String name = "NumPadDevice";
+    private final DeviceType deviceType = DeviceType.NumPad;
+    private ButtonArray jnumpad;
+    private JLabel jlabel;
 
     private int keyPressed = -1;
     private boolean active;
 
     public SwingNumPadDevice() {
+        prepareSwing();
+    }
+
+    private void prepareSwing() {
         jlabel = new JLabel("Numpad");
         jlabel.setAlignmentX(LEFT_ALIGNMENT);
         jnumpad = new ButtonArray(this);
         jnumpad.setAlignmentX(LEFT_ALIGNMENT);
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        BoxLayout boxLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+        setLayout(boxLayout);
         add(jlabel);
         add(jnumpad);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jnumpad.setEnabled(active);
+        jnumpad.setEnabled(false);
+        setPreferredSize(getMinimumSize());
     }
 
     @Override
@@ -95,29 +104,29 @@ public class SwingNumPadDevice extends JPanel implements NumPadDevice, ActionLis
         }
         notify();
     }
+
+    private class ButtonArray extends JPanel {
+        JButton[] b = new JButton[10];
+
+        ButtonArray(ActionListener al) {
+            GridLayout gl = new GridLayout(0, 3);
+            setLayout(gl);
+            for (int i = 1; i < 10; i++) {
+                b[i] = new JButton("" + i);
+                add(b[i]);
+                b[i].addActionListener(al);
+            }
+            b[0] = new JButton("0");
+            add(b[0]);
+            b[0].addActionListener(al);
+        }
+
+        @Override
+        public void setEnabled(boolean st) {
+            for (int i = 0; i < getComponentCount(); i++) {
+                getComponent(i).setEnabled(st);
+            }
+        }
+    }
 }
 
-class ButtonArray extends JPanel {
-    JButton[] b = new JButton[10];
-
-    public ButtonArray(ActionListener al) {
-        GridLayout gl = new GridLayout(0, 3);
-        setLayout(gl);
-        for (int i = 1; i < 10; i++) {
-            b[i] = new JButton("" + i);
-            add(b[i]);
-            b[i].addActionListener(al);
-        }
-        b[0] = new JButton("0");
-        add(b[0]);
-        b[0].addActionListener(al);
-    }
-
-    @Override
-    public void setEnabled(boolean st) {
-        for (int i = 0; i < getComponentCount(); i++) {
-            getComponent(i).setEnabled(st);
-        }
-    }
-
-}

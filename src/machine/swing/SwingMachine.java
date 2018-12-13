@@ -10,11 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SwingMachine extends JFrame implements HardwareMachine {
-
+    //Container Sizes
+    private static final int POWDER_CONTAINER_REGULAR_SIZE = 500;
+    private static final int LIQUID_CONTAINER_REGULAR_SIZE = 1000;
+    private static final int SMALL_CUP_CONTAINER = 25;
+    private static final int BIG_CUP_CONTAINER = 15;
+    private static final int PROCESSOR_CONTAINER_SIZE = 500;
     //Constant variables
-    public static final int FRAME_SIZE_WIDTH = 800;
-    public static final int FRAME_SIZE_HEIGHT = 600;
-    public static final double EXTERNAL_INTERNAL_RATIO = 0.4;
+    static final int FRAME_SIZE_WIDTH = 800;
+    static final int FRAME_SIZE_HEIGHT = 600;
+    static final double EXTERNAL_INTERNAL_RATIO = 0.3;
     public static final Color ACTIVE_COLOR = Color.lightGray;
     public static final Color DE_ACTIVE_COLOR = Color.white;
     public static final Color BACKGROUND_COLOR = Color.white;
@@ -34,6 +39,11 @@ public class SwingMachine extends JFrame implements HardwareMachine {
         devices = new HashMap<>();
         instance = this;
 
+        prepareSwing();
+        insertDevices();
+    }
+
+    private void prepareSwing() {
         //Swing Preparation
         setSize(FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT);
         setResizable(false);
@@ -47,7 +57,7 @@ public class SwingMachine extends JFrame implements HardwareMachine {
         return (instance != null) ? instance : new SwingMachine();
     }
 
-    public void initializeDevices() {
+    private void insertDevices() {
         externalDevices = new ExternalDevices();
         internalDevices = new InternalDevices();
 

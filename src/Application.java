@@ -1,5 +1,3 @@
-import devices.consoleDevices.external.*;
-import devices.consoleDevices.internal.*;
 import machine.SoftwareMachine;
 import machine.console.ConsoleMachine;
 import machine.swing.SwingMachine;
@@ -8,12 +6,8 @@ import modules.dispensers.ConsumableDispenser;
 import modules.external.*;
 import recipes.Recipe;
 import recipes.RecipeManager;
-import recipes.consumables.Cup;
-import recipes.consumables.ingredients.Liquid;
-import recipes.consumables.ingredients.Powder;
 import recipes.product.Product;
 import tuc.ece.cs201.vm.hw.HardwareMachine;
-import tuc.ece.cs201.vm.hw.device.*;
 import utilities.StringManager;
 
 import java.util.HashMap;
@@ -36,9 +30,21 @@ import java.util.HashMap;
  * Graphics Implementation: 5% completed
  * **************************************
  */
-public class Application {
-    //Switch between Graphical & Console User Interface
-    private static final boolean GUI_ENABLED = false;
+class Console {
+    public static void main(String[] args) {
+        HardwareMachine machine = ConsoleMachine.getInstance();
+        new Application(machine);
+    }
+}
+
+class Swing {
+    public static void main(String[] args) {
+        HardwareMachine machine = SwingMachine.getInstance();
+        new Application(machine);
+    }
+}
+
+class Application {
     //Menu Action Codes
     private static final String AC_WELCOME_MESSAGE = "000";
     private static final String AC_MAIN_MENU = "100";
@@ -49,25 +55,16 @@ public class Application {
     private static final String AC_ADMIN_CHECK_CONTAINER_LEVELS = "113";
     private static final String AC_ADMIN_REFILL_CONTAINERS = "114";
     private static final String AC_USER_BUY_DRINK = "121";
-    //Container Sizes
-    private static final int POWDER_CONTAINER_REGULAR_SIZE = 500;
-    private static final int LIQUID_CONTAINER_REGULAR_SIZE = 1000;
-    private static final int SMALL_CUP_CONTAINER = 25;
-    private static final int BIG_CUP_CONTAINER = 15;
-    private static final int PROCESSOR_CONTAINER_SIZE = 500;
-    //Class variables
-    private static HardwareMachine machine;
     private static SoftwareMachine sm;
     private static RecipeManager rm;
+    //Class variables
+    private final HardwareMachine machine;
 
-    //Constants
-    public static void main(String[] args) {
+    Application(HardwareMachine machine) {
         //Machine Preparation
-        machine = (GUI_ENABLED) ? SwingMachine.getInstance() : ConsoleMachine.getInstance();
-        insertDevices();
+        this.machine = machine;
         sm = SoftwareMachine.getInstance(machine);
         rm = RecipeManager.getInstance();
-        insertConsumables();
 
         //Start Cycle
         assert machine != null;
@@ -75,109 +72,35 @@ public class Application {
     }
 
     /**
-     * Inserts Graphical or Console Devices based on the selected implementation
+     * Makes sure dispensers have containers and containers have consumables.
+     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options.
      */
-    private static void insertDevices() {
-        if (GUI_ENABLED) {
-            insertGuiDevices();
-        } else {
-            insertConsoleDevices();
+    private static void generalCheck() {
+        assert (sm.getContainers() != null);
+        assert (sm.getProcessors() != null);
+        assert (sm.getConsumables() != null);
+        assert (sm.getDispensers() != null);
+        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
+            assert (dispenser.getContainers() != null);
+            for (Container container : dispenser.getContainers().values()) {
+                assert (container.getConsumable() != null);
+            }
         }
     }
 
-    /**
-     * Inserts all required Physical Console Devices
-     */
-    private static void insertConsoleDevices() {
-        ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
-        assert console != null;
 
-        //Dispensers
-        DispenserDevice dosingDispenserDevice = new ConsoleDispenserDevice("POWDERS", DeviceType.DosingDispenser);
-        DispenserDevice flowDispenserDevice = new ConsoleDispenserDevice("LIQUIDS", DeviceType.FlowDispenser);
-        DispenserDevice materialDispenserDevice = new ConsoleDispenserDevice("CUPS", DeviceType.MaterialDispenser);
-
-        //Containers
-        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", POWDER_CONTAINER_REGULAR_SIZE));
-        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", POWDER_CONTAINER_REGULAR_SIZE));
-
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", LIQUID_CONTAINER_REGULAR_SIZE));
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", LIQUID_CONTAINER_REGULAR_SIZE));
-
-        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", SMALL_CUP_CONTAINER));
-        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", BIG_CUP_CONTAINER));
-
-        //Processors
-        ProcessorDevice boiler = (new ConsoleProcessorDevice("BoilerDevice", PROCESSOR_CONTAINER_SIZE));
-        ProcessorDevice cooler = (new ConsoleProcessorDevice("CoolerDevice", PROCESSOR_CONTAINER_SIZE));
-        ProcessorDevice blender = (new ConsoleProcessorDevice("BlenderDevice", PROCESSOR_CONTAINER_SIZE));
-        ProcessorDevice buffer = (new ConsoleProcessorDevice("BufferDevice", PROCESSOR_CONTAINER_SIZE));
-
-        //External
-        NumPadDevice numPadDevice = new ConsoleNumPadDevice();
-        CoinAcceptorDevice coinAcceptorDevice = new ConsoleCoinAcceptorDevice();
-        DisplayDevice displayDevice = new ConsoleDisplayDevice();
-        ChangeCaseDevice changeCaseDevice = new ConsoleChangeCaseDevice();
-        ProductCaseDevice productCaseDevice = new ConsoleProductCaseDevice();
-
-
-        //Adding all these Devices
-        //Dispensers
-        console.addDevice(dosingDispenserDevice);
-        console.addDevice(materialDispenserDevice);
-        console.addDevice(flowDispenserDevice);
-        //Processors
-        console.addDevice(boiler);
-        console.addDevice(cooler);
-        console.addDevice(blender);
-        console.addDevice(buffer);
-        //External Devices
-        console.addDevice(numPadDevice);
-        console.addDevice(coinAcceptorDevice);
-        console.addDevice(displayDevice);
-        console.addDevice(changeCaseDevice);
-        console.addDevice(productCaseDevice);
-    }
-
-    /**
-     * Inserts all required Physical Graphical Devices
-     */
-    private static void insertGuiDevices() {
-        SwingMachine swing = (SwingMachine) machine;
-        assert swing != null;
-        swing.initializeDevices();
-    }
-
-    /**
-     * Inserts all consumables needed
-     */
-    private static void insertConsumables() {
-        //Powders
-        sm.addConsumable(new Powder("Coffee", POWDER_CONTAINER_REGULAR_SIZE));
-        sm.addConsumable(new Powder("Sugar", POWDER_CONTAINER_REGULAR_SIZE));
-        //Renames HashMap Key
-
-        //Liquids
-        sm.addConsumable(new Liquid("Water", LIQUID_CONTAINER_REGULAR_SIZE));
-        sm.addConsumable(new Liquid("Milk", LIQUID_CONTAINER_REGULAR_SIZE));
-
-        //Materials
-        sm.addConsumable(new Cup("SmallCup", SMALL_CUP_CONTAINER, "Small"));
-        sm.addConsumable(new Cup("BigCup", BIG_CUP_CONTAINER, "Big"));
-    }
-
-    private static void startCycleOf(SoftwareMachine machine) {
+    private void startCycleOf(SoftwareMachine machine) {
         assert machine != null;
         //Loading external modules
         DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName());
-        NumPad numPad = (NumPad) machine.getModule(NumPad.class.getSimpleName());
-        CoinReader coinReader = (CoinReader) machine.getModule(CoinReader.class.getSimpleName());
-        ChangeCase changeCase = (ChangeCase) machine.getModule(ChangeCase.class.getSimpleName());
-        ProductCase productCase = (ProductCase) machine.getModule(ProductCase.class.getSimpleName());
         assert display != null;
+        NumPad numPad = (NumPad) machine.getModule(NumPad.class.getSimpleName());
         assert numPad != null;
+        CoinReader coinReader = (CoinReader) machine.getModule(CoinReader.class.getSimpleName());
         assert coinReader != null;
+        ChangeCase changeCase = (ChangeCase) machine.getModule(ChangeCase.class.getSimpleName());
         assert changeCase != null;
+        ProductCase productCase = (ProductCase) machine.getModule(ProductCase.class.getSimpleName());
         assert productCase != null;
 
         //Loading Recipes
@@ -281,23 +204,6 @@ public class Application {
                     break;
                 default: //Action Code not recognised
                     selection = 0;
-            }
-        }
-    }
-
-    /**
-     * Makes sure dispensers have containers and containers have consumables.
-     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options.
-     */
-    private static void generalCheck() {
-        assert (sm.getContainers() != null);
-        assert (sm.getProcessors() != null);
-        assert (sm.getConsumables() != null);
-        assert (sm.getDispensers() != null);
-        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
-            assert (dispenser.getContainers() != null);
-            for (Container container : dispenser.getContainers().values()) {
-                assert (container.getConsumable() != null);
             }
         }
     }
