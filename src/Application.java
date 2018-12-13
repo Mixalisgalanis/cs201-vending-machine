@@ -156,6 +156,7 @@ public class Application {
     }
 
     private static void startCycleOf(SoftwareMachine machine) {
+        assert machine != null;
         //Loading external modules
         DisplayPanel display = (DisplayPanel) machine.getModule(DisplayPanel.class.getSimpleName());
         NumPad numPad = (NumPad) machine.getModule(NumPad.class.getSimpleName());
