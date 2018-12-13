@@ -19,12 +19,14 @@ public class FsRecipeDAO implements RecipeDAO {
     public HashMap<String, Recipe> loadRecipes() {
         HashMap<String, Recipe> recipes = new HashMap<>();
         for (File file : folder.listFiles()) {
-            String recipeCode = file.getName().substring(0, file.getName().indexOf(" - "));
-            try {
-                String data = new Scanner(file).useDelimiter("\\A").next();
-                recipes.put(recipeCode, new Recipe(recipeCode, data));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            if (file.getName().contains(RECIPES_FILE_SUFFIX)) {
+                String recipeCode = file.getName().substring(0, file.getName().indexOf(" - "));
+                try {
+                    String data = new Scanner(file).useDelimiter("\\A").next();
+                    recipes.put(recipeCode, new Recipe(recipeCode, data));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return recipes;
@@ -45,11 +47,14 @@ public class FsRecipeDAO implements RecipeDAO {
     }
 
     @Override
-    public void deleteRecipe(String code) {
-        for (Recipe recipe : loadRecipes().values()){
-            if(recipe.getCode().equals(code)){
-                for(File file : folder.listFiles()){
-                    if (file.getPath().substring(8).equals(code + " - " + recipe.getName() + RECIPES_FILE_SUFFIX)) file.delete();
+    public void deleteRecipe(Recipe recipe) {
+        for (File file : folder.listFiles()) {
+            String filePath = recipe.getCode() + " - " + recipe.getName() + RECIPES_FILE_SUFFIX;
+            if (file.getName().equals(filePath)) {
+                if (!file.delete()) {
+                    System.out.println("Could not delete " + recipe.getName() + " because file is in use!");
+                } else {
+                    System.out.println(recipe.getName() + " removed successfully!");
                 }
             }
         }
@@ -59,8 +64,7 @@ public class FsRecipeDAO implements RecipeDAO {
     @Override
     public boolean checkIfExists(String code) {
         for (File file : folder.listFiles()) {
-            String recipeCode = file.getName().substring(0, file.getName().indexOf('.'));
-            if (recipeCode.equalsIgnoreCase(code + RECIPES_FILE_SUFFIX)) {
+            if (file.getPath().contains(code)) {
                 return true;
             }
         }

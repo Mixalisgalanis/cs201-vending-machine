@@ -3,6 +3,7 @@ package recipes;
 import recipes.consumables.ingredients.Ingredient;
 import recipes.step.RecipeStep;
 import recipes.step.TransferStep;
+import utilities.StringManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -160,7 +161,8 @@ public class Recipe {
                 String className = classNameFinder(tempIngredient[0]);   //Gets the class name based on the ingredient name
                 Class<?> clazz = Class.forName("recipes.consumables.ingredients." + className);          //Finds the class based on the class name
                 Constructor<?> ctor = clazz.getConstructors()[0]; //Calls class constructor with given parameters
-                Object object = ctor.newInstance(toCamelCase(tempIngredient[1]), Integer.parseInt(tempIngredient[2])); //Creates object from that constructor
+                Object object = ctor.newInstance(StringManager.toCamelCase(tempIngredient[1]),
+                        Integer.parseInt(tempIngredient[2])); //Creates object from that constructor
                 ingredients.add((Ingredient) object);          //Adds the object (Ingredient) on the ingredients list
             }
 
@@ -172,7 +174,8 @@ public class Recipe {
             data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
             do {
                 //Creating TransferStep or OperateStep based on the step name in file
-                Class<?> clazz = Class.forName("recipes.step." + classNameFinder(tempLine.substring(0, tempLine.indexOf(" ")))); //Gets the class name based on the step name
+                Class<?> clazz = Class.forName("recipes.step." + classNameFinder(tempLine.substring(0,
+                        tempLine.indexOf(" ")))); //Gets the class name based on the step name
                 Constructor<?> ctor = clazz.getConstructors()[1];                //Finds the class based on the class name
                 //Needed to collect all strings in an array in order to achieve equal constructor structure between the two Step Types
                 String[] stepData = tempLine.substring(tempLine.indexOf(" ") + 1, tempLine.lastIndexOf(" ")).split(" ");
@@ -245,16 +248,5 @@ public class Recipe {
             default:
                 return data;
         }
-    }
-
-    /**
-     * Converts a String to Camel Case Format.
-     *
-     * @param input String to be converted.
-     * @return the Camel Case String.
-     */
-    private String toCamelCase(String input) {
-        String temp = input.toLowerCase();
-        return (temp.substring(0, 1).toUpperCase() + temp.substring(1));
     }
 }

@@ -187,16 +187,23 @@ public class RecipeManager {
     }
 
     public void removeRecipe(String recipeCode) {
-        recipeDAO.deleteRecipe(recipeCode);
+        recipeDAO.deleteRecipe(recipes.get(recipeCode));
     }
 
-    private String nameDecoder (String name){
-        if (name.equalsIgnoreCase("Coffee")) return "Coffee";
-        else if (name.equalsIgnoreCase("Sugar")) return "Sugar";
-        else if (name.equalsIgnoreCase("Water")) return "Water";
-        else if (name.equalsIgnoreCase("Milk")) return "Milk";
-        else if (name.equalsIgnoreCase("Transfer")) return "Transfer";
-        else if (name.equalsIgnoreCase("Operate")) return "Operate";
+    private String nameDecoder(String name) {
+        if (name.equalsIgnoreCase("Coffee")) {
+            return "Coffee";
+        } else if (name.equalsIgnoreCase("Sugar")) {
+            return "Sugar";
+        } else if (name.equalsIgnoreCase("Water")) {
+            return "Water";
+        } else if (name.equalsIgnoreCase("Milk")) {
+            return "Milk";
+        } else if (name.equalsIgnoreCase("Transfer")) {
+            return "Transfer";
+        } else if (name.equalsIgnoreCase("Operate")) {
+            return "Operate";
+        }
         return name;
     }
 }

@@ -23,4 +23,15 @@ public class StringManager {
         }
         return result;
     }
+
+    /**
+     * Converts a String to Camel Case Format.
+     *
+     * @param input String to be converted.
+     * @return the Camel Case String.
+     */
+    public static String toCamelCase(String input) {
+        String temp = input.toLowerCase();
+        return (temp.substring(0, 1).toUpperCase() + temp.substring(1));
+    }
 }

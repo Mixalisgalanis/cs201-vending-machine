@@ -192,7 +192,6 @@ public class Application {
             display.displayMessage(Menu.getMenu());
             switch (actionCode) {
                 case AC_WELCOME_MESSAGE:
-                    display.displayMessage("Press -1 any time to EXIT the Program.");
                     selection = 1;
                     break;
                 case AC_MAIN_MENU:
@@ -222,7 +221,6 @@ public class Application {
                     display.displayMessage(StringManager.generateDashLine("", "-") + "\nEnter recipe code to delete: ");
                     int recipeCode = numPad.readCode(3);
                     rm.removeRecipe(String.valueOf(recipeCode));
-                    display.displayMessage("Recipe removed successfully!");
                     selection = RESET_SELECTION;
                     break;
 

@@ -10,7 +10,7 @@ public interface RecipeDAO {
 
     void storeRecipe(Recipe recipe);
 
-    void deleteRecipe(String code);
+    void deleteRecipe(Recipe recipe);
 
     boolean checkIfExists(String code);
 }
