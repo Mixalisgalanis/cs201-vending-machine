@@ -85,6 +85,7 @@ public class Application {
      */
     private static void insertConsoleDevices() {
         ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
+        assert console != null;
 
         //Dispensers
         DispenserDevice dosingDispenserDevice = new ConsoleDispenserDevice("POWDERS", DeviceType.DosingDispenser);
@@ -138,7 +139,8 @@ public class Application {
      */
     private static void insertGuiDevices() {
         SwingMachine swing = (SwingMachine) machine;
-        //TODO Insert GUI Devices
+        assert swing != null;
+        swing.initializeDevices();
     }
 
     /**

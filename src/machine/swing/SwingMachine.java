@@ -41,15 +41,13 @@ public class SwingMachine extends JFrame implements HardwareMachine {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Vending Machine");
-
-        initializeDevices();
     }
 
     public static SwingMachine getInstance() {
         return (instance != null) ? instance : new SwingMachine();
     }
 
-    private void initializeDevices() {
+    public void initializeDevices() {
         externalDevices = new ExternalDevices();
         internalDevices = new InternalDevices();
 

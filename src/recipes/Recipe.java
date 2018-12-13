@@ -13,6 +13,7 @@ public class Recipe {
     //Class variables
 
     private final String code;
+    private final String NEW_LINE_SEPARATOR = "\r\n";
     //Ingredients
     private final ArrayList<Ingredient> ingredients;
     //Steps
@@ -137,20 +138,19 @@ public class Recipe {
         //Extracting information from file
         try {
             //Basic recipe properties
-            /*data += "\r\n";*/
-            String tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2);
+            String tempLine = data.substring(0, data.indexOf(NEW_LINE_SEPARATOR));          //Proceeds to next line
+            data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
             name = tempLine.substring(tempLine.indexOf(":") + 2); //Extracts name
-            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2);
+            tempLine = data.substring(0, data.indexOf(NEW_LINE_SEPARATOR));          //Proceeds to next line
+            data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
             price = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 2)); //Extracts price
-            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2);
+            tempLine = data.substring(0, data.indexOf(NEW_LINE_SEPARATOR));          //Proceeds to next line
+            data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
             type = tempLine.substring(tempLine.indexOf(":") + 2); //Extracts type
 
             //Ingredients - ex: "INGREDIENTS: POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
-            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2);
+            tempLine = data.substring(0, data.indexOf(NEW_LINE_SEPARATOR));          //Proceeds to next line
+            data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
             String ingredientsLine = tempLine.substring(tempLine.indexOf(":") + 2); //ex: "POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
             String[] allIngredients = ingredientsLine.split(",");      //ex: allIngredients[0] == POW:COFFEE:40
             for (String ingredient : allIngredients) {
@@ -166,10 +166,10 @@ public class Recipe {
 
             //Recipe Steps
             //Proceeds to next line recursively until the end of the file
-            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2);
-            tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2);
+            tempLine = data.substring(0, data.indexOf(NEW_LINE_SEPARATOR));          //Proceeds to next line
+            data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
+            tempLine = data.substring(0, data.indexOf(NEW_LINE_SEPARATOR));          //Proceeds to next line
+            data = data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length());
             do {
                 //Creating TransferStep or OperateStep based on the step name in file
                 Class<?> clazz = Class.forName("recipes.step." + classNameFinder(tempLine.substring(0, tempLine.indexOf(" ")))); //Gets the class name based on the step name
@@ -180,8 +180,8 @@ public class Recipe {
                 Object object = ctor.newInstance(stepData, a); //Creates object from that constructor
 
                 recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
-                tempLine = (!(data).equals("")) ? data.substring(0, data.indexOf("\r\n")) : ""; //Proceeds to next line
-                data = (!(data).equals("")) ? data.substring(data.indexOf("\r\n") + 2) : "";
+                tempLine = (!(data).equals("")) ? data.substring(0, data.indexOf(NEW_LINE_SEPARATOR)) : ""; //Proceeds to next line
+                data = (!(data).equals("")) ? data.substring(data.indexOf(NEW_LINE_SEPARATOR) + NEW_LINE_SEPARATOR.length()) : "";
             } while (!tempLine.equals(""));
         } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
