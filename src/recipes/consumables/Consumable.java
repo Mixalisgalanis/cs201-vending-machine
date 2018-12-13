@@ -1,31 +1,40 @@
 package recipes.consumables;
 
-public class Consumable {
+abstract public class Consumable {
 
+    //Class variables
     private String name;
     private int quantity;
     private String consumableType;
 
+    //Constructors
     public Consumable(String name, int quantity, String consumableType) {
         this.name = name;
         this.quantity = quantity;
         this.consumableType = consumableType;
     }
 
-    public Consumable getPart(int quantity) {
-        if (this.quantity >= quantity) {
-            this.quantity = this.quantity - quantity;
-            return new Consumable(name, quantity, consumableType);
-        }
-        return null;
+    public Consumable(int quantity, String consumableType) {
+        this.quantity = quantity;
+        this.consumableType = consumableType;
     }
 
-    public void refillPart(int containerCapacity, int quantity) {
-        this.quantity += ((quantity + this.quantity > containerCapacity) ? (containerCapacity - this.quantity) : quantity);
+    public Consumable(String name, int quantity) {
+        this.quantity = quantity;
+        this.name = name;
     }
 
+    //Getters & Setters
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setConsumableType(String consumableType) {
+        this.consumableType = consumableType;
     }
 
     public int getQuantity() {
@@ -39,4 +48,16 @@ public class Consumable {
     public String getConsumableType() {
         return consumableType;
     }
+
+    //Other Methods
+    abstract public Consumable getPart(int quantity);
+
+    public void refillPart(int containerCapacity, int quantity) {
+        this.quantity += ((quantity + this.quantity > containerCapacity) ? (containerCapacity - this.quantity) : quantity);
+    }
+
+    public void refill(int containerCapacity) {
+        quantity = containerCapacity;
+    }
+
 }

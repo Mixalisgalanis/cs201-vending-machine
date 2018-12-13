@@ -13,13 +13,13 @@ public class FsRecipeDAO implements RecipeDAO {
 
     private static final String RECIPES_FOLDER = "recipes";
     private static final String RECIPES_FILE_SUFFIX = ".rcp";
-    private File folder = new File(RECIPES_FOLDER);
+    private final File folder = new File(RECIPES_FOLDER);
 
     @Override
     public HashMap<String, Recipe> loadRecipes() {
         HashMap<String, Recipe> recipes = new HashMap<>();
         for (File file : folder.listFiles()) {
-            String recipeCode = file.getName().substring(0, file.getName().indexOf('.'));
+            String recipeCode = file.getName().substring(0, file.getName().indexOf(" - "));
             try {
                 String data = new Scanner(file).useDelimiter("\\A").next();
                 recipes.put(recipeCode, new Recipe(recipeCode, data));
@@ -32,7 +32,7 @@ public class FsRecipeDAO implements RecipeDAO {
 
     @Override
     public void storeRecipe(Recipe recipe) {
-        File file = new File(RECIPES_FOLDER + recipe.getCode() + RECIPES_FILE_SUFFIX);
+        File file = new File(RECIPES_FOLDER + "/" + recipe.getCode() + RECIPES_FILE_SUFFIX);
         FileWriter fileWriter; //Required Writers to access and read from the file
         try {
             fileWriter = new FileWriter(file);
@@ -46,14 +46,19 @@ public class FsRecipeDAO implements RecipeDAO {
 
     @Override
     public void deleteRecipe(String code) {
-        for (File file : folder.listFiles()) {
-            if (file.getName().equals(code)) file.delete();
-        }
+        File file = new File(RECIPES_FOLDER + "/" + code + RECIPES_FILE_SUFFIX);
+        file.delete();
     }
 
 
     @Override
     public boolean checkIfExists(String code) {
+        for (File file : folder.listFiles()) {
+            String recipeCode = file.getName().substring(0, file.getName().indexOf('.'));
+            if (recipeCode.equalsIgnoreCase(code + RECIPES_FILE_SUFFIX)) {
+                return true;
+            }
+        }
         return false;
     }
 }

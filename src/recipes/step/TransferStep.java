@@ -2,7 +2,7 @@ package recipes.step;
 
 import behaviour.Consumer;
 import behaviour.Provider;
-import modules.dispensers.Dispenser;
+import modules.dispensers.ConsumableDispenser;
 
 public class TransferStep extends RecipeStep {
 
@@ -21,9 +21,9 @@ public class TransferStep extends RecipeStep {
     }
 
     public TransferStep(String[] data, int quantity) {
-        this.source = data[0];
-        this.destination = data[1];
-        this.content = data[2];
+        source = data[0];
+        destination = data[1];
+        content = data[2];
         this.quantity = quantity;
     }
 
@@ -74,20 +74,32 @@ public class TransferStep extends RecipeStep {
 
     @Override
     public void executeStep() {
-        if (data.findDispenser(source) != null) {
-            Dispenser dispenser = data.findDispenser(source);
-            Consumer consumer = data.findConsumer(destination);
+        if (sm.getDispensers().get(source) != null) {
+            ConsumableDispenser dispenser = sm.getDispensers().get(source);
+            Consumer consumer = sm.findProcessor(nameDecoder(destination));
+            if (destination.equalsIgnoreCase("Product_Case")) {
+                consumer = sm.getProductCase();
+            }
 
+            String containerName = sm.findContainer(nameDecoder(content)).getName();
             dispenser.plug(consumer);
-            dispenser.prepareContainer(data.findContainerByConsumable(source, data.findConsumable(content)).getName(), consumer);
+            dispenser.prepareContainer(containerName, consumer);
+            dispenser.getContainer(containerName).provide(consumer, quantity);
             dispenser.unPlug(consumer);
         } else {
-            Provider provider = data.findProvider(source);
-            Consumer consumer = data.findConsumer(destination);
-
+            Provider provider = (Provider) sm.findProcessor(nameDecoder(source));
+            Consumer consumer = sm.findProcessor(nameDecoder(destination));
+            if (destination.equalsIgnoreCase("Product_Case")) {
+                consumer = sm.getProductCase();
+            }
             provider.plug(consumer);
-            provider.provide(consumer, quantity);
+            if (content.equalsIgnoreCase("ALL") && quantity == 0) {
+                provider.provide(consumer);
+            } else {
+                provider.provide(consumer, quantity);
+            }
             provider.unPlug(consumer);
         }
+        System.out.println("------------------------------------------------");
     }
 }

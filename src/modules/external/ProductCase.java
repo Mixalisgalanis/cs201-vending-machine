@@ -2,8 +2,9 @@ package modules.external;
 
 import behaviour.Consumer;
 import modules.Module;
-import recipes.Recipe;
 import recipes.consumables.Consumable;
+import recipes.consumables.Cup;
+import recipes.consumables.ingredients.ProcessedIngredient;
 import recipes.product.Product;
 import recipes.product.ProductBuilder;
 import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
@@ -11,39 +12,45 @@ import tuc.ece.cs201.vm.hw.device.ProductCaseDevice;
 public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
 
     //Class variables
-    private boolean pluggable;
-    private ProductBuilder builder;
-    private Product product;
+    private boolean plugged;
+    private boolean prepared;
+    private boolean loaded;
+    private final ProductBuilder builder;
+    private Consumable consumable;
+    private Cup cup;
 
 
     //Constructor
-    public ProductCase(String productName, int procuctCost, ProductCaseDevice device) {
-        super("ProductCase", device);
-        this.pluggable = false;
-        this.builder = new ProductBuilder(productName, procuctCost);
-    }
-
     public ProductCase(ProductCaseDevice device) {
-        super("ProductCase", device);
+        super(device);
+        setName(getClass().getSimpleName());
+        plugged = false;
+        prepared = false;
+        loaded = false;
+        builder = new ProductBuilder();
     }
 
 
     //Other Methods
     @Override
     public void acceptAndLoad(Consumable consumable) {
-        if (pluggable) {
-            if (product == null) {
-                this.product.setConsumables(consumable);
-                getDevice().loadIngredient(consumable.toString());
-                //TODO check what "toString" returns
-            }
+        assert plugged;
+        assert consumable != null;
+        if (consumable instanceof Cup) {
+            cup = (Cup) consumable;
+        } else {
+            assert consumable instanceof ProcessedIngredient;
+            this.consumable = consumable;
         }
-        //TODO check if we need more if cases
+        getDevice().loadIngredient(consumable.getName());
+        loaded = true;
     }
 
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
+
+            getDevice().connect(((Module) consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);
         }
@@ -53,33 +60,72 @@ public class ProductCase extends Module<ProductCaseDevice> implements Consumer {
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
             setPlugged(false);
+            getDevice().disconnect(((Module) consumer).getDevice());
             consumer.setPlugged(false);
         }
     }
 
     @Override
     public void unPlugAll() {
+        getDevice().disconnectAll();
         //TODO figure out what we're supposed to do here!
     }
 
     @Override
     public boolean isPlugged() {
-        return this.pluggable;
+        return plugged;
     }
 
     @Override
     public void setPlugged(boolean plugged) {
-        this.pluggable = plugged;
+        this.plugged = plugged;
     }
 
+    //Product Methods
     public Product getProduct() {
-        //no need to construct product in here because we will prepare the container then fill it(acceptAndLoad)and then we just need to return the product
-        //TODO check if any device operation is needed
+        assert prepared;
+        //getDevice().getProcuct() Missing method in ProductCaseDevice - Displays info about ready product
+        System.out.println("Please take your " + builder.getProduct().getProductName() + "."); //Just because above
+        // method is missing
+        getDevice().unLock();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Assuming Product is taken...");
+        getDevice().lock();
+        Product product = builder.getProduct();
+
+        //Clear Things up
+        setLoaded(false);
+        setConsumable(null);
+        setCup(null);
+
         return product;
     }
 
-    public void prepareProduct(Recipe recipe) {
-        product = new Product(recipe.getName(), recipe.getPrice());
-        builder.addConsumables();
+    public void prepareProduct(String productName, String material) {
+        assert loaded;
+        builder.createProduct(productName);
+        getDevice().putMaterial(material);
+        builder.addConsumable(consumable);
+        prepared = true;
+    }
+
+    public void setPrepared(boolean prepared) {
+        this.prepared = prepared;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public void setConsumable(Consumable consumable) {
+        this.consumable = consumable;
+    }
+
+    public void setCup(Cup cup) {
+        this.cup = cup;
     }
 }

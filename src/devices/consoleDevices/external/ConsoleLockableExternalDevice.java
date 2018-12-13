@@ -1,7 +1,7 @@
-package consoleDevices.external;
+package devices.consoleDevices.external;
 
 
-import consoleDevices.ConsoleDevice;
+import devices.consoleDevices.ConsoleDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 import tuc.ece.cs201.vm.hw.device.LockableDevice;
 
@@ -11,20 +11,20 @@ public class ConsoleLockableExternalDevice extends ConsoleDevice implements Lock
 
     public ConsoleLockableExternalDevice(String name, DeviceType deviceType) {
         super(name, deviceType);
-        this.locked = true;
+        locked = true;
     }
 
 
     @Override
     public void lock() {
-        this.locked = true;
-        System.out.println(getName() + " is locked.");
+        locked = true;
+        System.out.println("[" + getName().toUpperCase() + " locked further access.]");
     }
 
     @Override
     public void unLock() {
-        this.locked = false;
-        System.out.println(getName() + " is unlocked.");
+        locked = false;
+        System.out.println("[" + getName().toUpperCase() + " unlocked access.]");
 
     }
 

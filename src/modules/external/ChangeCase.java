@@ -10,25 +10,34 @@ public class ChangeCase extends Module<ChangeCaseDevice> {
 
     //Constructor
     public ChangeCase(ChangeCaseDevice device) {
-        super("ChangeCase", device);
-        this.change = 0;
+        super(device);
+        setName(getClass().getSimpleName());
+        change = 0;
     }
 
     //OtherMethods
     public void setChange(int change) {
+        assert change >= 0;
         this.change = change;
+        if (change > 0) {
+            getDevice().unLock();
+        }
         for (int i = 0; i < coins.length; ) {
-            if (this.change > coins[i]) {
+            if (this.change >= coins[i]) {
                 getDevice().giveChange(coins[i]);
                 this.change -= coins[i];
             } else {
                 i += 1;
             }
         }
+        if (change > 0) {
+            removeChange();
+            getDevice().lock();
+        }
     }
 
-    public void removeChange() {
-        this.change = 0;
+    private void removeChange() {
+        change = 0;
         getDevice().removeChange();
     }
 }

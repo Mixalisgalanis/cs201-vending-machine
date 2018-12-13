@@ -1,4 +1,4 @@
-package consoleDevices.internal;
+package devices.consoleDevices.internal;
 
 
 import tuc.ece.cs201.vm.hw.device.Device;
@@ -10,16 +10,21 @@ public class ConsoleFlowContainerDevice extends ConsoleContainerDevice implement
     private final int STREAM_RATE_SIZE = 5;
 
     public ConsoleFlowContainerDevice(String name, DeviceType deviceType, int capacity) {
+        super(name, deviceType, capacity);
+    }
+
+    public ConsoleFlowContainerDevice(String name, int capacity) {
         super(name, DeviceType.FlowContainer, capacity);
     }
 
     @Override
     public int streamRate() {
-        return this.STREAM_RATE_SIZE;
+        return STREAM_RATE_SIZE;
     }
 
     @Override
     public void streamOut(Device device) {
-        System.out.println("Streamed out " + "ml of " + device.getName() + ".");
+        System.out.println(getName().toUpperCase() + " streamed out " + STREAM_RATE_SIZE + "ml of liquid to " + device.getName().toUpperCase() +
+                ".");
     }
 }

@@ -2,6 +2,7 @@ package recipes;
 
 import recipes.consumables.ingredients.Ingredient;
 import recipes.step.RecipeStep;
+import recipes.step.TransferStep;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -11,18 +12,16 @@ public class Recipe {
 
     //Class variables
 
+    private final String code;
+    //Ingredients
+    private final ArrayList<Ingredient> ingredients;
+    //Steps
+    private final ArrayList<RecipeStep> recipeSteps;
     //Basic variable types
     private String name;
-    private String code;
     private int price;
     private String type;
     private boolean available;
-
-    //Ingredients
-    private ArrayList<Ingredient> ingredients;
-
-    //Steps
-    private ArrayList<RecipeStep> recipeSteps;
     private int currentRecipeStepNumber;
 
     //Constructors
@@ -31,7 +30,7 @@ public class Recipe {
         this.code = code;
         this.price = price;
         this.type = type;
-        this.available = false;
+        available = false;
 
         currentRecipeStepNumber = 0;
         recipeSteps = new ArrayList<>();
@@ -59,7 +58,7 @@ public class Recipe {
         this.type = type;
         this.ingredients = ingredients;
         this.recipeSteps = recipeSteps;
-        this.available = false;
+        available = false;
         currentRecipeStepNumber = 0;
     }
 
@@ -76,46 +75,26 @@ public class Recipe {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public boolean isAvailable() {
         return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
     }
 
     public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public ArrayList<RecipeStep> getRecipeSteps() {
-        return recipeSteps;
-    }
-
-    public RecipeStep getCurrentRecipeStep() {
-        return recipeSteps.get(currentRecipeStepNumber);
-    }
     //Other Methods
+    public String getCupSize() {
+        return ((TransferStep) recipeSteps.get(recipeSteps.size() - 2)).getContent();
+    }
 
     /**
      * Gets the next step from the recipe steps list.
@@ -131,22 +110,22 @@ public class Recipe {
      *
      * @return true if there are more steps, false if there aren't.
      */
-    public boolean hasMoreSteps() {
-        return (currentRecipeStepNumber < recipeSteps.size() - 1);
+    boolean hasMoreSteps() {
+        return (currentRecipeStepNumber <= recipeSteps.size() - 1);
     }
 
     /**
      * Makes this particular recipe available
      */
-    public void enable() {
-        this.available = true;
+    void enable() {
+        available = true;
     }
 
     /**
      * Makes this particular recipe not available.
      */
-    public void disable() {
-        this.available = false;
+    void disable() {
+        available = false;
     }
 
     /**
@@ -160,19 +139,19 @@ public class Recipe {
             //Basic recipe properties
             /*data += "\r\n";*/
             String tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2, data.length());
-            this.name = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //Extracts name
+            data = data.substring(data.indexOf("\r\n") + 2);
+            name = tempLine.substring(tempLine.indexOf(":") + 2); //Extracts name
             tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2, data.length());
-            this.price = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length())); //Extracts price
+            data = data.substring(data.indexOf("\r\n") + 2);
+            price = Integer.parseInt(tempLine.substring(tempLine.indexOf(":") + 2)); //Extracts price
             tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2, data.length());
-            this.type = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //Extracts type
+            data = data.substring(data.indexOf("\r\n") + 2);
+            type = tempLine.substring(tempLine.indexOf(":") + 2); //Extracts type
 
             //Ingredients - ex: "INGREDIENTS: POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
             tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2, data.length());
-            String ingredientsLine = tempLine.substring(tempLine.indexOf(":") + 2, tempLine.length()); //ex: "POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
+            data = data.substring(data.indexOf("\r\n") + 2);
+            String ingredientsLine = tempLine.substring(tempLine.indexOf(":") + 2); //ex: "POW:COFFEE:40,POW:SUGAR:80,LIQ:WATER:100"
             String[] allIngredients = ingredientsLine.split(",");      //ex: allIngredients[0] == POW:COFFEE:40
             for (String ingredient : allIngredients) {
                 String[] tempIngredient = ingredient.split(":");//ex: tempIngredient[0] == POW
@@ -182,27 +161,27 @@ public class Recipe {
                 Class<?> clazz = Class.forName("recipes.consumables.ingredients." + className);          //Finds the class based on the class name
                 Constructor<?> ctor = clazz.getConstructors()[0]; //Calls class constructor with given parameters
                 Object object = ctor.newInstance(toCamelCase(tempIngredient[1]), Integer.parseInt(tempIngredient[2])); //Creates object from that constructor
-                this.ingredients.add((Ingredient) object);          //Adds the object (Ingredient) on the ingredients list
+                ingredients.add((Ingredient) object);          //Adds the object (Ingredient) on the ingredients list
             }
 
             //Recipe Steps
             //Proceeds to next line recursively until the end of the file
             tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2, data.length());
+            data = data.substring(data.indexOf("\r\n") + 2);
             tempLine = data.substring(0, data.indexOf("\r\n"));          //Proceeds to next line
-            data = data.substring(data.indexOf("\r\n") + 2, data.length());
+            data = data.substring(data.indexOf("\r\n") + 2);
             do {
                 //Creating TransferStep or OperateStep based on the step name in file
                 Class<?> clazz = Class.forName("recipes.step." + classNameFinder(tempLine.substring(0, tempLine.indexOf(" ")))); //Gets the class name based on the step name
                 Constructor<?> ctor = clazz.getConstructors()[1];                //Finds the class based on the class name
                 //Needed to collect all strings in an array in order to achieve equal constructor structure between the two Step Types
                 String[] stepData = tempLine.substring(tempLine.indexOf(" ") + 1, tempLine.lastIndexOf(" ")).split(" ");
-                int a = Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ") + 1, tempLine.length()));
-                Object object = ctor.newInstance(new Object[]{stepData, a}); //Creates object from that constructor
+                int a = Integer.parseInt(tempLine.substring(tempLine.lastIndexOf(" ") + 1));
+                Object object = ctor.newInstance(stepData, a); //Creates object from that constructor
 
-                this.recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
+                recipeSteps.add((RecipeStep) object); //Adds the object (Step) on the ingredients list
                 tempLine = (!(data).equals("")) ? data.substring(0, data.indexOf("\r\n")) : ""; //Proceeds to next line
-                data = (!(data).equals("")) ? data.substring(data.indexOf("\r\n") + 2, data.length()) : "";
+                data = (!(data).equals("")) ? data.substring(data.indexOf("\r\n") + 2) : "";
             } while (!tempLine.equals(""));
         } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
@@ -241,7 +220,7 @@ public class Recipe {
     /**
      * Executes Step Internally depending on the type of step. This is accomplished with method overloading.
      */
-    public void executeStep() {
+    void executeStep() {
         getNextStep().executeStep();
     }
 
@@ -253,7 +232,7 @@ public class Recipe {
      * @param data the extracted text from the file
      * @return the class name found
      */
-    String classNameFinder(String data) {
+    private String classNameFinder(String data) {
         switch (data) {
             case "POW":
                 return "Powder";

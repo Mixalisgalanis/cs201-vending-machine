@@ -1,153 +1,160 @@
 package machine;
 
-import consoleDevices.external.*;
-import consoleDevices.internal.ConsoleDispenserDevice;
-import consoleDevices.internal.ConsoleProcessorDevice;
-import modules.containers.DosingContainer;
-import modules.containers.FlowContainer;
-import modules.containers.MaterialContainer;
+import behaviour.Consumer;
+import modules.Module;
+import modules.ModuleFactory;
+import modules.containers.Container;
 import modules.containers.processor.IngredientProcessor;
+import modules.containers.processor.Processor;
 import modules.dispensers.ConsumableDispenser;
-import modules.external.*;
-import recipes.Recipe;
-import recipes.RecipeManager;
+import modules.dispensers.Dispenser;
 import recipes.consumables.Consumable;
+import tuc.ece.cs201.vm.hw.HardwareMachine;
+import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
+
+import java.util.HashMap;
 
 public class SoftwareMachine {
 
-    //Class Variables
-    private static final boolean GUI = false;
-    //Constants
-    private static final String MAIN_MENU = "=======MAIN MENU=======\nTypes of Users:\n1. Administrator\n2. User\n=======================\nPlease select type: ";
-    private static final String ADMIN_SUBMENU = "----Administrator Submenu----\nActions:\n1. Create Recipes\n2. Delete Recipes\n3. Refill Containers\nPlease select action: ";
-    private static final String USER_SUBMENU = "----User Submenu----\nActions:\n1. Buy a drink\nPlease select actiion: ";
-    private static final String RECIPES_HEADER = "----Available Recipes----\n";
-    private static final String RECIPES_FOOTER = "Please select recipe code to execute: ";
-    //Singleton
+    //Class variables
     private static SoftwareMachine instance;
-    private static boolean allowInstance = true;
-    //Data Required
-    private Data data;
-    private RecipeManager rm;
+    private final HashMap<String, Module> modules;
 
-    public SoftwareMachine() {
-        this.data = (Data.getInstance() != null) ? Data.getInstance() : new Data();
-        this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
-        insertData();
+    //Constructors
+    private SoftwareMachine() {
+        modules = new HashMap<>();
         //Prevent further instantiation
         instance = this;
-        allowInstance = false;
+    }
+
+    private SoftwareMachine(HardwareMachine machine) {
+        modules = new HashMap<>();
+        //Prevents further instantiation
+        instance = this;
+        probeHardware(machine);
     }
 
     public static SoftwareMachine getInstance() {
-        return instance;
+        return (instance != null) ? instance : new SoftwareMachine();
     }
 
-    private void insertData() {
-        /*
-        Adding Consumables
-         */
-        //Powder Consumables
-        data.addConsumable(new Consumable("Coffee", data.STANDARD_DOSING_CONTAINER_SIZE, "Powder"));
-        data.addConsumable(new Consumable("Sugar", data.STANDARD_DOSING_CONTAINER_SIZE, "Powder"));
-
-        //Liquid Consumables
-        data.addConsumable(new Consumable("Water", data.STANDARD_FLOW_CONTAINER_SIZE, "Liquid"));
-
-        //Material Consumables
-        data.addConsumable(new Consumable("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, "Material"));
-
-        /*
-        Adding Modules
-         */
-        //External Modules
-        data.addHardwareEntity(new NumPad((GUI) ? null : new ConsoleNumPadDevice()));
-        data.addHardwareEntity(new CoinReader((GUI) ? null : new ConsoleCoinAcceptorDevice()));
-        data.addHardwareEntity(new ChangeCase((GUI) ? null : new ConsoleChangeCaseDevice()));
-        data.addHardwareEntity(new DisplayPanel((GUI) ? null : new ConsoleDisplayDevice()));
-        data.addHardwareEntity(new ProductCase((GUI) ? null : new ConsoleProductCaseDevice()));
-
-        //ConsumableDispensers
-        data.addHardwareEntity(new ConsumableDispenser("POWDERS", "Powder", (GUI) ? null : new ConsoleDispenserDevice("PowderDevice")));
-        data.addHardwareEntity(new ConsumableDispenser("LIQUIDS", "Liquid", (GUI) ? null : new ConsoleDispenserDevice("LiquidDevice")));
-        data.addHardwareEntity(new ConsumableDispenser("MATERIALS", "Material", (GUI) ? null : new ConsoleDispenserDevice("MaterialDevice")));
-
-        //DosingContainers
-        data.addHardwareEntity(new DosingContainer("Coffee", data.STANDARD_DOSING_CONTAINER_SIZE, data.findConsumable("Coffee")));
-        data.addHardwareEntity(new DosingContainer("Sugar", data.STANDARD_DOSING_CONTAINER_SIZE, data.findConsumable("Sugar")));
-        //LiquidContainers
-        data.addHardwareEntity(new FlowContainer("Water", data.STANDARD_FLOW_CONTAINER_SIZE, data.findConsumable("Water")));
-        //MaterialContainers
-        data.addHardwareEntity(new MaterialContainer("Cup", data.STANDARD_MATERIAL_CONTAINER_SIZE, data.findConsumable("Cup")));
-
-        //Ingredientrocessors
-        data.addHardwareEntity(new IngredientProcessor("Boiler", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
-        data.addHardwareEntity(new IngredientProcessor("Cooler", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
-        data.addHardwareEntity(new IngredientProcessor("Blender", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
-        data.addHardwareEntity(new IngredientProcessor("Buffer", data.PROCESSOR_SIZE, null, new ConsoleProcessorDevice()));
-
+    public static SoftwareMachine getInstance(HardwareMachine machine) {
+        return (instance != null) ? instance : new SoftwareMachine(machine);
     }
 
-    public void startCycle() {
-        rm.loadRecipes();
-        rm.validateRecipes();
-        rm.loadEnabledRecipes();
-        DisplayPanel display = (DisplayPanel) data.getModules().get("DisplayPanel");
-        NumPad numPad = (NumPad) data.getModules().get("NumPad");
-        CoinReader coinReader = (CoinReader) data.getModules().get("CoinReader");
-        ChangeCase changeCase = (ChangeCase) data.getModules().get("ChangeCase");
-        ProductCase productCase = (ProductCase) data.getModules().get("ProductCase");
+    //Other Methods
+    public Module getModule(String moduleName) {
+        return modules.get(moduleName);
+    }
 
-        display.displayMessage("Welcome to Vending Machine v1.0 (alpha)");
-        display.displayMessage(MAIN_MENU);
-        switch (String.valueOf(numPad.readCode(1))) {
-            case "1":
-                display.displayMessage(ADMIN_SUBMENU);
-                switch (String.valueOf(numPad.readCode(1))) {
-                    case "1":
-                        rm.createRecipe();
-                        break;
-                    case "2": {
-                        display.displayMessage(RECIPES_HEADER);
-                        for (Recipe recipe : rm.getRecipes().values()) {
-                            display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
-                        }
-                        display.displayMessage("Enter recipe code to delete: ");
-                        int recipeCode = numPad.readCode(3);
-                        rm.removeRecipe(String.valueOf(recipeCode));
-                        break;
-                    }
-                    case "3":
-                        data.refillContainers();
-                        break;
-                }
-                break;
-            case "2":
-                display.displayMessage(USER_SUBMENU);
-                switch (String.valueOf(numPad.readCode(1))) {
-                    case "1": {
-                        display.displayMessage(RECIPES_HEADER);
-                        for (Recipe recipe : rm.getAvailableRecipes().values()) {
-                            display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + ")");
-                        }
-                        Recipe recipe;
-                        do {
-                            display.displayMessage(RECIPES_FOOTER);
-                            int recipeCode = numPad.readCode(3);
-                            recipe = rm.getRecipe(String.valueOf(recipeCode));
-                            if (recipe == null) display.displayMessage("Recipe not Found!");
-                        } while (recipe == null);
-                        int change = coinReader.receiveMoney(recipe.getPrice());
-                        coinReader.clearMoney();
-                        changeCase.setChange(change);
-                        changeCase.removeChange();
-                        rm.executeRecipe(recipe);
-                        productCase.prepareProduct(recipe);
-                    }
-                    break;
-                }
-                break;
+    private void probeHardware(HardwareMachine machine) {
+        for (Device device : machine.listDevices()) {
+            Module module = ModuleFactory.createModule(device);
+            if (module != null) {
+                modules.put(module.getName(), module);
+            }
         }
+    }
 
+    public void addConsumable(Consumable consumable) {
+        for (ConsumableDispenser dispenser : getDispensers().values()) {
+            if (dispenser.getConsumableType().equals(consumable.getConsumableType())) {
+                Container container = dispenser.getContainer(consumable);
+                container.setName(consumable.getName() + Container.class.getSimpleName());
+                container.setConsumable(consumable);
+                return;
+            }
+        }
+    }
+
+    public void refillContainers() {
+        for (Container container : getContainers().values()) {
+            container.getConsumable().refill(container.getCapacity());
+        }
+    }
+
+
+    //Data Gathering
+    public HashMap<String, ConsumableDispenser> getDispensers() {
+        HashMap<String, ConsumableDispenser> dispensers = new HashMap<>();
+        for (Module module : modules.values()) {
+            if (module.getType() == DeviceType.DosingDispenser ||
+                    module.getType() == DeviceType.FlowDispenser ||
+                    module.getType() == DeviceType.MaterialDispenser) {
+                dispensers.put(module.getName(), (ConsumableDispenser) module);
+            }
+        }
+        return dispensers;
+    }
+
+    public HashMap<String, IngredientProcessor> getProcessors() {
+        HashMap<String, IngredientProcessor> processors = new HashMap<>();
+        for (Module module : modules.values()) {
+            if (module.getType() == DeviceType.Processor) {
+                processors.put(module.getName(), (IngredientProcessor) module);
+            }
+        }
+        return processors;
+    }
+
+    public HashMap<String, Container> getContainers() {
+        HashMap<String, Container> containers = new HashMap<>();
+        for (ConsumableDispenser dispenser : getDispensers().values()) {
+            for (Container container : dispenser.getContainers().values()) {
+                containers.put(container.getName(), container);
+            }
+        }
+        return containers;
+    }
+
+    public HashMap<String, Consumable> getConsumables() {
+        HashMap<String, Consumable> consumables = new HashMap<>();
+        for (Container container : getContainers().values()) {
+            consumables.put(container.getConsumable().getName(), container.getConsumable());
+        }
+        /*
+        TO BE TESTED - LAMDA EXPRESSION
+        getContainers().values().forEach((Container container) -> consumables.put(container.getConsumable().getName()
+                , container.getConsumable()));*/
+        return consumables;
+    }
+
+    public Consumer getProductCase() {
+        for (Module module : modules.values()) {
+            if (module.getType().equals(DeviceType.ProductCase)) {
+                return (Consumer) module;
+            }
+        }
+        return null;
+    }
+
+
+    //Finder Methods
+    public Container findContainer(String name) {
+        for (Container container : getContainers().values()) {
+            if (container.getConsumable() != null && container.getConsumable().getName().equalsIgnoreCase(name)) {
+                return container;
+            }
+        }
+        return null;
+    }
+
+    public Processor findProcessor(String name) {
+        for (IngredientProcessor processor : getProcessors().values()) {
+            if (processor.getDevice().getName().equalsIgnoreCase(name + "Device")) {
+                return processor;
+            }
+        }
+        return null;
+    }
+
+    public Dispenser findDispenser(String containerName) {
+        for (ConsumableDispenser dispenser : getDispensers().values()) {
+            if (dispenser.getContainers().containsKey(containerName)) {
+                return dispenser;
+            }
+        }
+        return null;
     }
 }

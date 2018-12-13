@@ -3,6 +3,7 @@ package recipes;
 import org.junit.Before;
 import org.junit.Test;
 
+@Deprecated
 public class RecipeManagerTest {
 
     private RecipeManager rm;
@@ -10,7 +11,7 @@ public class RecipeManagerTest {
 
     @Before
     public void setUp() {
-        this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
+        // this.rm = (RecipeManager.getInstance() != null) ? RecipeManager.getInstance() : new RecipeManager();
         //this.loadRecipes();
 
     }

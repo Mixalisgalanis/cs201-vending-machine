@@ -18,12 +18,26 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
         super(name, device);
         this.capacity = capacity;
         this.consumable = consumable;
-        this.plugged = false;
+        plugged = false;
+    }
+
+    Container(T device) {
+        super(device);
+        capacity = device.getCapacity();
     }
 
     //Getters & Setters
+    @Override
+    public T getDevice() {
+        return (T) super.getDevice();
+    }
+
     public int getCapacity() {
         return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public Consumable getConsumable() {
@@ -33,28 +47,27 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
     public void setConsumable(Consumable consumable) {
         this.consumable = consumable;
     }
-
     //Implemented Methods
+
     @Override
     public void provide(Consumer consumer, int quantity) {
-        if (plugged) {
-            if (quantity <= getConsumable().getQuantity()) {
-                consumer.acceptAndLoad(getConsumable().getPart(quantity));
-            }
+        assert plugged;
+        if (quantity <= getConsumable().getQuantity()) {
+            consumer.acceptAndLoad(getConsumable().getPart(quantity));
         }
     }
 
     @Override
     public void provide(Consumer consumer) {
-        if (plugged) {
-            consumer.acceptAndLoad(getConsumable());
-            setConsumable(null);
-        }
+        assert plugged;
+        consumer.acceptAndLoad(getConsumable());
+        setConsumable(null);
     }
 
     @Override
     public void plug(Consumer consumer) {
         if (!isPlugged()) {
+            getDevice().connect(((Module) consumer).getDevice());
             setPlugged(true);
             consumer.setPlugged(true);
         }
@@ -63,6 +76,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
     @Override
     public void unPlug(Consumer consumer) {
         if (isPlugged()) {
+            getDevice().disconnect(((Module) consumer).getDevice());
             setPlugged(false);
             consumer.setPlugged(false);
         }
@@ -84,4 +98,7 @@ abstract public class Container<T extends ContainerDevice> extends Module<Contai
         this.plugged = plugged;
     }
 
+    public String consumableNameDecoder() {
+        return getName().substring(0, getName().indexOf("Container"));
+    }
 }

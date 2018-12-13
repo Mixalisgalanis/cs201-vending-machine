@@ -16,7 +16,7 @@ public class OperateStep extends RecipeStep {
     }
 
     public OperateStep(String[] data, int duration) {
-        this.processor = data[0];
+        processor = data[0];
         this.duration = duration;
     }
 
@@ -51,7 +51,8 @@ public class OperateStep extends RecipeStep {
 
     @Override
     public void executeStep() {
-        Processor tempProcessor = data.findIngredientProcessor(processor);
+        Processor tempProcessor = sm.findProcessor(nameDecoder(processor));
         tempProcessor.process(duration);
+        System.out.println("------------------------------------------------");
     }
 }

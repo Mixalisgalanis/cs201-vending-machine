@@ -1,6 +1,6 @@
-package consoleDevices.internal;
+package devices.consoleDevices.internal;
 
-import consoleDevices.ConsoleDevice;
+import devices.consoleDevices.ConsoleDevice;
 import tuc.ece.cs201.vm.hw.device.ContainerDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
@@ -28,13 +28,13 @@ public class ConsoleContainerDevice extends ConsoleDevice implements ContainerDe
     @Override
     public void open() {
         opened = true;
-        System.out.println(this.getName() + " is opened.");
+        System.out.println("[" + getName().toUpperCase() + "'s door is now opened!]");
     }
 
     @Override
     public void close() {
         opened = false;
-        System.out.println(this.getName() + " is closed.");
+        System.out.println("[" + getName().toUpperCase() + "'s door is now closed!]");
     }
 
     @Override

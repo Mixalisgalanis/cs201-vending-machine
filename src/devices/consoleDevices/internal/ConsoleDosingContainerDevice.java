@@ -1,4 +1,4 @@
-package consoleDevices.internal;
+package devices.consoleDevices.internal;
 
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
@@ -13,14 +13,12 @@ public class ConsoleDosingContainerDevice extends ConsoleContainerDevice impleme
     }
 
     @Override
-    public void releaseDose(Device device) {
-        System.out.println("Released " + DOSE_SIZE + "g of " + device.getName() + ".");
-        //TODO Insert Timer
-    }
-
-    @Override
     public int doseSize() {
         return DOSE_SIZE;
     }
 
+    @Override
+    public void releaseDose(Device device) {
+        System.out.println(getName().toUpperCase() + " released " + DOSE_SIZE + "g of powder to " + device.getName().toUpperCase());
+    }
 }
