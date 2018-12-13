@@ -155,7 +155,7 @@ public class RecipeManager {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         for (int j = 0; j < ingredientsData.length / 2; j++) {
             try {
-                Class<?> clazz = (sm.getConsumables().get(ingredientsData[2 * j]).getClass());
+                Class<?> clazz = (sm.getConsumables().get(nameDecoder(ingredientsData[2 * j])).getClass());
                 Constructor<?> ctor = clazz.getConstructors()[0];
                 Object object = ctor.newInstance(ingredientsData[2 * j], Integer.parseInt(ingredientsData[2 * j + 1]));
                 ingredients.add((Ingredient) object);
@@ -170,7 +170,7 @@ public class RecipeManager {
         ArrayList<RecipeStep> steps = new ArrayList<>();
         for (String currentStep : stepsData) {
             try {
-                Class<?> clazz = Class.forName("recipes.step." + currentStep.substring(0, currentStep.indexOf(" ")) + "Step");
+                Class<?> clazz = Class.forName("recipes.step." + nameDecoder(currentStep.substring(0, currentStep.indexOf(" "))) + "Step");
                 Constructor<?> ctor = clazz.getConstructors()[1];
                 int a = Integer.parseInt(currentStep.substring(currentStep.lastIndexOf(" ") + 1));
                 String[] stepData = currentStep.substring(currentStep.indexOf(" ") + 1, currentStep.lastIndexOf(" ")).split(" ");
@@ -188,5 +188,15 @@ public class RecipeManager {
 
     public void removeRecipe(String recipeCode) {
         recipeDAO.deleteRecipe(recipeCode);
+    }
+
+    private String nameDecoder (String name){
+        if (name.equalsIgnoreCase("Coffee")) return "Coffee";
+        else if (name.equalsIgnoreCase("Sugar")) return "Sugar";
+        else if (name.equalsIgnoreCase("Water")) return "Water";
+        else if (name.equalsIgnoreCase("Milk")) return "Milk";
+        else if (name.equalsIgnoreCase("Transfer")) return "Transfer";
+        else if (name.equalsIgnoreCase("Operate")) return "Operate";
+        return name;
     }
 }

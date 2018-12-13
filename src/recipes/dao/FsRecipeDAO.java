@@ -46,8 +46,13 @@ public class FsRecipeDAO implements RecipeDAO {
 
     @Override
     public void deleteRecipe(String code) {
-        File file = new File(RECIPES_FOLDER + "/" + code + RECIPES_FILE_SUFFIX);
-        file.delete();
+        for (Recipe recipe : loadRecipes().values()){
+            if(recipe.getCode().equals(code)){
+                for(File file : folder.listFiles()){
+                    if (file.getPath().substring(8).equals(code + " - " + recipe.getName() + RECIPES_FILE_SUFFIX)) file.delete();
+                }
+            }
+        }
     }
 
 
