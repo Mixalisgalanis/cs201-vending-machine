@@ -15,6 +15,13 @@ public class ConsoleNumPadDevice extends ConsoleLockableExternalDevice implement
 
     @Override
     public int readDigit(String s) {
-        return Reader.readInt(s);
+        int digit = -1;
+        while (digit <= 0 || digit >= 9) {
+            digit = Reader.readInt(s);
+            if (digit <= 0 || digit >= 9) {
+                System.out.println("Invalid " + getName().toUpperCase() + " input! Please try again: ");
+            }
+        }
+        return digit;
     }
 }

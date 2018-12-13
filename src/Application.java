@@ -1,8 +1,8 @@
 import devices.consoleDevices.external.*;
 import devices.consoleDevices.internal.*;
-import machine.ConsoleMachine;
 import machine.SoftwareMachine;
-import machine.SwingMachine;
+import machine.console.ConsoleMachine;
+import machine.swing.SwingMachine;
 import modules.containers.Container;
 import modules.dispensers.ConsumableDispenser;
 import modules.external.*;
@@ -26,10 +26,14 @@ import java.util.HashMap;
  * <p>
  * This Projects makes heavy use of assertions. To enable Assertion Check in case of debugging you need to edit run
  * configuration and add "-ea" argument to VM Options.
+ * <p>
+ * State of Project:
+ * Console Implementation: 100% completed
+ * Graphics Implementation: 5% completed
  */
 public class Application {
     //Switch between Graphical & Console User Interface
-    private static final boolean GUI_ENABLED = true;
+    private static final boolean GUI_ENABLED = false;
     //Menu Action Codes
     private static final String AC_WELCOME_MESSAGE = "000";
     private static final String AC_MAIN_MENU = "100";
@@ -54,7 +58,7 @@ public class Application {
     //Constants
     public static void main(String[] args) {
         //Machine Preparation
-        machine = (GUI_ENABLED) ? new SwingMachine() : new ConsoleMachine();
+        machine = (GUI_ENABLED) ? SwingMachine.getInstance() : ConsoleMachine.getInstance();
         insertDevices();
         sm = SoftwareMachine.getInstance(machine);
         rm = RecipeManager.getInstance();

@@ -1,4 +1,4 @@
-package machine;
+package machine.console;
 
 import tuc.ece.cs201.vm.hw.HardwareMachine;
 import tuc.ece.cs201.vm.hw.device.Device;
@@ -7,19 +7,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SwingMachine implements HardwareMachine {
+public class ConsoleMachine implements HardwareMachine {
 
     //Class variables
     private final HashMap<String, Device> devices;
-
+    private static ConsoleMachine instance;
 
     //Constructor
-    public SwingMachine() {
+    private ConsoleMachine() {
         devices = new HashMap<>();
+        instance = this;
     }
 
-
-    //Other Methods
+    //Methods
     @Override
     public List<Device> listDevices() {
         return new ArrayList<>(devices.values());
@@ -30,6 +30,9 @@ public class SwingMachine implements HardwareMachine {
         return null;
     }
 
+    public static ConsoleMachine getInstance() {
+        return (instance != null) ? instance : new ConsoleMachine();
+    }
 
     public void addDevice(Device device) {
         devices.put(device.getName(), device);

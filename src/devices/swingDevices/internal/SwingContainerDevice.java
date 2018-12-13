@@ -1,9 +1,43 @@
 package devices.swingDevices.internal;
 
-import devices.swingDevices.SwingDevice;
 import tuc.ece.cs201.vm.hw.device.ContainerDevice;
+import tuc.ece.cs201.vm.hw.device.Device;
+import tuc.ece.cs201.vm.hw.device.DeviceType;
 
-public class SwingContainerDevice extends SwingDevice implements ContainerDevice {
+import javax.swing.*;
+import java.util.List;
+
+public class SwingContainerDevice extends JPanel implements ContainerDevice {
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public void connect(Device device) {
+
+    }
+
+    @Override
+    public void disconnect(Device device) {
+
+    }
+
+    @Override
+    public void disconnectAll() {
+
+    }
+
+    @Override
+    public List<Device> listConnectedDevices() {
+        return null;
+    }
+
+    @Override
+    public DeviceType getType() {
+        return null;
+    }
 
     @Override
     public int getCapacity() {
