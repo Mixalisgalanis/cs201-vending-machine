@@ -18,7 +18,18 @@ import utilities.StringManager;
 
 import java.util.HashMap;
 
+/**
+ * This Class contains the main run of the Project. A Software Machine is created based on a template hardware
+ * Machine. Hardware Devices are added here and appropriate modules are created based on the physical existing devices.
+ * Console and Graphics Implementation can be easily switched by modifying the GUI_ENABLED variable. This Class also
+ * contains all the required Menus to navigate user to specific actions.
+ * <p>
+ * This Projects makes heavy use of assertions. To enable Assertion Check in case of debugging you need to edit run
+ * configuration and add "-ea" argument to VM Options.
+ */
 public class Application {
+    //Switch between Graphical & Console User Interface
+    private static final boolean GUI_ENABLED = true;
     //Menu Action Codes
     private static final String AC_WELCOME_MESSAGE = "000";
     private static final String AC_MAIN_MENU = "100";
@@ -29,8 +40,13 @@ public class Application {
     private static final String AC_ADMIN_CHECK_CONTAINER_LEVELS = "113";
     private static final String AC_ADMIN_REFILL_CONTAINERS = "114";
     private static final String AC_USER_BUY_DRINK = "121";
+    //Container Sizes
+    private static final int POWDER_CONTAINER_REGULAR_SIZE = 500;
+    private static final int LIQUID_CONTAINER_REGULAR_SIZE = 1000;
+    private static final int SMALL_CUP_CONTAINER = 25;
+    private static final int BIG_CUP_CONTAINER = 15;
+    private static final int PROCESSOR_CONTAINER_SIZE = 500;
     //Class variables
-    private static final boolean GUI_ENABLED = false; //<----Change to switch between Graphical & Console User Interface
     private static HardwareMachine machine;
     private static SoftwareMachine sm;
     private static RecipeManager rm;
@@ -49,6 +65,9 @@ public class Application {
         startCycleOf(sm);
     }
 
+    /**
+     * Inserts Graphical or Console Devices based on the selected implementation
+     */
     private static void insertDevices() {
         if (GUI_ENABLED) {
             insertGuiDevices();
@@ -57,6 +76,9 @@ public class Application {
         }
     }
 
+    /**
+     * Inserts all required Physical Console Devices
+     */
     private static void insertConsoleDevices() {
         ConsoleMachine console = (ConsoleMachine) machine; //Machine is console
 
@@ -66,20 +88,20 @@ public class Application {
         DispenserDevice materialDispenserDevice = new ConsoleDispenserDevice("CUPS", DeviceType.MaterialDispenser);
 
         //Containers
-        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
-        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", console.POWDER_CONTAINER_REGULAR_SIZE));
+        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("CoffeeContainerDevice", POWDER_CONTAINER_REGULAR_SIZE));
+        dosingDispenserDevice.addContainer(new ConsoleDosingContainerDevice("SugarContainerDevice", POWDER_CONTAINER_REGULAR_SIZE));
 
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
-        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("WaterContainerDevice", LIQUID_CONTAINER_REGULAR_SIZE));
+        flowDispenserDevice.addContainer(new ConsoleFlowContainerDevice("MilkContainerDevice", LIQUID_CONTAINER_REGULAR_SIZE));
 
-        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", console.SMALL_CUP_CONTAINER));
-        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", console.BIG_CUP_CONTAINER));
+        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("SmallCupContainerDevice", SMALL_CUP_CONTAINER));
+        materialDispenserDevice.addContainer(new ConsoleMaterialContainerDevice("BigCupContainerDevice", BIG_CUP_CONTAINER));
 
         //Processors
-        ProcessorDevice boiler = (new ConsoleProcessorDevice("BoilerDevice", console.PROCESSOR_CONTAINER_SIZE));
-        ProcessorDevice cooler = (new ConsoleProcessorDevice("CoolerDevice", console.PROCESSOR_CONTAINER_SIZE));
-        ProcessorDevice blender = (new ConsoleProcessorDevice("BlenderDevice", console.PROCESSOR_CONTAINER_SIZE));
-        ProcessorDevice buffer = (new ConsoleProcessorDevice("BufferDevice", console.PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice boiler = (new ConsoleProcessorDevice("BoilerDevice", PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice cooler = (new ConsoleProcessorDevice("CoolerDevice", PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice blender = (new ConsoleProcessorDevice("BlenderDevice", PROCESSOR_CONTAINER_SIZE));
+        ProcessorDevice buffer = (new ConsoleProcessorDevice("BufferDevice", PROCESSOR_CONTAINER_SIZE));
 
         //External
         NumPadDevice numPadDevice = new ConsoleNumPadDevice();
@@ -90,15 +112,16 @@ public class Application {
 
 
         //Adding all these Devices
+        //Dispensers
         console.addDevice(dosingDispenserDevice);
         console.addDevice(materialDispenserDevice);
         console.addDevice(flowDispenserDevice);
-
+        //Processors
         console.addDevice(boiler);
         console.addDevice(cooler);
         console.addDevice(blender);
         console.addDevice(buffer);
-
+        //External Devices
         console.addDevice(numPadDevice);
         console.addDevice(coinAcceptorDevice);
         console.addDevice(displayDevice);
@@ -106,28 +129,30 @@ public class Application {
         console.addDevice(productCaseDevice);
     }
 
+    /**
+     * Inserts all required Physical Graphical Devices
+     */
     private static void insertGuiDevices() {
         SwingMachine swing = (SwingMachine) machine;
         //TODO Insert GUI Devices
-
     }
 
+    /**
+     * Inserts all consumables needed
+     */
     private static void insertConsumables() {
-        ConsoleMachine console = (ConsoleMachine) machine; //Machine is console //TODO Remove Console Dependency
-
         //Powders
-        sm.addConsumable(new Powder("Coffee", console.POWDER_CONTAINER_REGULAR_SIZE));
-        sm.addConsumable(new Powder("Sugar", console.POWDER_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Powder("Coffee", POWDER_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Powder("Sugar", POWDER_CONTAINER_REGULAR_SIZE));
         //Renames HashMap Key
 
         //Liquids
-        sm.addConsumable(new Liquid("Water", console.LIQUID_CONTAINER_REGULAR_SIZE));
-        sm.addConsumable(new Liquid("Milk", console.LIQUID_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Liquid("Water", LIQUID_CONTAINER_REGULAR_SIZE));
+        sm.addConsumable(new Liquid("Milk", LIQUID_CONTAINER_REGULAR_SIZE));
 
         //Materials
-        sm.addConsumable(new Cup("SmallCup", console.SMALL_CUP_CONTAINER, "Small"));
-        sm.addConsumable(new Cup("BigCup", console.BIG_CUP_CONTAINER, "Big"));
-
+        sm.addConsumable(new Cup("SmallCup", SMALL_CUP_CONTAINER, "Small"));
+        sm.addConsumable(new Cup("BigCup", BIG_CUP_CONTAINER, "Big"));
     }
 
     private static void startCycleOf(SoftwareMachine machine) {
@@ -150,7 +175,7 @@ public class Application {
         //Should pass generalCheck
         generalCheck();
 
-        //Displaying Menus and taking actions
+        //Displaying Menus and taking actions using a Menu System
         new Menu();
         int EXIT_SELECTION = -1;
         int RESET_SELECTION = -2;
@@ -252,7 +277,7 @@ public class Application {
 
     /**
      * Makes sure dispensers have containers and containers have consumables.
-     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options
+     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options.
      */
     private static void generalCheck() {
         assert (sm.getContainers() != null);
@@ -267,6 +292,11 @@ public class Application {
         }
     }
 
+    /**
+     * This class represents a Menu System which is based on action codes. Every action code represent a specific menu.
+     * The selection is acquired through the NumPad and an action code is generated in this class. If the action code
+     * is recognized (by the switch-case above), appropriate actions are taken.
+     */
     private static class Menu {
 
         //Class variables
@@ -282,12 +312,23 @@ public class Application {
         }
 
         //Getters
+
+        /**
+         * Searches and finds a menu based on an action code. If no Menus are found, an action not found message is
+         * returned.
+         *
+         * @return a String of the Menu to display
+         */
         static String getMenu() {
             return (actionCodes.get(currentActionCode) == null) ? "Action not found. Please try again!\n" :
                     actionCodes.get(currentActionCode);
         }
 
         //Other Methods
+
+        /**
+         * Inserts all required Menus (Hash Map with action code (keys) and Menu String (values)
+         */
         static void insertActionCodes() {
             actionCodes.put(AC_WELCOME_MESSAGE, StringManager.generateDashLine("", "=") + "\nWelcome to Vending Machine v1.0 " +
                     "(Beta)\n" + StringManager.generateDashLine("", "="));
@@ -309,6 +350,14 @@ public class Application {
             actionCodes.put(AC_USER_BUY_DRINK, "You have chosen to Buy a Drink!\n");
         }
 
+        /**
+         * Generates an action code based on a selection. (EX: "100" (with selection '2') -> "120").
+         * Having selection equal to 0, simulates the Menu system going back 1 Menu.
+         * Having selection equal to -2, simulated the Menu system going back to Main Menu.
+         *
+         * @param selection NumPad Input
+         * @return the new action code generated
+         */
         static String calculateActionCode(int selection) {
             switch (selection) {
                 case 0:
