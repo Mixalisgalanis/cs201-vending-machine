@@ -19,7 +19,7 @@ public class SwingNumPadDevice extends JPanel implements NumPadDevice, ActionLis
     private JLabel jlabel;
 
     private int keyPressed = -1;
-    private boolean active;
+    private boolean activated;
 
     public SwingNumPadDevice() {
         prepareSwing();
@@ -43,7 +43,7 @@ public class SwingNumPadDevice extends JPanel implements NumPadDevice, ActionLis
     public void lock() {
         setBackground(SwingMachine.DE_ACTIVE_COLOR);
         jnumpad.setEnabled(false);
-        active = false;
+        activated = false;
     }
 
 
@@ -51,7 +51,7 @@ public class SwingNumPadDevice extends JPanel implements NumPadDevice, ActionLis
     public void unLock() {
         setBackground(SwingMachine.ACTIVE_COLOR);
         jnumpad.setEnabled(true);
-        active = true;
+        activated = true;
     }
 
     @Override
@@ -88,7 +88,9 @@ public class SwingNumPadDevice extends JPanel implements NumPadDevice, ActionLis
     public synchronized int readDigit(String c) {
         keyPressed = -1;
         try {
+            setEnabled(true);
             wait();
+            setEnabled(false);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

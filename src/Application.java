@@ -33,6 +33,17 @@ class Swing {
 }
 
 /**
+ * New Swing Implementation Given in the Exam of the Project
+ */
+class SwingExam {
+    public static void main(String[] args) {
+//        HardwareMachine machine = SwingVM.getInstance();
+//        new Application(machine);
+    }
+    //TODO Don't Forget to include Recipe name in file name (200 - XXXXXXXXXXXXX.rcp)
+}
+
+/**
  * ******Project Authors:******
  * Mixalis Galanis (2016030036)
  * Ioanna Marinou (2016030143)
@@ -47,7 +58,7 @@ class Swing {
  * **************************************
  * State of Project:
  * Console Implementation: 100% completed
- * Graphics Implementation: 25% completed
+ * Graphics Implementation: 35% completed
  * **************************************
  */
 class Application {
@@ -150,7 +161,8 @@ class Application {
                     //Display available recipes
                     display.displayMessage(StringManager.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getAvailableRecipes()) {
-                        display.displayMessage("[" + recipe.getCode() + "]: " + recipe.getName() + " (" + recipe.getPrice() + "c)");
+                        display.displayMessage("[" + recipe.getCode() + "]: " + ((recipe.getCode().charAt(0) == '2') ?
+                                ("(NEW!) ") : "(OLD) ") + recipe.getName() + " (" + recipe.getPrice() + "c)");
                     }
                     display.displayMessage(StringManager.generateDashLine("", "-"));
                     Recipe recipe;
