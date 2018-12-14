@@ -1,7 +1,8 @@
 package machine.swing;
 
-import devices.swingDevices.internal.SwingContainerDevice;
 import devices.swingDevices.internal.SwingDosingContainerDevice;
+import devices.swingDevices.internal.SwingFlowContainerDevice;
+import devices.swingDevices.internal.SwingMaterialContainerDevice;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
 import javax.swing.*;
@@ -12,8 +13,12 @@ public class InternalDevices extends JPanel {
     private final int gridWidth;
     private final int gridHeight;
 
-    private final SwingContainerDevice cont1;
-    private final SwingContainerDevice cont2;
+    private final SwingDosingContainerDevice coffeeContainerDevice;
+    private final SwingDosingContainerDevice sugarContainerDevice;
+    private final SwingFlowContainerDevice waterContainerDevice;
+    private final SwingFlowContainerDevice milkContainerDevice;
+    private final SwingMaterialContainerDevice smallCupContainerDevice;
+    private final SwingMaterialContainerDevice bigCupContainerDevice;
 
     public InternalDevices() {
         setBackground(Color.LIGHT_GRAY);
@@ -24,15 +29,21 @@ public class InternalDevices extends JPanel {
         gridWidth = dimension.width / 6;
         gridHeight = dimension.height / 4;
 
-        cont1 = new SwingDosingContainerDevice("CoffeeContainer", DeviceType.DosingContainer, 100, 0, 0, gridWidth,
-                gridHeight, 10,
-                SwingMachine.COFFEE_COLOR);
-        SwingMachine.getInstance().addDevice(cont1);
+        int x = 0;
+        int y = 0;
 
-        cont2 = new SwingDosingContainerDevice("SugarContainer", DeviceType.DosingContainer, 100, gridWidth, 0,
-                gridWidth, gridHeight, 10,
-                SwingMachine.SUGAR_COLOR);
-        SwingMachine.getInstance().addDevice(cont2);
+        coffeeContainerDevice = new SwingDosingContainerDevice("CoffeeContainerDevice", DeviceType.DosingContainer,
+                SwingMachine.POWDER_CONTAINER_REGULAR_SIZE, (x++) * (gridWidth), y, gridWidth, gridHeight, 10, SwingMachine.COFFEE_COLOR);
+        sugarContainerDevice = new SwingDosingContainerDevice("SugarContainerDevice", DeviceType.DosingContainer,
+                SwingMachine.POWDER_CONTAINER_REGULAR_SIZE, (x++) * (gridWidth), y, gridWidth, gridHeight, 10, SwingMachine.SUGAR_COLOR);
+        waterContainerDevice = new SwingFlowContainerDevice("WaterContainerDevice", DeviceType.FlowContainer,
+                SwingMachine.LIQUID_CONTAINER_REGULAR_SIZE, (x++) * (gridWidth), y, gridWidth, gridHeight, 10, SwingMachine.WATER_COLOR);
+        milkContainerDevice = new SwingFlowContainerDevice("MilkContainerDevice", DeviceType.FlowContainer,
+                SwingMachine.LIQUID_CONTAINER_REGULAR_SIZE, (x++) * (gridWidth), y, gridWidth, gridHeight, 10, SwingMachine.MILK_COLOR);
+        smallCupContainerDevice = new SwingMaterialContainerDevice("SmallCupContainerDevice", DeviceType.MaterialContainer,
+                SwingMachine.SMALL_CUP_CONTAINER, (x++) * (gridWidth), y, gridWidth, gridHeight, 10, SwingMachine.SMALL_CUP);
+        bigCupContainerDevice = new SwingMaterialContainerDevice("BigCupContainerDevice", DeviceType.MaterialContainer,
+                SwingMachine.BIG_CUP_CONTAINER, (x++) * (gridWidth), y, gridWidth, gridHeight, 10, SwingMachine.BIG_CUP);
     }
 
     @Override
@@ -41,8 +52,12 @@ public class InternalDevices extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         //Draw all Graphic Devices in Internal Devices
-        cont1.draw(g2);
-        cont2.draw(g2);
+        coffeeContainerDevice.draw(g2);
+        sugarContainerDevice.draw(g2);
+        waterContainerDevice.draw(g2);
+        milkContainerDevice.draw(g2);
+        smallCupContainerDevice.draw(g2);
+        bigCupContainerDevice.draw(g2);
 
         // Draw the grid with dashes lines
         g2.setStroke(SwingMachine.dashed);
@@ -55,6 +70,5 @@ public class InternalDevices extends JPanel {
         }
 
         g2.setStroke(SwingMachine.stroke);
-
     }
 }
