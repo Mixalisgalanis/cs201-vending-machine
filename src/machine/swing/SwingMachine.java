@@ -24,9 +24,13 @@ public class SwingMachine extends JFrame implements HardwareMachine {
     public static final Color DE_ACTIVE_COLOR = Color.white;
     public static final Color BACKGROUND_COLOR = Color.white;
     public static final Color FOREGROUND_COLOR = Color.RED;
-    private static final BasicStroke stroke = new BasicStroke(1.0f);
-    private static final BasicStroke dStroke = new BasicStroke(2.0f);
-    private static final BasicStroke wStroke = new BasicStroke(8.0f);
+    public static final BasicStroke stroke = new BasicStroke(1.0f);
+    public static final BasicStroke dStroke = new BasicStroke(2.0f);
+    public static final BasicStroke wStroke = new BasicStroke(8.0f);
+    public static final Color COFFEE_COLOR = Color.darkGray;
+    public static final Color SUGAR_COLOR = new Color(255, 255, 255);
+    final static float dash1[] = {5.0f};
+    final static BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
     //Singleton
     private static SwingMachine instance;
     //Class variables

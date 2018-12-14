@@ -21,14 +21,18 @@ import java.util.HashMap;
  * This Class contains the main run of the Project. A Software Machine is created based on a template hardware
  * Machine. Hardware Devices are added here and appropriate modules are created based on the physical existing devices.
  * Console and Graphics Implementation can be easily switched by modifying the GUI_ENABLED variable. This Class also
- * contains all the required Menus to navigate user to specific actions. Note: This Projects makes heavy use of
- * assertions. To enable Assertion Check in case of debugging you need to edit run configuration and add "-ea"
- * argument to VM Options.
+ * uses a sophisticated Menu System which contains all the required Menus to navigate the user to a specific action.
+ * Note: This Projects makes heavy use of assertions. To enable Assertion Check in case of debugging you need to edit
+ * run configuration and add "-ea" argument to VM Options.
  * **************************************
  * State of Project:
  * Console Implementation: 100% completed
- * Graphics Implementation: 5% completed
+ * Graphics Implementation: 25% completed
  * **************************************
+ */
+
+/**
+ * Console Implementation of the Project
  */
 class Console {
     public static void main(String[] args) {
@@ -37,6 +41,9 @@ class Console {
     }
 }
 
+/**
+ * Swing Implementation of the Project
+ */
 class Swing {
     public static void main(String[] args) {
         HardwareMachine machine = SwingMachine.getInstance();
@@ -45,24 +52,14 @@ class Swing {
 }
 
 class Application {
-    //Menu Action Codes
-    private static final String AC_WELCOME_MESSAGE = "000";
-    private static final String AC_MAIN_MENU = "100";
-    private static final String AC_ADMIN_SUBMENU = "110";
-    private static final String AC_USER_SUBMENU = "120";
-    private static final String AC_ADMIN_CREATE_RECIPE = "111";
-    private static final String AC_ADMIN_DELETE_RECIPE = "112";
-    private static final String AC_ADMIN_CHECK_CONTAINER_LEVELS = "113";
-    private static final String AC_ADMIN_REFILL_CONTAINERS = "114";
-    private static final String AC_USER_BUY_DRINK = "121";
+
+    //Class Variables
     private static SoftwareMachine sm;
     private static RecipeManager rm;
-    //Class variables
-    private final HardwareMachine machine;
 
+    //Constructor
     Application(HardwareMachine machine) {
         //Machine Preparation
-        this.machine = machine;
         sm = SoftwareMachine.getInstance(machine);
         rm = RecipeManager.getInstance();
 
@@ -70,24 +67,6 @@ class Application {
         assert machine != null;
         startCycleOf(sm);
     }
-
-    /**
-     * Makes sure dispensers have containers and containers have consumables.
-     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options.
-     */
-    private static void generalCheck() {
-        assert (sm.getContainers() != null);
-        assert (sm.getProcessors() != null);
-        assert (sm.getConsumables() != null);
-        assert (sm.getDispensers() != null);
-        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
-            assert (dispenser.getContainers() != null);
-            for (Container container : dispenser.getContainers().values()) {
-                assert (container.getConsumable() != null);
-            }
-        }
-    }
-
 
     private void startCycleOf(SoftwareMachine machine) {
         assert machine != null;
@@ -119,27 +98,27 @@ class Application {
             String actionCode = Menu.calculateActionCode(selection);
             display.displayMessage(Menu.getMenu());
             switch (actionCode) {
-                case AC_WELCOME_MESSAGE:
+                case Menu.AC_WELCOME_MESSAGE:
                     selection = 1;
                     break;
-                case AC_MAIN_MENU:
+                case Menu.AC_MAIN_MENU:
                     selection = numPad.readCode(1);
                     break;
 
-                case AC_ADMIN_SUBMENU:
+                case Menu.AC_ADMIN_SUBMENU:
                     selection = numPad.readCode(1);
                     break;
 
-                case AC_USER_SUBMENU:
+                case Menu.AC_USER_SUBMENU:
                     selection = numPad.readCode(1);
                     break;
 
-                case AC_ADMIN_CREATE_RECIPE:
+                case Menu.AC_ADMIN_CREATE_RECIPE:
                     rm.createRecipe();
                     selection = RESET_SELECTION;
                     break;
 
-                case AC_ADMIN_DELETE_RECIPE:
+                case Menu.AC_ADMIN_DELETE_RECIPE:
                     //Display Recipes Header
                     display.displayMessage(StringManager.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getRecipes().values()) {
@@ -152,7 +131,7 @@ class Application {
                     selection = RESET_SELECTION;
                     break;
 
-                case AC_ADMIN_CHECK_CONTAINER_LEVELS:
+                case Menu.AC_ADMIN_CHECK_CONTAINER_LEVELS:
                     display.displayMessage(StringManager.generateDashLine("Available Containers", "-"));
                     for (Container container : machine.getContainers().values()) {
                         display.displayMessage("[" + container.getConsumable().getName() + "] " + container.getName() +
@@ -162,13 +141,13 @@ class Application {
                     selection = RESET_SELECTION;
                     break;
 
-                case AC_ADMIN_REFILL_CONTAINERS:
+                case Menu.AC_ADMIN_REFILL_CONTAINERS:
                     machine.refillContainers();
                     display.displayMessage("Containers Refilled Successfully!");
                     selection = RESET_SELECTION;
                     break;
 
-                case AC_USER_BUY_DRINK:
+                case Menu.AC_USER_BUY_DRINK:
                     //Display available recipes
                     display.displayMessage(StringManager.generateDashLine("Available Recipes", "-"));
                     for (Recipe recipe : rm.getAvailableRecipes()) {
@@ -208,12 +187,40 @@ class Application {
         }
     }
 
+
+    /**
+     * Makes sure dispensers have containers and containers have consumables.
+     * To enable Assertion Check you need to edit run configuration and add "-ea" argument to VM Options.
+     */
+    private static void generalCheck() {
+        assert (sm.getContainers() != null);
+        assert (sm.getProcessors() != null);
+        assert (sm.getConsumables() != null);
+        assert (sm.getDispensers() != null);
+        for (ConsumableDispenser dispenser : sm.getDispensers().values()) {
+            assert (dispenser.getContainers() != null);
+            for (Container container : dispenser.getContainers().values()) {
+                assert (container.getConsumable() != null);
+            }
+        }
+    }
+
     /**
      * This class represents a Menu System which is based on action codes. Every action code represent a specific menu.
      * The selection is acquired through the NumPad and an action code is generated in this class. If the action code
      * is recognized (by the switch-case above), appropriate actions are taken.
      */
     private static class Menu {
+        //Menu Action Codes
+        private static final String AC_WELCOME_MESSAGE = "000";
+        private static final String AC_MAIN_MENU = "100";
+        private static final String AC_ADMIN_SUBMENU = "110";
+        private static final String AC_USER_SUBMENU = "120";
+        private static final String AC_ADMIN_CREATE_RECIPE = "111";
+        private static final String AC_ADMIN_DELETE_RECIPE = "112";
+        private static final String AC_ADMIN_CHECK_CONTAINER_LEVELS = "113";
+        private static final String AC_ADMIN_REFILL_CONTAINERS = "114";
+        private static final String AC_USER_BUY_DRINK = "121";
 
         //Class variables
         static String INITIAL_CODE = "000";
@@ -223,11 +230,28 @@ class Application {
         static String previousActionCode = INITIAL_CODE;
 
         //Constructor
-        Menu() {
-            insertActionCodes();
-        }
 
-        //Getters
+        /**
+         * Inserts all required Menus (Hash Map with action code (keys) and Menu String (values)
+         */
+        Menu() {
+            actionCodes.put(AC_WELCOME_MESSAGE, StringManager.generateDashLine("", "=") + "\nWelcome to Vending Machine v1.0 " +
+                    "(Beta)\n" + StringManager.generateDashLine("", "="));
+            actionCodes.put(AC_MAIN_MENU, "\n" + StringManager.generateDashLine("MAIN MENU", "=") +
+                    "\n1. Administrator\n2. User\n" + StringManager.generateDashLine("", "=") +
+                    "\nPlease select user type: ");
+            actionCodes.put(AC_ADMIN_SUBMENU, "\n" +
+                    StringManager.generateDashLine("Administrator Submenu", "-") + "\n0. Back (<----)" +
+                    "\n1. Create " + "Recipes\n2. Delete Recipes\n3. Check Container Levels\n4. Refill Containers\n"
+                    + StringManager.generateDashLine("", "-") + "\nPlease select action: ");
+            actionCodes.put(AC_USER_SUBMENU, "\n" + StringManager.generateDashLine("User Submenu", "-") +
+                    "\n0. Back (<----)\n1. Buy a Drink\n" + StringManager.generateDashLine("", "-") + "\nPlease select action:");
+            actionCodes.put(AC_ADMIN_CREATE_RECIPE, "You have chosen to Create a Recipe!\n");
+            actionCodes.put(AC_ADMIN_DELETE_RECIPE, "You have chosen to Delete a Recipe!\n");
+            actionCodes.put(AC_ADMIN_CHECK_CONTAINER_LEVELS, "You have chosen to check remaining Container Levels!\n");
+            actionCodes.put(AC_ADMIN_REFILL_CONTAINERS, "You have chosen to Refill Containers!\n");
+            actionCodes.put(AC_USER_BUY_DRINK, "You have chosen to Buy a Drink!\n");
+        }
 
         /**
          * Searches and finds a menu based on an action code. If no Menus are found, an action not found message is
@@ -238,32 +262,6 @@ class Application {
         static String getMenu() {
             return (actionCodes.get(currentActionCode) == null) ? "Action not found. Please try again!\n" :
                     actionCodes.get(currentActionCode);
-        }
-
-        //Other Methods
-
-        /**
-         * Inserts all required Menus (Hash Map with action code (keys) and Menu String (values)
-         */
-        static void insertActionCodes() {
-            actionCodes.put(AC_WELCOME_MESSAGE, StringManager.generateDashLine("", "=") + "\nWelcome to Vending Machine v1.0 " +
-                    "(Beta)\n" + StringManager.generateDashLine("", "="));
-            actionCodes.put(AC_MAIN_MENU, "\n" +
-                    StringManager.generateDashLine("MAIN MENU", "=") + "\n1. Administrator\n" +
-                    "2. User\n" + StringManager.generateDashLine("", "=") + "\nPlease select user type: ");
-            actionCodes.put(AC_ADMIN_SUBMENU,
-                    "\n" + StringManager.generateDashLine("Administrator Submenu", "-") + "\n0. " +
-                            "Back (<----)" + "\n1. Create " + "Recipes\n2. Delete Recipes\n3. Check Container Levels\n" +
-                            "4. Refill Containers\n"
-                            + StringManager.generateDashLine("", "-") + "\nPlease select action: ");
-            actionCodes.put(AC_USER_SUBMENU,
-                    "\n" + StringManager.generateDashLine("User Submenu", "-") + "\n0. Back (<----)" +
-                            "\n1. Buy a Drink\n" + StringManager.generateDashLine("", "-") + "\nPlease select action:");
-            actionCodes.put(AC_ADMIN_CREATE_RECIPE, "You have chosen to Create a Recipe!\n");
-            actionCodes.put(AC_ADMIN_DELETE_RECIPE, "You have chosen to Delete a Recipe!\n");
-            actionCodes.put(AC_ADMIN_CHECK_CONTAINER_LEVELS, "You have chosen to check remaining Container Levels!\n");
-            actionCodes.put(AC_ADMIN_REFILL_CONTAINERS, "You have chosen to Refill Containers!\n");
-            actionCodes.put(AC_USER_BUY_DRINK, "You have chosen to Buy a Drink!\n");
         }
 
         /**

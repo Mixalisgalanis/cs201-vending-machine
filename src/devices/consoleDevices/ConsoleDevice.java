@@ -1,6 +1,5 @@
 package devices.consoleDevices;
 
-
 import tuc.ece.cs201.vm.hw.device.Device;
 import tuc.ece.cs201.vm.hw.device.DeviceType;
 
@@ -11,14 +10,14 @@ public class ConsoleDevice implements Device {
 
     private final String name;
     private final DeviceType deviceType;
-    private boolean connected;
     private static ArrayList<Device> connectedDevices;
+    private boolean connected;
 
     public ConsoleDevice(String name, DeviceType deviceType) {
         this.name = name;
         this.deviceType = deviceType;
-        connected = false;
         connectedDevices = new ArrayList<>();
+        connected = false;
     }
 
     @Override
